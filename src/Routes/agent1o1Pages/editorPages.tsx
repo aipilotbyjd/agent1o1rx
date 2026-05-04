@@ -1,13 +1,19 @@
 import pages from '@/Routes/pages';
 import { lazy } from 'react';
 
+const WorkflowEditorPage = lazy(() => import('@/pages/editor/WorkflowEditor/WorkflowEditor.page'));
+
 const EditorPages = [
 	{
-		path: pages.examples.exampleMain.to,
+		path: pages.editor.to,
 		children: [
 			{
-				path: pages.examples.exampleMain.subPages.userInterface.subPages.navs.to,
-				element: <NavsExamplePage />,
+				path: pages.editor.subPages.new.to,
+				element: <WorkflowEditorPage />,
+			},
+			{
+				path: pages.editor.subPages.edit.to,
+				element: <WorkflowEditorPage />,
 			},
 		],
 	},

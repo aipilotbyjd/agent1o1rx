@@ -13,6 +13,8 @@ import UnderConstructionPage from '@/pages/UnderConstruction.page';
 import DocumentationPages from '@/Routes/infoPages/documentationPages';
 import ExamplePages from '@/Routes/infoPages/examplePages';
 import RegisterPage from '@/pages/Register.page';
+import EditorLayout from '@/layouts/Editor.layout';
+import EditorPages from '@/Routes/agent1o1Pages/editorPages';
 
 // Lazily loaded components for routes
 const SalesLayout = lazy(() => import('@/pages/apps/sales/_layouts/Sales.layout'));
@@ -237,6 +239,10 @@ const router = createBrowserRouter([
 										],
 									},
 								],
+							},
+							{
+								element: <EditorLayout />,
+								children: [...EditorPages],
 							},
 						],
 					},

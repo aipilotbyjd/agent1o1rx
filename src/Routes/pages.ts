@@ -1165,7 +1165,7 @@ const app = {
 
 const editor = {
 	id: 'editor',
-	to: 'app/editor',
+	to: '/app/editor',
 	text: 'Editor',
 	icon: 'PencilEdit02',
 	subPages: {
