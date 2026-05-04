@@ -28,7 +28,7 @@ const PromptToWorkflow = () => {
 				value={prompt}
 				onChange={(event) => setPrompt(event.target.value)}
 				placeholder='Describe the workflow you want to build'
-				className='h-32 w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-sm text-zinc-100 outline-none focus:border-violet-400'
+				className='h-32 w-full rounded-xl border bg-white p-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-500 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 focus:border-violet-400'
 			/>
 			<button
 				type='button'

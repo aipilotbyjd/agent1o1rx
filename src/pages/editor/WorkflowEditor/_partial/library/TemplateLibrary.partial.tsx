@@ -4,7 +4,7 @@ const TemplateLibrary = () => {
 	const { dispatch } = useWorkflowEditor();
 
 	return (
-		<div className='border-t border-zinc-800 p-3'>
+		<div className='border-t border-zinc-200 dark:border-zinc-800 p-3'>
 			<button
 				type='button'
 				onClick={() =>
@@ -14,7 +14,7 @@ const TemplateLibrary = () => {
 						defKeys: ['input.ask', 'ai.chat', 'output.display'],
 					})
 				}
-				className='w-full rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-3 py-2 text-left text-sm font-bold text-emerald-200 transition hover:bg-emerald-400/20'>
+				className='w-full rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-left text-sm font-bold text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-700/50 dark:bg-emerald-950/30 dark:text-emerald-300 dark:hover:bg-emerald-950/50'>
 				Generate starter flow
 			</button>
 		</div>

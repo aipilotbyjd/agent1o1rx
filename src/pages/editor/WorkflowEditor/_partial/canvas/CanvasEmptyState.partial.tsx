@@ -25,8 +25,8 @@ const CanvasEmptyState = () => {
 		<div className='pointer-events-none absolute inset-0 flex items-center justify-center p-6'>
 			<div className='pointer-events-auto w-full max-w-3xl'>
 				<div className='mb-5 text-center'>
-					<div className='text-xl font-black text-white'>Start with a workflow template</div>
-					<div className='mt-1 text-sm text-zinc-400'>
+					<div className='text-xl font-black text-zinc-900 dark:text-white'>Start with a workflow template</div>
+					<div className='mt-1 text-sm text-zinc-500 dark:text-zinc-400'>
 						Drag nodes from the library or choose a starter flow.
 					</div>
 				</div>
@@ -42,12 +42,12 @@ const CanvasEmptyState = () => {
 									defKeys: template.nodes,
 								})
 							}
-							className='rounded-xl border border-white/10 bg-white/95 p-4 text-left text-zinc-950 shadow-xl transition hover:-translate-y-0.5 hover:bg-white'>
+							className='rounded-xl border border-zinc-200 bg-white p-4 text-left text-zinc-950 shadow-xl transition hover:-translate-y-0.5 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800'>
 							<div className='text-sm font-black'>{template.name}</div>
-							<div className='mt-1 min-h-10 text-xs text-zinc-500'>{template.description}</div>
-							<div className='mt-3 flex gap-1 text-[10px] font-black text-zinc-400'>
+							<div className='mt-1 min-h-10 text-xs text-zinc-500 dark:text-zinc-400'>{template.description}</div>
+							<div className='mt-3 flex gap-1 text-[10px] font-black text-zinc-400 dark:text-zinc-500'>
 								{template.nodes.map((node) => (
-									<span key={node} className='rounded bg-zinc-100 px-1.5 py-0.5'>
+									<span key={node} className='rounded bg-zinc-100 px-1.5 py-0.5 dark:bg-zinc-800'>
 										{node.split('.')[0]}
 									</span>
 								))}

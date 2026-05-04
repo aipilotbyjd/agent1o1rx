@@ -5,7 +5,7 @@ import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context
 import type { TNodeField } from '../../_types/node.type';
 
 const inputClass =
-	'w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-emerald-400';
+	'w-full rounded-lg border bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 focus:border-emerald-400';
 
 const FieldInput = ({
 	field,
@@ -24,7 +24,7 @@ const FieldInput = ({
 				role='switch'
 				aria-checked={active}
 				onClick={() => onChange(!active)}
-				className={`h-7 w-12 rounded-full border p-1 transition ${active ? 'border-emerald-400 bg-emerald-400' : 'border-zinc-700 bg-zinc-900'}`}>
+				className={`h-7 w-12 rounded-full border p-1 transition ${active ? 'border-emerald-400 bg-emerald-500' : 'border-zinc-300 bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800'}`}>
 				<span className={`block h-4 w-4 rounded-full bg-white transition ${active ? 'translate-x-5' : ''}`} />
 			</button>
 		);
@@ -93,7 +93,7 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 	return (
 		<div className='space-y-4'>
 			<div>
-				<label className='mb-1 block text-xs font-black uppercase tracking-widest text-zinc-500'>
+				<label className='mb-1 block text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400'>
 					Node name
 				</label>
 				<input
@@ -106,7 +106,7 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 			</div>
 			{def.fields.map((field) => (
 				<div key={field.key}>
-					<label className='mb-1 block text-xs font-black uppercase tracking-widest text-zinc-500'>
+					<label className='mb-1 block text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400'>
 						{field.label}
 					</label>
 					<FieldInput
@@ -126,7 +126,7 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 							{variables.slice(0, 6).map((variable) => (
 								<span
 									key={`${variable.nodeId}:${variable.outputId}`}
-									className='rounded bg-zinc-800 px-2 py-1 text-[10px] text-zinc-300'>
+									className='rounded bg-zinc-200 px-2 py-1 text-[10px] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300'>
 									{variable.token}
 								</span>
 							))}

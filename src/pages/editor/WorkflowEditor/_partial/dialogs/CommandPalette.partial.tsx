@@ -15,7 +15,7 @@ const CommandPalette = () => {
 						dispatch({ type: 'AUTO_LAYOUT' });
 						dispatch({ type: 'SET_COMMAND_PALETTE', open: false });
 					}}
-					className='rounded-lg bg-zinc-900 px-3 py-2 text-left text-sm font-bold hover:bg-zinc-800'>
+					className='rounded-lg bg-zinc-100 px-3 py-2 text-left text-sm font-bold text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700'>
 					Auto-layout canvas
 				</button>
 				<button
@@ -24,10 +24,10 @@ const CommandPalette = () => {
 						dispatch({ type: 'TOGGLE_AI_PANEL' });
 						dispatch({ type: 'SET_COMMAND_PALETTE', open: false });
 					}}
-					className='rounded-lg bg-zinc-900 px-3 py-2 text-left text-sm font-bold hover:bg-zinc-800'>
+					className='rounded-lg bg-zinc-100 px-3 py-2 text-left text-sm font-bold text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700'>
 					Open AI builder
 				</button>
-				<div className='pt-2 text-xs font-black uppercase tracking-widest text-zinc-500'>Add node</div>
+				<div className='pt-2 text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400'>Add node</div>
 				<div className='max-h-72 overflow-y-auto'>
 					{NODE_CATALOG.map((node) => (
 						<button
@@ -41,13 +41,13 @@ const CommandPalette = () => {
 								});
 								dispatch({ type: 'SET_COMMAND_PALETTE', open: false });
 							}}
-							className='flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left hover:bg-zinc-900'>
-							<span className='flex h-7 w-7 items-center justify-center rounded bg-zinc-800 text-[10px] font-black'>
+							className='flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-800'>
+							<span className='flex h-7 w-7 items-center justify-center rounded bg-zinc-200 text-[10px] font-black text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200'>
 								{node.icon}
 							</span>
 							<span>
-								<span className='block text-sm font-bold text-white'>{node.label}</span>
-								<span className='block text-xs text-zinc-500'>{node.description}</span>
+								<span className='block text-sm font-bold text-zinc-900 dark:text-zinc-100'>{node.label}</span>
+								<span className='block text-xs text-zinc-500 dark:text-zinc-400'>{node.description}</span>
 							</span>
 						</button>
 					))}

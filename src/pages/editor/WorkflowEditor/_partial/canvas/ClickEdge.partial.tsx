@@ -23,7 +23,7 @@ const ClickEdge = ({
 			<path
 				d={`M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`}
 				fill='none'
-				stroke='rgba(255,255,255,0.48)'
+				stroke='rgba(139, 92, 246, 0.6)'
 				strokeWidth='2'
 			/>
 			<foreignObject x={mx - 12} y={(y1 + y2) / 2 - 12} width='24' height='24'>
@@ -31,7 +31,7 @@ const ClickEdge = ({
 					type='button'
 					onClick={onRemove}
 					title='Remove connection'
-					className='h-6 w-6 rounded-full border border-white/20 bg-zinc-900 text-xs text-white'>
+					className='h-6 w-6 rounded-full border border-zinc-300 bg-white text-xs text-zinc-700 shadow hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700'>
 					x
 				</button>
 			</foreignObject>

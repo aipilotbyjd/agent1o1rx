@@ -17,9 +17,9 @@ const ImportExportDialog = () => {
 				<textarea
 					value={raw}
 					onChange={(event) => setRaw(event.target.value)}
-					className='h-80 w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 font-mono text-xs text-zinc-200 outline-none focus:border-emerald-400'
+					className='h-80 w-full rounded-xl border bg-white p-3 font-mono text-xs text-zinc-800 outline-none transition placeholder:text-zinc-500 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 focus:border-emerald-400'
 				/>
-				{error && <div className='rounded-lg bg-rose-500/10 px-3 py-2 text-sm text-rose-200'>{error}</div>}
+				{error && <div className='rounded-lg bg-rose-500/10 px-3 py-2 text-sm text-rose-300'>{error}</div>}
 				<div className='flex justify-end gap-2'>
 					<button
 						type='button'
@@ -27,7 +27,7 @@ const ImportExportDialog = () => {
 							setRaw(exported);
 							setError(null);
 						}}
-						className='rounded-lg border border-zinc-800 px-3 py-2 text-sm font-bold text-zinc-300 hover:text-white'>
+						className='rounded-lg border border-zinc-300 px-3 py-2 text-sm font-bold text-zinc-600 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:text-white'>
 						Reset
 					</button>
 					<button

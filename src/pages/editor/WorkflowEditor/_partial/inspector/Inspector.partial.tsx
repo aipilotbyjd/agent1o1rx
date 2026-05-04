@@ -14,10 +14,10 @@ const Inspector = () => {
 	if (!state.ui.rightPanelOpen) return null;
 
 	return (
-		<aside className='flex h-full w-96 shrink-0 flex-col border-l border-zinc-800 bg-zinc-950'>
-			<div className='flex h-14 items-center justify-between border-b border-zinc-800 px-4'>
+		<aside className='flex h-full w-96 shrink-0 flex-col border-l border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950'>
+			<div className='flex h-14 items-center justify-between border-b border-zinc-200 px-4 dark:border-zinc-800'>
 				<div>
-					<div className='text-sm font-black text-white'>Inspector</div>
+					<div className='text-sm font-black text-zinc-900 dark:text-white'>Inspector</div>
 					<div className='text-xs text-zinc-500'>
 						{selected ? selected.data.label : 'Select a node'}
 					</div>
@@ -25,7 +25,7 @@ const Inspector = () => {
 				<button
 					type='button'
 					onClick={() => dispatch({ type: 'TOGGLE_RIGHT_PANEL' })}
-					className='rounded-md border border-zinc-800 px-2 py-1 text-xs text-zinc-400 hover:text-white'>
+					className='rounded-md border border-zinc-200 px-2 py-1 text-xs text-zinc-500 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-white'>
 					Hide
 				</button>
 			</div>
@@ -41,7 +41,7 @@ const Inspector = () => {
 							<button
 								type='button'
 								onClick={() => dispatch({ type: 'DUPLICATE_SELECTED' })}
-								className='flex-1 rounded-lg bg-zinc-800 px-3 py-2 text-sm font-bold text-white hover:bg-zinc-700'>
+								className='flex-1 rounded-lg bg-zinc-100 px-3 py-2 text-sm font-bold text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700'>
 								Duplicate
 							</button>
 							<button
@@ -53,7 +53,7 @@ const Inspector = () => {
 						</div>
 					</div>
 				) : (
-					<div className='rounded-xl border border-dashed border-zinc-800 p-6 text-center text-sm text-zinc-500'>
+					<div className='rounded-xl border border-dashed border-zinc-200 p-6 text-center text-sm text-zinc-500 dark:border-zinc-800'>
 						Select a canvas node to configure parameters, inspect ports, and preview output.
 					</div>
 				)}

@@ -23,16 +23,16 @@ const NodeLibrary = () => {
 	if (!state.ui.leftPanelOpen) return null;
 
 	return (
-		<aside className='flex h-full w-80 shrink-0 flex-col border-r border-zinc-800 bg-zinc-950'>
-			<div className='flex h-14 items-center justify-between border-b border-zinc-800 px-4'>
+		<aside className='flex h-full w-80 shrink-0 flex-col border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950'>
+			<div className='flex h-14 items-center justify-between border-b border-zinc-200 px-4 dark:border-zinc-800'>
 				<div>
-					<div className='text-sm font-black text-white'>Node Library</div>
+					<div className='text-sm font-black text-zinc-900 dark:text-white'>Node Library</div>
 					<div className='text-xs text-zinc-500'>{NODE_CATALOG.length} building blocks</div>
 				</div>
 				<button
 					type='button'
 					onClick={() => dispatch({ type: 'TOGGLE_LEFT_PANEL' })}
-					className='rounded-md border border-zinc-800 px-2 py-1 text-xs text-zinc-400 hover:text-white'>
+					className='rounded-md border border-zinc-200 px-2 py-1 text-xs text-zinc-500 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:text-white'>
 					Hide
 				</button>
 			</div>

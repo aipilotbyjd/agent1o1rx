@@ -3,13 +3,13 @@ import type { TNodeDefinition } from '../../_types/node.type';
 
 const NodeInputs = ({ def }: { def: TNodeDefinition }) => (
 	<div>
-		<div className='mb-2 text-xs font-black uppercase tracking-widest text-zinc-500'>Inputs</div>
+		<div className='mb-2 text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400'>Inputs</div>
 		<div className='space-y-1'>
 			{def.inputs.length ? (
 				def.inputs.map((input) => (
-					<div key={input.id} className='flex items-center justify-between rounded-lg bg-zinc-900 px-3 py-2 text-sm'>
+					<div key={input.id} className='flex items-center justify-between rounded-lg bg-zinc-100 px-3 py-2 text-sm text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100'>
 						<span>{input.name}</span>
-						<span className='flex items-center gap-1 text-xs text-zinc-400'>
+						<span className='flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400'>
 							<span
 								className='h-2 w-2 rounded-full'
 								style={{ backgroundColor: PORT_TYPE_COLOR[input.type] }}
@@ -19,7 +19,7 @@ const NodeInputs = ({ def }: { def: TNodeDefinition }) => (
 					</div>
 				))
 			) : (
-				<div className='rounded-lg bg-zinc-900 px-3 py-2 text-sm text-zinc-500'>No inputs</div>
+				<div className='rounded-lg bg-zinc-100 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400'>No inputs</div>
 			)}
 		</div>
 	</div>

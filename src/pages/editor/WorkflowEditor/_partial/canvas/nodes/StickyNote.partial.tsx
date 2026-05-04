@@ -25,11 +25,13 @@ const StickyNote = ({
 			onClick={onSelect}
 			onDragEnd={onDragEnd}
 			className={[
-				'absolute w-[200px] rounded-md border border-amber-300 bg-amber-100 p-3 text-left text-amber-950 shadow-lg',
+				'absolute w-[200px] rounded-md border p-3 text-left shadow-lg transition',
+				'border-amber-300 bg-amber-100 text-amber-950',
+				'dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-200',
 				selected ? 'ring-4 ring-amber-400/40' : '',
 			].join(' ')}
 			style={{ left: node.position.x, top: node.position.y }}>
-			<div className='text-xs font-black uppercase tracking-widest text-amber-700'>Note</div>
+			<div className='text-xs font-black uppercase tracking-widest text-amber-700 dark:text-amber-400'>Note</div>
 			<div className='mt-1 whitespace-pre-line text-sm'>
 				{String(node.data.values.content ?? 'Add notes in the inspector.')}
 			</div>
