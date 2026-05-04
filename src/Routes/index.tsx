@@ -73,6 +73,10 @@ const router = createBrowserRouter([
 						element: <RegisterPage />,
 					},
 					{
+						path: '/register',
+						element: <RegisterPage />,
+					},
+					{
 						element: <DefaultLayout />,
 						children: [...DocumentationPages, ...ExamplePages],
 					},

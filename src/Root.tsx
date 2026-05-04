@@ -1,8 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
-import { useAuth } from './context/authContext';
 import useFontSize from './hooks/useFontSize';
-import { Logo, LogoDark, LogoLight } from './assets/images';
+import { Logo } from './assets/images';
 import { toast, ToastContainer, ToastContentProps } from 'react-toastify';
 import useDarkMode from './hooks/useDarkMode';
 import colors from './tailwindcss/colors.tailwind';
@@ -32,10 +31,7 @@ const RootWrapper = ({ children }: { children: ReactNode }) => {
 };
 
 const Root = () => {
-	const { isLoading } = useAuth();
 	const location = useLocation();
-
-	const { isDarkTheme } = useDarkMode();
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -146,16 +142,9 @@ const Root = () => {
 
 	return (
 		<RootWrapper>
-			{isLoading && (
-				<div className='flex h-full items-center justify-center'>
-					<img src={isDarkTheme ? LogoDark : LogoLight} alt='' className='h-24' />
-				</div>
-			)}
-			{!isLoading && (
-				<div className='flex grow flex-col'>
-					<Outlet />
-				</div>
-			)}
+			<div className='flex grow flex-col'>
+				<Outlet />
+			</div>
 		</RootWrapper>
 	);
 };

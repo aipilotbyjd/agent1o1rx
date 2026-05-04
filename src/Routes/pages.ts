@@ -1157,174 +1157,52 @@ const documentation = {
 };
 
 const app = {
-	appMain: {
-		id: 'appMain',
-		to: '/app',
-		text: 'App',
-		icon: 'Home09',
-		subPages: {
-			workflows: {
-				id: 'workflows',
-				to: '/app/workflows',
-				text: 'Workflows',
-				icon: 'Key02',
-			},
-			agents: {
-				id: 'agents',
-				to: '/app/agents',
-				text: 'Agents',
-				icon: 'Bot',
-				subPages: {
-					new: {
-						id: 'newAgent',
-						to: '/app/agents/new',
-						text: 'New Agent',
-						icon: 'PlusSignCircle',
-					},
-					edit: {
-						id: 'editAgent',
-						to: '/app/agents/:agentId/edit',
-						text: 'Edit Agent',
-						icon: 'PencilEdit02',
-					},
-				},
-			},
-			skills: {
-				id: 'skills',
-				to: '/app/skills',
-				text: 'Skills',
-				icon: 'Tools',
-			},
-			webhooks: {
-				id: 'webhooks',
-				to: '/app/webhooks',
-				text: 'Webhooks',
-				icon: 'Webhook',
-			},
-			credentials: {
-				id: 'credentials',
-				to: '/app/credentials',
-				text: 'Credentials',
-				icon: 'Key02',
-			},
-			oauthCallback: {
-				id: 'oauthCallback',
-				to: '/app/oauth/callback',
-				text: 'OAuth Callback',
-				icon: 'Link01',
-			},
-			executions: {
-				id: 'executions',
-				to: '/app/executions',
-				text: 'Executions',
-				icon: 'PlayCircle',
-			},
-			variables: {
-				id: 'variables',
-				to: '/app/variables',
-				text: 'Variables',
-				icon: 'Key02',
-			},
-			templates: {
-				id: 'templates',
-				to: '/app/templates',
-				text: 'Templates',
-				icon: 'LayoutGrid',
-			},
-			settings: {
-				id: 'settings',
-				to: '/app/settings',
-				text: 'Settings',
-				icon: 'Settings02',
-				subPages: {
-					general: {
-						id: 'general',
-						to: '/app/settings/general',
-						text: 'General',
-						icon: 'Settings02',
-					},
-					profile: {
-						id: 'profile',
-						to: '/app/settings/profile',
-						text: 'Profile',
-						icon: 'User02',
-					},
-					workspaces: {
-						id: 'workspaces',
-						to: '/app/settings/workspaces',
-						text: 'Workspaces',
-						icon: 'DashboardSquare03',
-					},
-					teams: {
-						id: 'teams',
-						to: '/app/settings/teams',
-						text: 'Teams',
-						icon: 'UserMultiple',
-					},
-				},
-			},
-			editor: {
-				id: 'editor',
-				to: '/app/editor',
-				text: 'Editor',
-				icon: 'Key02',
-				subPages: {
-					flowEditor: {
-						id: 'flowEditor',
-						to: '/app/editor/:id',
-						text: 'Flow Editor',
-						icon: 'Key02',
-					},
-					storyBuilder: {
-						id: 'storyBuilder',
-						to: '/app/story-builder/:id',
-						text: 'Story Builder',
-						icon: 'BookOpen01',
-					},
-				},
-			},
+	id: 'app',
+	to: '/',
+	text: 'App',
+	icon: 'AiBrowser',
+};
+
+const editor = {
+	id: 'editor',
+	to: 'app/editor',
+	text: 'Editor',
+	icon: 'PencilEdit02',
+	subPages: {
+		new: {
+			id: 'new',
+			to: '/app/editor/new',
+			text: 'New',
+			icon: 'PencilEdit02',
+		},
+		edit: {
+			id: 'edit',
+			to: '/app/editor/edit',
+			text: 'Edit',
+			icon: 'PencilEdit02',
 		},
 	},
 };
 
-const editor = {
-	editorMain: {
-		id: 'editorMain',
-		to: '/app/editor',
-		text: 'Editor',
-		icon: 'Key02',
-		subPages: {
-			flowEditor: {
-				id: 'flowEditor',
-				to: '/app/editor/flow/:id',
-				text: 'Flow Editor',
-				icon: 'Key02',
-			},
-		},
-	}
-};
-
 const agent = {
-	agentMain: {
-		id: 'agentMain',
-		to: '/app/agents',
-		text: 'Agent',
-		icon: 'Key02',
-		subPages: {
-			new: {
-				id: 'newAgent',
-				to: '/app/agents/new',
-				text: 'New Agent',
-				icon: 'PlusSignCircle',
-			},
-			edit: {
-				id: 'editAgent',
-				to: '/app/agents/:agentId/edit',
-				text: 'Edit Agent',
-				icon: 'PencilEdit02',
-			},
-		}
-	}
+	id: 'agent',
+	to: '/app/agent',
+	text: 'Agent',
+	icon: 'Robot',
+	subPages: {
+		new: {
+			id: 'new',
+			to: '/app/agent/new',
+			text: 'New',
+			icon: 'Robot',
+		},
+		edit: {
+			id: 'edit',
+			to: '/app/agent/edit',
+			text: 'Edit',
+			icon: 'Robot',
+		},
+	},
 };
 
 const pages = { apps, pagesExamples, documentation, examples, app, editor, agent };
