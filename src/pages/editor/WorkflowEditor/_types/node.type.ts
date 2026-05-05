@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type TPortType = 'string' | 'number' | 'boolean' | 'list' | 'file' | 'json' | 'any';
 
 export type TNodeCategory =
@@ -49,7 +51,7 @@ export type TNodeDefinition = {
 	category: TNodeCategory;
 	label: string;
 	description: string;
-	icon: string;
+	icon: ReactNode;
 	color: string;
 	inputs: TNodePort[];
 	outputs: TNodePort[];

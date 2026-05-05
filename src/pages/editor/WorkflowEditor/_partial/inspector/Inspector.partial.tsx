@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NODE_CATALOG_MAP } from '../../_helper/nodeCatalog.constants';
+import { useNodeCatalog } from '../../_hooks/useNodeCatalog.hook';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import NodeDataPreview from './NodeDataPreview.partial';
 import NodeDocs from './NodeDocs.partial';
@@ -27,8 +27,9 @@ const getStatusStyles = (status: TNodeRunStatus) => {
 
 const Inspector = () => {
 	const { state, dispatch } = useWorkflowEditor();
+	const { nodeMap } = useNodeCatalog();
 	const selected = state.nodes.find((node) => node.id === state.ui.selectedNodeId);
-	const def = selected ? NODE_CATALOG_MAP[selected.data.defKey] : null;
+	const def = selected ? nodeMap[selected.data.defKey] : null;
 	const isOpen = state.ui.rightPanelOpen && Boolean(selected && def);
 	const [activeTab, setActiveTab] = useState<TabKey>('settings');
 
@@ -55,7 +56,8 @@ const Inspector = () => {
 						<div
 							className='flex h-11 w-11 items-center justify-center rounded-lg border text-base font-black'
 							style={{
-								borderColor: def.color === 'emerald' ? 'rgb(52 211 153)' : undefined,
+								borderColor:
+									def.color === 'emerald' ? 'rgb(52 211 153)' : undefined,
 							}}>
 							{def.icon}
 						</div>
@@ -134,14 +136,11 @@ const Inspector = () => {
 								aria-selected={activeTab === tab.key}
 								aria-controls={`${tab.key}-panel`}
 								onClick={() => setActiveTab(tab.key)}
-								className={`
-									relative px-4 py-2.5 text-sm font-medium transition-colors
-									${
-										activeTab === tab.key
-											? 'text-zinc-950 dark:text-white'
-											: 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200'
-									}
-								`}>
+								className={`relative px-4 py-2.5 text-sm font-medium transition-colors ${
+									activeTab === tab.key
+										? 'text-zinc-950 dark:text-white'
+										: 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200'
+								} `}>
 								{tab.label}
 								{tab.count !== undefined && tab.count > 0 && (
 									<span className='ml-1.5 rounded-full bg-zinc-200 px-1.5 py-0.5 text-xs dark:bg-zinc-700'>
@@ -149,7 +148,7 @@ const Inspector = () => {
 									</span>
 								)}
 								{activeTab === tab.key && (
-									<span className='absolute bottom-0 left-0 right-0 mx-auto h-0.5 w-12 rounded-full bg-emerald-500' />
+									<span className='absolute right-0 bottom-0 left-0 mx-auto h-0.5 w-12 rounded-full bg-emerald-500' />
 								)}
 							</button>
 						))}

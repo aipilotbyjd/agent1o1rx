@@ -66,6 +66,7 @@ export default Flow;
 ### Nodes
 
 Nodes are the building blocks of the graph. Each node has:
+
 - `id`: Unique identifier
 - `type`: Node type (built-in or custom)
 - `position`: { x, y } coordinates
@@ -75,16 +76,17 @@ Nodes are the building blocks of the graph. Each node has:
 import { Node } from '@xyflow/react';
 
 const node: Node = {
-  id: 'node-1',
-  type: 'default',
-  position: { x: 100, y: 100 },
-  data: { label: 'Node Label' },
-  style: { background: '#D6D5E6' },
-  className: 'custom-node',
+	id: 'node-1',
+	type: 'default',
+	position: { x: 100, y: 100 },
+	data: { label: 'Node Label' },
+	style: { background: '#D6D5E6' },
+	className: 'custom-node',
 };
 ```
 
 Built-in node types:
+
 - `default`: Standard node
 - `input`: No target handles
 - `output`: No source handles
@@ -93,6 +95,7 @@ Built-in node types:
 ### Edges
 
 Edges connect nodes. Each edge requires:
+
 - `id`: Unique identifier
 - `source`: Source node ID
 - `target`: Target node ID
@@ -101,17 +104,18 @@ Edges connect nodes. Each edge requires:
 import { Edge } from '@xyflow/react';
 
 const edge: Edge = {
-  id: 'e1-2',
-  source: '1',
-  target: '2',
-  type: 'smoothstep',
-  animated: true,
-  label: 'Edge Label',
-  style: { stroke: '#fff', strokeWidth: 2 },
+	id: 'e1-2',
+	source: '1',
+	target: '2',
+	type: 'smoothstep',
+	animated: true,
+	label: 'Edge Label',
+	style: { stroke: '#fff', strokeWidth: 2 },
 };
 ```
 
 Built-in edge types:
+
 - `default`: Bezier curve
 - `straight`: Straight line
 - `step`: Orthogonal with sharp corners
@@ -297,25 +301,25 @@ Use `useReactFlow()` hook for programmatic viewport control:
 import { useReactFlow } from '@xyflow/react';
 
 function ViewportControls() {
-  const { fitView, zoomIn, zoomOut, setCenter, screenToFlowPosition } = useReactFlow();
+	const { fitView, zoomIn, zoomOut, setCenter, screenToFlowPosition } = useReactFlow();
 
-  // Fit all nodes in view
-  const handleFitView = () => fitView({ padding: 0.2, duration: 400 });
+	// Fit all nodes in view
+	const handleFitView = () => fitView({ padding: 0.2, duration: 400 });
 
-  // Zoom controls
-  const handleZoomIn = () => zoomIn({ duration: 300 });
-  const handleZoomOut = () => zoomOut({ duration: 300 });
+	// Zoom controls
+	const handleZoomIn = () => zoomIn({ duration: 300 });
+	const handleZoomOut = () => zoomOut({ duration: 300 });
 
-  // Center on specific coordinates
-  const handleCenter = () => setCenter(250, 250, { zoom: 1.5, duration: 500 });
+	// Center on specific coordinates
+	const handleCenter = () => setCenter(250, 250, { zoom: 1.5, duration: 500 });
 
-  // Convert screen coordinates to flow coordinates
-  const addNodeAtClick = (event: React.MouseEvent) => {
-    const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
-    // Use position to add node
-  };
+	// Convert screen coordinates to flow coordinates
+	const addNodeAtClick = (event: React.MouseEvent) => {
+		const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+		// Use position to add node
+	};
 
-  return null;
+	return null;
 }
 ```
 
@@ -362,11 +366,11 @@ const onConnect: OnConnect = (connection) => console.log('Connected:', connectio
 import { useOnSelectionChange, useOnViewportChange } from '@xyflow/react';
 
 useOnSelectionChange({
-  onChange: ({ nodes, edges }) => console.log('Selected:', nodes.length, edges.length),
+	onChange: ({ nodes, edges }) => console.log('Selected:', nodes.length, edges.length),
 });
 
 useOnViewportChange({
-  onChange: (viewport) => console.log('Viewport:', viewport.zoom),
+	onChange: (viewport) => console.log('Viewport:', viewport.zoom),
 });
 ```
 
@@ -397,8 +401,8 @@ const isValidConnection = (connection: Connection) => {
 const { screenToFlowPosition, setNodes } = useReactFlow();
 
 const onPaneClick = (event: React.MouseEvent) => {
-  const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
-  setNodes(nodes => [...nodes, { id: `node-${Date.now()}`, position, data: { label: 'New' } }]);
+	const position = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+	setNodes((nodes) => [...nodes, { id: `node-${Date.now()}`, position, data: { label: 'New' } }]);
 };
 ```
 

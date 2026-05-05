@@ -45,7 +45,9 @@ const CommandPalette = () => {
 		},
 	].filter((command) =>
 		needle
-			? [command.label, command.description].some((value) => value.toLowerCase().includes(needle))
+			? [command.label, command.description].some((value) =>
+					value.toLowerCase().includes(needle),
+				)
 			: true,
 	);
 

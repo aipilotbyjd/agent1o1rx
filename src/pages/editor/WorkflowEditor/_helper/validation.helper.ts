@@ -1,5 +1,5 @@
-import { NODE_CATALOG_MAP } from './nodeCatalog.constants';
 import type { TCanvasEdge, TCanvasNode } from '../_types/canvas.type';
+import type { TNodeDefinition } from '../_types/node.type';
 
 export type TValidationIssue = {
 	id: string;
@@ -11,6 +11,7 @@ export type TValidationIssue = {
 export const validateWorkflow = (
 	nodes: TCanvasNode[],
 	edges: TCanvasEdge[],
+	nodeCatalog: Record<string, TNodeDefinition>,
 ): TValidationIssue[] => {
 	const issues: TValidationIssue[] = [];
 	const nodeIds = new Set(nodes.map((node) => node.id));
@@ -26,7 +27,7 @@ export const validateWorkflow = (
 	});
 
 	nodes.forEach((node) => {
-		const def = NODE_CATALOG_MAP[node.data.defKey];
+		const def = nodeCatalog[node.data.defKey];
 		if (!def) {
 			issues.push({
 				id: `node:${node.id}:definition`,
@@ -51,7 +52,7 @@ export const validateWorkflow = (
 			});
 	});
 
-	if (!nodes.some((node) => NODE_CATALOG_MAP[node.data.defKey]?.category === 'output')) {
+	if (!nodes.some((node) => nodeCatalog[node.data.defKey]?.category === 'output')) {
 		issues.push({
 			id: 'workflow:output',
 			message: 'Add an Output node so the workflow returns a result.',

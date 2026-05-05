@@ -2,10 +2,12 @@ import { useRef } from 'react';
 import { createId } from '../_context/WorkflowEditorStore.context';
 import { useWorkflowEditor } from '../_context/WorkflowEditorProvider.context';
 import { createMockNodeOutput, getRunOrder } from '../_helper/runGraph.helper';
+import { useNodeCatalog } from '../_hooks/useNodeCatalog.hook';
 
 export const useRunWorkflow = () => {
 	const { state, dispatch } = useWorkflowEditor();
 	const stopped = useRef(false);
+	const { nodeMap } = useNodeCatalog();
 
 	const runWorkflow = async () => {
 		if (state.run.status === 'running') return;
@@ -31,7 +33,7 @@ export const useRunWorkflow = () => {
 				id: node.id,
 				status: 'success',
 				durationMs,
-				outputPreview: createMockNodeOutput(node),
+				outputPreview: createMockNodeOutput(node, nodeMap),
 			});
 			dispatch({
 				type: 'APPEND_LOG',

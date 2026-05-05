@@ -1,5 +1,5 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react';
-import { NODE_CATALOG_MAP } from '../../../_helper/nodeCatalog.constants';
+import { useNodeCatalog } from '../../../_hooks/useNodeCatalog.hook';
 import { HUE_TO_CLASSES, PORT_TYPE_COLOR } from '../../../_helper/builder.constants';
 import type { TCanvasNode } from '../../../_types/canvas.type';
 import type { TNodePort } from '../../../_types/node.type';
@@ -37,13 +37,27 @@ const PortHandles = ({
 );
 
 const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
-	const def = NODE_CATALOG_MAP[data.defKey];
-	const hue = HUE_TO_CLASSES[def?.color ?? 'zinc'] ?? HUE_TO_CLASSES.zinc;
+	const { nodeMap, isLoading } = useNodeCatalog();
+	const def = nodeMap[data.defKey];
+	const hue = def
+		? (HUE_TO_CLASSES[def.color ?? 'zinc'] ?? HUE_TO_CLASSES.zinc)
+		: HUE_TO_CLASSES.zinc;
 	const status = data.status ?? 'idle';
 	const inputs = def?.inputs ?? [];
 	const outputs = def?.outputs ?? [];
+
+	// Handle missing node definition
+	if (!def && !isLoading) {
+		return (
+			<div className='rounded-lg border border-dashed border-rose-300 bg-rose-50 p-3'>
+				<div className='text-xs font-bold text-rose-600'>⚠️ Unknown Node</div>
+				<div className='font-mono text-[10px] text-rose-500'>{data.defKey}</div>
+			</div>
+		);
+	}
 	const validationIssues = (data.validationIssues ?? []) as TValidationIssue[];
-	const hasError = status === 'error' || validationIssues.some((issue) => issue.severity === 'error');
+	const hasError =
+		status === 'error' || validationIssues.some((issue) => issue.severity === 'error');
 	const hasWarning = validationIssues.length > 0;
 	const isActiveRunNode = Boolean(data.isActiveRunNode);
 
@@ -61,8 +75,10 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 			className={[
 				'relative w-[230px] rounded-lg border p-3 text-left shadow-lg transition',
 				'bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-100',
-				selected ? 'border-emerald-400 ring-4 ring-emerald-400/25' : `${hue.border} ${hue.darkBorder}`,
-				isActiveRunNode ? 'shadow-emerald-500/30 ring-4 ring-emerald-400/30' : '',
+				selected
+					? 'border-emerald-400 ring-4 ring-emerald-400/25'
+					: `${hue.border} ${hue.darkBorder}`,
+				isActiveRunNode ? 'ring-4 shadow-emerald-500/30 ring-emerald-400/30' : '',
 				hasError ? 'border-rose-400' : '',
 			].join(' ')}>
 			<PortHandles ports={inputs} type='target' position={Position.Left} />
@@ -81,7 +97,7 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 			<div className='flex items-start gap-2'>
 				<span
 					className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border text-xs font-black ${hue.bg} ${hue.text} ${hue.border} ${hue.darkBg} ${hue.darkText} ${hue.darkBorder}`}>
-					{def?.icon ?? '?'}
+					{def?.icon ? <div className='h-5 w-5'>{def.icon}</div> : <>'?</>}
 				</span>
 				<div className='min-w-0 flex-1'>
 					<div className='truncate text-sm font-bold'>{data.label}</div>
