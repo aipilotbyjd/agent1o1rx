@@ -26,17 +26,12 @@ export const WorkflowService = {
 			.then(unwrap<IWorkflow>),
 
 	create: (ws: string, body: TCreateWorkflowDto) =>
-		axiosClient
-			.post<TApiResponse<IWorkflow>>(E.create(ws), body)
-			.then(unwrap<IWorkflow>),
+		axiosClient.post<TApiResponse<IWorkflow>>(E.create(ws), body).then(unwrap<IWorkflow>),
 
 	update: (ws: string, id: string, body: TUpdateWorkflowDto) =>
-		axiosClient
-			.put<TApiResponse<IWorkflow>>(E.update(ws, id), body)
-			.then(unwrap<IWorkflow>),
+		axiosClient.put<TApiResponse<IWorkflow>>(E.update(ws, id), body).then(unwrap<IWorkflow>),
 
-	remove: (ws: string, id: string) =>
-		axiosClient.delete(E.delete(ws, id)).then(() => undefined),
+	remove: (ws: string, id: string) => axiosClient.delete(E.delete(ws, id)).then(() => undefined),
 
 	execute: (
 		ws: string,
@@ -48,14 +43,10 @@ export const WorkflowService = {
 			.then(unwrap<IWorkflowExecutionResult>),
 
 	activate: (ws: string, id: string) =>
-		axiosClient
-			.post<TApiResponse<IWorkflow>>(E.activate(ws, id))
-			.then(unwrap<IWorkflow>),
+		axiosClient.post<TApiResponse<IWorkflow>>(E.activate(ws, id)).then(unwrap<IWorkflow>),
 
 	deactivate: (ws: string, id: string) =>
-		axiosClient
-			.post<TApiResponse<IWorkflow>>(E.deactivate(ws, id))
-			.then(unwrap<IWorkflow>),
+		axiosClient.post<TApiResponse<IWorkflow>>(E.deactivate(ws, id)).then(unwrap<IWorkflow>),
 
 	duplicate: (ws: string, id: string, body?: IDuplicateWorkflowDto) =>
 		axiosClient
@@ -63,9 +54,7 @@ export const WorkflowService = {
 			.then(unwrap<IWorkflow>),
 
 	importWorkflow: (ws: string, body: IWorkflowImport) =>
-		axiosClient
-			.post<TApiResponse<IWorkflow>>(E.import(ws), body)
-			.then(unwrap<IWorkflow>),
+		axiosClient.post<TApiResponse<IWorkflow>>(E.import(ws), body).then(unwrap<IWorkflow>),
 
 	exportWorkflow: (ws: string, id: string) =>
 		axiosClient

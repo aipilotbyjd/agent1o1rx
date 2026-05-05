@@ -26,7 +26,7 @@ import { createQueryClient } from '@/api/core';
 const queryClient = createQueryClient();
 
 export const Providers = ({ children }: { children: React.ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+	<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 ```
 
@@ -42,9 +42,9 @@ VITE_API_URL=https://agent1o1.test/api/v1
 import { useWorkflows, useCreateWorkflow } from '@/api/modules/workflows';
 
 const WorkflowsList = ({ workspaceId }: { workspaceId: string }) => {
-  const { data, isLoading } = useWorkflows(workspaceId);
-  const createMutation = useCreateWorkflow(workspaceId);
-  // ...
+	const { data, isLoading } = useWorkflows(workspaceId);
+	const createMutation = useCreateWorkflow(workspaceId);
+	// ...
 };
 ```
 

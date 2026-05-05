@@ -12,14 +12,20 @@ const ImportExportDialog = () => {
 	if (!state.ui.importExportOpen) return null;
 
 	return (
-		<Modal title='Import / Export Workflow' onClose={() => dispatch({ type: 'SET_IMPORT_EXPORT', open: false })}>
+		<Modal
+			title='Import / Export Workflow'
+			onClose={() => dispatch({ type: 'SET_IMPORT_EXPORT', open: false })}>
 			<div className='space-y-3'>
 				<textarea
 					value={raw}
 					onChange={(event) => setRaw(event.target.value)}
-					className='h-80 w-full rounded-xl border bg-white p-3 font-mono text-xs text-zinc-800 outline-none transition placeholder:text-zinc-500 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 focus:border-emerald-400'
+					className='h-80 w-full rounded-xl border border-zinc-300 bg-white p-3 font-mono text-xs text-zinc-800 transition outline-none placeholder:text-zinc-500 focus:border-emerald-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200'
 				/>
-				{error && <div className='rounded-lg bg-rose-500/10 px-3 py-2 text-sm text-rose-300'>{error}</div>}
+				{error && (
+					<div className='rounded-lg bg-rose-500/10 px-3 py-2 text-sm text-rose-300'>
+						{error}
+					</div>
+				)}
 				<div className='flex justify-end gap-2'>
 					<button
 						type='button'
@@ -34,9 +40,14 @@ const ImportExportDialog = () => {
 						type='button'
 						onClick={() => {
 							try {
-								dispatch({ type: 'LOAD_WORKFLOW', workflow: parseWorkflowImport(raw) });
+								dispatch({
+									type: 'LOAD_WORKFLOW',
+									workflow: parseWorkflowImport(raw),
+								});
 							} catch (err) {
-								setError(err instanceof Error ? err.message : 'Invalid workflow JSON.');
+								setError(
+									err instanceof Error ? err.message : 'Invalid workflow JSON.',
+								);
 							}
 						}}
 						className='rounded-lg bg-emerald-500 px-3 py-2 text-sm font-black text-white hover:bg-emerald-600'>

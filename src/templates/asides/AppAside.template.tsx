@@ -140,7 +140,7 @@ const Search = () => {
 					className='mb-4 !border-zinc-500/25 transition-all duration-300 ease-in-out hover:!border-zinc-500/50'
 					value={inputValue}
 					onClick={() => setIsModalOpen(true)}
-					onChange={() => { }}
+					onChange={() => {}}
 				/>
 			</FieldWrap>
 			<Modal

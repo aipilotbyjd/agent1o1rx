@@ -17,7 +17,9 @@ const Inspector = () => {
 		<aside className='flex h-full w-96 shrink-0 flex-col border-l border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950'>
 			<div className='flex h-14 items-center justify-between border-b border-zinc-200 px-4 dark:border-zinc-800'>
 				<div>
-					<div className='text-sm font-black text-zinc-900 dark:text-white'>Inspector</div>
+					<div className='text-sm font-black text-zinc-900 dark:text-white'>
+						Inspector
+					</div>
 					<div className='text-xs text-zinc-500'>
 						{selected ? selected.data.label : 'Select a node'}
 					</div>
@@ -54,7 +56,8 @@ const Inspector = () => {
 					</div>
 				) : (
 					<div className='rounded-xl border border-dashed border-zinc-200 p-6 text-center text-sm text-zinc-500 dark:border-zinc-800'>
-						Select a canvas node to configure parameters, inspect ports, and preview output.
+						Select a canvas node to configure parameters, inspect ports, and preview
+						output.
 					</div>
 				)}
 			</div>

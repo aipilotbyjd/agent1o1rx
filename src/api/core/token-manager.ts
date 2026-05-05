@@ -34,8 +34,7 @@ export const getTokenExpiry = (): number | null => {
 	return expiry ? parseInt(expiry, 10) : null;
 };
 
-export const isRememberMe = (): boolean =>
-	localStorage.getItem(TOKEN_KEYS.REMEMBER_ME) === 'true';
+export const isRememberMe = (): boolean => localStorage.getItem(TOKEN_KEYS.REMEMBER_ME) === 'true';
 
 // ─── Setters ─────────────────────────────────────────────────
 
@@ -74,8 +73,7 @@ export const isTokenExpired = (): boolean => {
 	return Date.now() / 1000 > expiry - 30; // 30-second buffer
 };
 
-export const hasValidToken = (): boolean =>
-	!!getAccessToken() && !isTokenExpired();
+export const hasValidToken = (): boolean => !!getAccessToken() && !isTokenExpired();
 
 // ─── Default export (back-compat) ───────────────────────────
 

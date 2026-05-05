@@ -18,7 +18,11 @@ import type { TListParams, TPaginatedResponse } from './types';
  */
 export function createResource<T, CreateDto, UpdateDto>(cfg: {
 	service: {
-		list: (ws: string, params?: TListParams, signal?: AbortSignal) => Promise<TPaginatedResponse<T> | T[]>;
+		list: (
+			ws: string,
+			params?: TListParams,
+			signal?: AbortSignal,
+		) => Promise<TPaginatedResponse<T> | T[]>;
 		detail: (ws: string, id: string, signal?: AbortSignal) => Promise<T>;
 		create: (ws: string, body: CreateDto) => Promise<T>;
 		update: (ws: string, id: string, body: UpdateDto) => Promise<T>;

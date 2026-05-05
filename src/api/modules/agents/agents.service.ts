@@ -17,22 +17,16 @@ export const AgentService = {
 		axiosClient.post<TApiResponse<TAgent>>(E.create(ws), body).then(unwrap<TAgent>),
 
 	update: (ws: string, agentId: string, body: Partial<TAgent>) =>
-		axiosClient
-			.put<TApiResponse<TAgent>>(E.update(ws, agentId), body)
-			.then(unwrap<TAgent>),
+		axiosClient.put<TApiResponse<TAgent>>(E.update(ws, agentId), body).then(unwrap<TAgent>),
 
 	remove: (ws: string, agentId: string) =>
 		axiosClient.delete(E.delete(ws, agentId)).then(() => undefined),
 
 	duplicate: (ws: string, agentId: string) =>
-		axiosClient
-			.post<TApiResponse<TAgent>>(E.duplicate(ws, agentId))
-			.then(unwrap<TAgent>),
+		axiosClient.post<TApiResponse<TAgent>>(E.duplicate(ws, agentId)).then(unwrap<TAgent>),
 
 	attachSkill: (ws: string, agentId: string, skillId: string) =>
-		axiosClient
-			.post(E.attachSkill(ws, agentId), { skill_id: skillId })
-			.then(() => undefined),
+		axiosClient.post(E.attachSkill(ws, agentId), { skill_id: skillId }).then(() => undefined),
 
 	detachSkill: (ws: string, agentId: string, skillId: string) =>
 		axiosClient.delete(E.detachSkill(ws, agentId, skillId)).then(() => undefined),
@@ -50,9 +44,7 @@ export const AgentSkillService = {
 			.then(unwrap<TAgentSkill[]>),
 
 	create: (ws: string, body: Partial<TAgentSkill>) =>
-		axiosClient
-			.post<TApiResponse<TAgentSkill>>(S.create(ws), body)
-			.then(unwrap<TAgentSkill>),
+		axiosClient.post<TApiResponse<TAgentSkill>>(S.create(ws), body).then(unwrap<TAgentSkill>),
 
 	update: (ws: string, skillId: string, body: Partial<TAgentSkill>) =>
 		axiosClient

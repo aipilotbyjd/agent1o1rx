@@ -12,7 +12,6 @@ export const workflowKeys = {
 	pinnedData: (ws: string, id: string) => ['workflows', ws, 'pinnedData', id] as const,
 	pinnedDataNode: (ws: string, id: string, nodeId: string) =>
 		['workflows', ws, 'pinnedData', id, nodeId] as const,
-	shares: (ws: string, workflowId: string) =>
-		['workflows', ws, 'shares', workflowId] as const,
+	shares: (ws: string, workflowId: string) => ['workflows', ws, 'shares', workflowId] as const,
 	publicShare: (token: string) => ['publicShares', 'view', token] as const,
 };

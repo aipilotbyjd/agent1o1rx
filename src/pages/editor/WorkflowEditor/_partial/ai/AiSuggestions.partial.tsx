@@ -6,9 +6,13 @@ const suggestions = [
 
 const AiSuggestions = () => (
 	<div className='space-y-2'>
-		<div className='text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400'>Suggestions</div>
+		<div className='text-xs font-black tracking-widest text-zinc-500 uppercase dark:text-zinc-400'>
+			Suggestions
+		</div>
 		{suggestions.map((suggestion) => (
-			<div key={suggestion} className='rounded-xl border border-zinc-200 bg-white p-3 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300'>
+			<div
+				key={suggestion}
+				className='rounded-xl border border-zinc-200 bg-white p-3 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300'>
 				{suggestion}
 			</div>
 		))}

@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { notify } from '@/api/core';
-import type { INoteFilters, ICreateNoteDto, IUpdateNoteDto, TNoteResourceName } from '@/types/note.type';
+import type {
+	INoteFilters,
+	ICreateNoteDto,
+	IUpdateNoteDto,
+	TNoteResourceName,
+} from '@/types/note.type';
 import { NoteService } from './notes.service';
 import { noteKeys } from './notes.keys';
 

@@ -35,8 +35,7 @@ export const useRollbackWorkflowVersion = (ws: string) => {
 export const useCompareWorkflowVersions = (ws: string, id: string, v1: number, v2: number) =>
 	useQuery({
 		queryKey: workflowKeys.compareVersions(ws, id, v1, v2),
-		queryFn: ({ signal }) =>
-			WorkflowEditorService.compareVersions(ws, id, v1, v2, signal),
+		queryFn: ({ signal }) => WorkflowEditorService.compareVersions(ws, id, v1, v2, signal),
 		enabled: !!ws && !!id && !!v1 && !!v2,
 	});
 

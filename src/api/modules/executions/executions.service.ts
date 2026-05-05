@@ -1,11 +1,7 @@
 import { axiosClient } from '@/api/client';
 import { unwrap } from '@/api/core';
 import type { TApiResponse, TListParams } from '@/api/core';
-import type {
-	TExecution,
-	TExecutionDetail,
-	TExecutionLog,
-} from '@/types/execution.type';
+import type { TExecution, TExecutionDetail, TExecutionLog } from '@/types/execution.type';
 import { ExecutionEndpoints as E } from './executions.endpoints';
 
 export const ExecutionService = {
@@ -24,9 +20,7 @@ export const ExecutionService = {
 			.get<TApiResponse<TExecutionLog[]>>(E.logs(ws, id), { signal })
 			.then(unwrap<TExecutionLog[]>),
 
-	cancel: (ws: string, id: string) =>
-		axiosClient.post(E.cancel(ws, id)).then(() => undefined),
+	cancel: (ws: string, id: string) => axiosClient.post(E.cancel(ws, id)).then(() => undefined),
 
-	retry: (ws: string, id: string) =>
-		axiosClient.post(E.retry(ws, id)).then(() => undefined),
+	retry: (ws: string, id: string) => axiosClient.post(E.retry(ws, id)).then(() => undefined),
 };

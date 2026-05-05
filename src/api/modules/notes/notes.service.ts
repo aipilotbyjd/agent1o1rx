@@ -27,17 +27,13 @@ export const NoteService = {
 	},
 
 	detail: (ws: string, noteId: string, signal?: AbortSignal) =>
-		axiosClient
-			.get<TApiResponse<INote>>(E.detail(ws, noteId), { signal })
-			.then(unwrap<INote>),
+		axiosClient.get<TApiResponse<INote>>(E.detail(ws, noteId), { signal }).then(unwrap<INote>),
 
 	create: (ws: string, body: ICreateNoteDto) =>
 		axiosClient.post<TApiResponse<INote>>(E.create(ws), body).then(unwrap<INote>),
 
 	update: (ws: string, noteId: string, body: IUpdateNoteDto) =>
-		axiosClient
-			.put<TApiResponse<INote>>(E.update(ws, noteId), body)
-			.then(unwrap<INote>),
+		axiosClient.put<TApiResponse<INote>>(E.update(ws, noteId), body).then(unwrap<INote>),
 
 	remove: (ws: string, noteId: string) =>
 		axiosClient.delete(E.delete(ws, noteId)).then(() => undefined),

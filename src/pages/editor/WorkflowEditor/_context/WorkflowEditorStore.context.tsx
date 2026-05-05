@@ -2,7 +2,12 @@ import { createContext } from 'react';
 import { HISTORY_LIMIT } from '../_helper/builder.constants';
 import { NODE_CATALOG_MAP } from '../_helper/nodeCatalog.constants';
 import { autoLayout } from '../_helper/layout.helper';
-import type { TCanvasEdge, TCanvasNode, TCanvasPosition, TCanvasSnapshot } from '../_types/canvas.type';
+import type {
+	TCanvasEdge,
+	TCanvasNode,
+	TCanvasPosition,
+	TCanvasSnapshot,
+} from '../_types/canvas.type';
 import type { TCanvasNodeData, TNodeRunStatus } from '../_types/node.type';
 import type { TRunLog } from '../_types/run.type';
 import type {
@@ -20,7 +25,13 @@ export type TWorkflowEditorAction =
 	| { type: 'RENAME_NODE'; id: string; label: string }
 	| { type: 'DELETE_SELECTED' }
 	| { type: 'DUPLICATE_SELECTED' }
-	| { type: 'ADD_EDGE'; source: string; target: string; sourceHandle?: string; targetHandle?: string }
+	| {
+			type: 'ADD_EDGE';
+			source: string;
+			target: string;
+			sourceHandle?: string;
+			targetHandle?: string;
+	  }
 	| { type: 'REMOVE_EDGE'; id: string }
 	| { type: 'AUTO_LAYOUT' }
 	| { type: 'UNDO' }
@@ -37,7 +48,14 @@ export type TWorkflowEditorAction =
 	| { type: 'RUN_FINISH'; status: 'success' | 'error' | 'stopped' }
 	| { type: 'RUN_CURRENT_NODE'; nodeId: string | null }
 	| { type: 'APPEND_LOG'; log: Omit<TRunLog, 'id' | 'at'> }
-	| { type: 'SET_NODE_STATUS'; id: string; status: TNodeRunStatus; durationMs?: number; error?: string; outputPreview?: unknown }
+	| {
+			type: 'SET_NODE_STATUS';
+			id: string;
+			status: TNodeRunStatus;
+			durationMs?: number;
+			error?: string;
+			outputPreview?: unknown;
+	  }
 	| { type: 'LOAD_WORKFLOW'; workflow: TExportedWorkflow };
 
 export type TWorkflowEditorContextValue = {
@@ -112,7 +130,14 @@ const makeNode = (defKey: string, position: TCanvasPosition): TCanvasNode | null
 		values,
 		status: 'idle',
 	};
-	const type = def.category === 'input' ? 'input' : def.category === 'output' ? 'output' : def.category === 'note' ? 'note' : 'base';
+	const type =
+		def.category === 'input'
+			? 'input'
+			: def.category === 'output'
+				? 'output'
+				: def.category === 'note'
+					? 'note'
+					: 'base';
 	return {
 		id: createId('node'),
 		type,
@@ -190,7 +215,10 @@ export const workflowEditorReducer = (
 								...node,
 								data: {
 									...node.data,
-									values: { ...node.data.values, [action.fieldKey]: action.value },
+									values: {
+										...node.data.values,
+										[action.fieldKey]: action.value,
+									},
 								},
 							}
 						: node,
@@ -338,7 +366,10 @@ export const workflowEditorReducer = (
 				...state,
 				run: {
 					...state.run,
-					logs: [...state.run.logs, { ...action.log, id: createId('log'), at: Date.now() }],
+					logs: [
+						...state.run.logs,
+						{ ...action.log, id: createId('log'), at: Date.now() },
+					],
 				},
 			};
 		case 'SET_NODE_STATUS':

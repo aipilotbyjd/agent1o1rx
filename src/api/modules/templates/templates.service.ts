@@ -30,14 +30,12 @@ export const TemplateService = {
 			.get<TApiResponse<ITemplateDetail>>(E.detail(id), { signal })
 			.then(unwrap<ITemplateDetail>),
 
-	trackView: (id: string) =>
-		axiosClient.post(E.view(id)).then(() => undefined),
+	trackView: (id: string) => axiosClient.post(E.view(id)).then(() => undefined),
 
 	use: (ws: string, templateId: string, workflowName?: string) =>
 		axiosClient
-			.post<TApiResponse<{ workflow_id: string }>>(
-				E.use(ws, templateId),
-				workflowName ? { workflow_name: workflowName } : undefined,
-			)
+			.post<
+				TApiResponse<{ workflow_id: string }>
+			>(E.use(ws, templateId), workflowName ? { workflow_name: workflowName } : undefined)
 			.then(unwrap<{ workflow_id: string }>),
 };

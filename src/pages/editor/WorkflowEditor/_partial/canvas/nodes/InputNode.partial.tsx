@@ -1,11 +1,3 @@
 import BaseNode from './BaseNode.partial';
-import type { TCanvasNode } from '../../../_types/canvas.type';
 
-const InputNode = (props: {
-	node: TCanvasNode;
-	selected: boolean;
-	onSelect: () => void;
-	onMove: (x: number, y: number) => void;
-}) => <BaseNode {...props} />;
-
-export default InputNode;
+export default BaseNode;

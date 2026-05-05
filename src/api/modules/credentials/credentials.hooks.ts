@@ -130,8 +130,7 @@ export const useOAuthProviders = () =>
 
 export const useGetOAuthAuthorizeUrl = (ws: string) =>
 	useMutation({
-		mutationFn: (params: string | IStartOAuthDto) =>
-			OAuthService.getAuthorizeUrl(ws, params),
+		mutationFn: (params: string | IStartOAuthDto) => OAuthService.getAuthorizeUrl(ws, params),
 		onError: notify.fromError('Failed to start OAuth flow'),
 	});
 

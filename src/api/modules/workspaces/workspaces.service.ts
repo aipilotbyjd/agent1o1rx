@@ -11,9 +11,7 @@ import { WorkspaceEndpoints as E } from './workspaces.endpoints';
 
 export const WorkspaceService = {
 	list: (signal?: AbortSignal) =>
-		axiosClient
-			.get<TApiResponse<TWorkspace[]>>(E.list, { signal })
-			.then(unwrap<TWorkspace[]>),
+		axiosClient.get<TApiResponse<TWorkspace[]>>(E.list, { signal }).then(unwrap<TWorkspace[]>),
 
 	detail: (id: string, signal?: AbortSignal) =>
 		axiosClient
@@ -21,9 +19,7 @@ export const WorkspaceService = {
 			.then(unwrap<TWorkspaceDetail>),
 
 	create: (payload: TCreateWorkspaceDto) =>
-		axiosClient
-			.post<TApiResponse<TWorkspace>>(E.create, payload)
-			.then(unwrap<TWorkspace>),
+		axiosClient.post<TApiResponse<TWorkspace>>(E.create, payload).then(unwrap<TWorkspace>),
 
 	update: (id: string, payload: TUpdateWorkspaceDto) =>
 		axiosClient

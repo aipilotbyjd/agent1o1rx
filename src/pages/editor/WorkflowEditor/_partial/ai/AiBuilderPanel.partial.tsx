@@ -7,11 +7,15 @@ const AiBuilderPanel = () => {
 	if (!state.ui.aiPanelOpen) return null;
 
 	return (
-		<aside className='fixed right-4 top-20 z-40 flex w-[380px] flex-col gap-4 rounded-2xl border border-violet-300 bg-white p-4 text-zinc-900 shadow-2xl dark:border-violet-700/50 dark:bg-zinc-950 dark:text-zinc-100'>
+		<aside className='fixed top-20 right-4 z-40 flex w-[380px] flex-col gap-4 rounded-2xl border border-violet-300 bg-white p-4 text-zinc-900 shadow-2xl dark:border-violet-700/50 dark:bg-zinc-950 dark:text-zinc-100'>
 			<div className='flex items-center justify-between'>
 				<div>
-					<div className='text-sm font-black text-zinc-900 dark:text-white'>AI Builder</div>
-					<div className='text-xs text-zinc-500 dark:text-zinc-400'>Prompt to single workflow</div>
+					<div className='text-sm font-black text-zinc-900 dark:text-white'>
+						AI Builder
+					</div>
+					<div className='text-xs text-zinc-500 dark:text-zinc-400'>
+						Prompt to single workflow
+					</div>
 				</div>
 				<button
 					type='button'

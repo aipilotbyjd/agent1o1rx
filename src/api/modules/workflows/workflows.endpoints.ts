@@ -19,8 +19,7 @@ export const WorkflowEditorEndpoints = {
 		`/workspaces/${ws}/workflows/${id}/versions/${version}`,
 	rollback: (ws: string, id: string, version: number) =>
 		`/workspaces/${ws}/workflows/${id}/versions/${version}/rollback`,
-	compareVersions: (ws: string, id: string) =>
-		`/workspaces/${ws}/workflows/${id}/versions/diff`,
+	compareVersions: (ws: string, id: string) => `/workspaces/${ws}/workflows/${id}/versions/diff`,
 	validate: (ws: string) => `/workspaces/${ws}/workflows/validate`,
 	testNode: (ws: string) => `/workspaces/${ws}/workflows/test-node`,
 	clone: (ws: string, id: string) => `/workspaces/${ws}/workflows/${id}/clone`,
@@ -30,10 +29,8 @@ export const WorkflowEditorEndpoints = {
 } as const;
 
 export const WorkflowShareEndpoints = {
-	list: (ws: string, workflowId: string) =>
-		`/workspaces/${ws}/workflows/${workflowId}/shares`,
-	create: (ws: string, workflowId: string) =>
-		`/workspaces/${ws}/workflows/${workflowId}/shares`,
+	list: (ws: string, workflowId: string) => `/workspaces/${ws}/workflows/${workflowId}/shares`,
+	create: (ws: string, workflowId: string) => `/workspaces/${ws}/workflows/${workflowId}/shares`,
 	update: (ws: string, workflowId: string, shareId: string) =>
 		`/workspaces/${ws}/workflows/${workflowId}/shares/${shareId}`,
 	delete: (ws: string, workflowId: string, shareId: string) =>

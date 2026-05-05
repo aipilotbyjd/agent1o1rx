@@ -19,13 +19,10 @@ export const TagService = {
 	update: (ws: string, id: string, body: IUpdateTagDto) =>
 		axiosClient.put<TApiResponse<ITag>>(E.update(ws, id), body).then(unwrap<ITag>),
 
-	remove: (ws: string, id: string) =>
-		axiosClient.delete(E.delete(ws, id)).then(() => undefined),
+	remove: (ws: string, id: string) => axiosClient.delete(E.delete(ws, id)).then(() => undefined),
 
 	attachWorkflows: (ws: string, tagId: string, body: ITagWorkflowsDto) =>
-		axiosClient
-			.post<TApiResponse<ITag>>(E.attachWorkflows(ws, tagId), body)
-			.then(unwrap<ITag>),
+		axiosClient.post<TApiResponse<ITag>>(E.attachWorkflows(ws, tagId), body).then(unwrap<ITag>),
 
 	detachWorkflows: (ws: string, tagId: string, body: ITagWorkflowsDto) =>
 		axiosClient

@@ -1,6 +1,8 @@
 import pages from '@/Routes/pages';
 import { lazy } from 'react';
 
+const NavsExamplePage = lazy(() => import('@/pages/examples/userInterface/Navs.example.page'));
+
 const AgentPages = [
 	{
 		path: pages.examples.exampleMain.to,

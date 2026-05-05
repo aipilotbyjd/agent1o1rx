@@ -43,8 +43,7 @@ export const CredentialService = {
 			.put<TApiResponse<ICredential>>(E.update(ws, id), body)
 			.then(unwrap<ICredential>),
 
-	remove: (ws: string, id: string) =>
-		axiosClient.delete(E.delete(ws, id)).then(() => undefined),
+	remove: (ws: string, id: string) => axiosClient.delete(E.delete(ws, id)).then(() => undefined),
 
 	test: (ws: string, id: string) =>
 		axiosClient
@@ -52,9 +51,7 @@ export const CredentialService = {
 			.then(unwrap<{ success: boolean; message: string }>),
 
 	refreshToken: (ws: string, id: string) =>
-		axiosClient
-			.post<TApiResponse<ICredential>>(E.refresh(ws, id))
-			.then(unwrap<ICredential>),
+		axiosClient.post<TApiResponse<ICredential>>(E.refresh(ws, id)).then(unwrap<ICredential>),
 
 	share: (ws: string, id: string, body: IShareCredentialDto) =>
 		axiosClient.post(E.share(ws, id), body).then(() => undefined),
@@ -75,13 +72,12 @@ export const OAuthService = {
 			.then(unwrap<IOAuthProvider[]>),
 
 	getAuthorizeUrl: (ws: string, params: string | IStartOAuthDto) => {
-		const normalized =
-			typeof params === 'string' ? { provider: params } : { ...params };
+		const normalized = typeof params === 'string' ? { provider: params } : { ...params };
 		const qs = buildOAuthAuthorizeParams(normalized);
 		return axiosClient
-			.get<TApiResponse<IOAuthAuthResponse>>(
-				`${O.authorize(ws, normalized.provider)}${qs ? `?${qs}` : ''}`,
-			)
+			.get<
+				TApiResponse<IOAuthAuthResponse>
+			>(`${O.authorize(ws, normalized.provider)}${qs ? `?${qs}` : ''}`)
 			.then(unwrap<IOAuthAuthResponse>);
 	},
 };

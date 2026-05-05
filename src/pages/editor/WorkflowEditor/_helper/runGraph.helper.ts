@@ -22,7 +22,10 @@ export const getRunOrder = (nodes: TCanvasNode[], edges: TCanvasEdge[]): TCanvas
 	}
 
 	const unresolved = nodes.filter((node) => !orderedIds.includes(node.id));
-	return [...orderedIds.map((id) => byId.get(id)).filter(Boolean), ...unresolved] as TCanvasNode[];
+	return [
+		...orderedIds.map((id) => byId.get(id)).filter(Boolean),
+		...unresolved,
+	] as TCanvasNode[];
 };
 
 export const createMockNodeOutput = (node: TCanvasNode): unknown => {

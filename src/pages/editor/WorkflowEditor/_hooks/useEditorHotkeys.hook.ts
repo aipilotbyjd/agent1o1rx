@@ -18,7 +18,10 @@ export const useEditorHotkeys = () => {
 				dispatch({ type: 'UNDO' });
 				return;
 			}
-			if ((mod && event.shiftKey && event.key.toLowerCase() === 'z') || (mod && event.key.toLowerCase() === 'y')) {
+			if (
+				(mod && event.shiftKey && event.key.toLowerCase() === 'z') ||
+				(mod && event.key.toLowerCase() === 'y')
+			) {
 				event.preventDefault();
 				dispatch({ type: 'REDO' });
 				return;

@@ -23,9 +23,7 @@ import { WorkflowEditorEndpoints as E } from './workflows.endpoints';
  */
 export const WorkflowEditorService = {
 	clone: (ws: string, id: string, body: ICloneWorkflowDto) =>
-		axiosClient
-			.post<TApiResponse<IWorkflow>>(E.clone(ws, id), body)
-			.then(unwrap<IWorkflow>),
+		axiosClient.post<TApiResponse<IWorkflow>>(E.clone(ws, id), body).then(unwrap<IWorkflow>),
 
 	validate: (ws: string, nodes: IWorkflowNode[], connections: IWorkflowConnection[]) =>
 		axiosClient

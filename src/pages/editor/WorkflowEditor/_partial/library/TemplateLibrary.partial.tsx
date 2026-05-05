@@ -4,7 +4,7 @@ const TemplateLibrary = () => {
 	const { dispatch } = useWorkflowEditor();
 
 	return (
-		<div className='border-t border-zinc-200 dark:border-zinc-800 p-3'>
+		<div className='border-t border-zinc-200 p-3 dark:border-zinc-800'>
 			<button
 				type='button'
 				onClick={() =>

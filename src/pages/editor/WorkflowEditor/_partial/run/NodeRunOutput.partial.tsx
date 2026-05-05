@@ -7,7 +7,9 @@ const NodeRunOutput = ({ nodes }: { nodes: TCanvasNode[] }) => (
 			.slice(-3)
 			.map((node) => (
 				<div key={node.id} className='rounded-lg bg-white p-3 dark:bg-zinc-900'>
-					<div className='mb-1 truncate text-xs font-black text-zinc-800 dark:text-zinc-200'>{node.data.label}</div>
+					<div className='mb-1 truncate text-xs font-black text-zinc-800 dark:text-zinc-200'>
+						{node.data.label}
+					</div>
 					<pre className='max-h-20 overflow-hidden text-[10px] text-zinc-500 dark:text-zinc-400'>
 						{JSON.stringify(node.data.outputPreview, null, 2)}
 					</pre>

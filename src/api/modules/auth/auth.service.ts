@@ -60,6 +60,5 @@ export const UserService = {
 		return data.data.avatar_url;
 	},
 
-	deleteAvatar: () =>
-		axiosClient.delete(UserEndpoints.deleteAvatar).then(() => undefined),
+	deleteAvatar: () => axiosClient.delete(UserEndpoints.deleteAvatar).then(() => undefined),
 };

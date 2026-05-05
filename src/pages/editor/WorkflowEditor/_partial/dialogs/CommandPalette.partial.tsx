@@ -7,7 +7,9 @@ const CommandPalette = () => {
 	if (!state.ui.commandPaletteOpen) return null;
 
 	return (
-		<Modal title='Command Palette' onClose={() => dispatch({ type: 'SET_COMMAND_PALETTE', open: false })}>
+		<Modal
+			title='Command Palette'
+			onClose={() => dispatch({ type: 'SET_COMMAND_PALETTE', open: false })}>
 			<div className='grid gap-2'>
 				<button
 					type='button'
@@ -27,7 +29,9 @@ const CommandPalette = () => {
 					className='rounded-lg bg-zinc-100 px-3 py-2 text-left text-sm font-bold text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700'>
 					Open AI builder
 				</button>
-				<div className='pt-2 text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400'>Add node</div>
+				<div className='pt-2 text-xs font-black tracking-widest text-zinc-500 uppercase dark:text-zinc-400'>
+					Add node
+				</div>
 				<div className='max-h-72 overflow-y-auto'>
 					{NODE_CATALOG.map((node) => (
 						<button
@@ -37,7 +41,10 @@ const CommandPalette = () => {
 								dispatch({
 									type: 'ADD_NODE',
 									defKey: node.key,
-									position: { x: 160 + state.nodes.length * 24, y: 140 + state.nodes.length * 18 },
+									position: {
+										x: 160 + state.nodes.length * 24,
+										y: 140 + state.nodes.length * 18,
+									},
 								});
 								dispatch({ type: 'SET_COMMAND_PALETTE', open: false });
 							}}
@@ -46,8 +53,12 @@ const CommandPalette = () => {
 								{node.icon}
 							</span>
 							<span>
-								<span className='block text-sm font-bold text-zinc-900 dark:text-zinc-100'>{node.label}</span>
-								<span className='block text-xs text-zinc-500 dark:text-zinc-400'>{node.description}</span>
+								<span className='block text-sm font-bold text-zinc-900 dark:text-zinc-100'>
+									{node.label}
+								</span>
+								<span className='block text-xs text-zinc-500 dark:text-zinc-400'>
+									{node.description}
+								</span>
 							</span>
 						</button>
 					))}

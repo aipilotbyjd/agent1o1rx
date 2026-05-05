@@ -18,7 +18,10 @@ export const useRunWorkflow = () => {
 			const started = performance.now();
 			dispatch({ type: 'RUN_CURRENT_NODE', nodeId: node.id });
 			dispatch({ type: 'SET_NODE_STATUS', id: node.id, status: 'running' });
-			dispatch({ type: 'APPEND_LOG', log: { nodeId: node.id, level: 'info', message: `${node.data.label} started` } });
+			dispatch({
+				type: 'APPEND_LOG',
+				log: { nodeId: node.id, level: 'info', message: `${node.data.label} started` },
+			});
 			await new Promise((resolve) => {
 				window.setTimeout(resolve, 300);
 			});
@@ -30,7 +33,14 @@ export const useRunWorkflow = () => {
 				durationMs,
 				outputPreview: createMockNodeOutput(node),
 			});
-			dispatch({ type: 'APPEND_LOG', log: { nodeId: node.id, level: 'info', message: `${node.data.label} finished in ${durationMs}ms` } });
+			dispatch({
+				type: 'APPEND_LOG',
+				log: {
+					nodeId: node.id,
+					level: 'info',
+					message: `${node.data.label} finished in ${durationMs}ms`,
+				},
+			});
 		}
 
 		dispatch({ type: 'RUN_FINISH', status: stopped.current ? 'stopped' : 'success' });

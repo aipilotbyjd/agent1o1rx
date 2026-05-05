@@ -16,7 +16,9 @@ import {
 
 export const WorkspaceMemberService = {
 	list: (ws: string, signal?: AbortSignal) =>
-		axiosClient.get<TApiResponse<TWorkspaceMember[]>>(M.list(ws), { signal }).then(unwrap<TWorkspaceMember[]>),
+		axiosClient
+			.get<TApiResponse<TWorkspaceMember[]>>(M.list(ws), { signal })
+			.then(unwrap<TWorkspaceMember[]>),
 
 	updateRole: (ws: string, userId: string, payload: TUpdateMemberRoleDto) =>
 		axiosClient
@@ -31,8 +33,7 @@ export const WorkspaceMemberService = {
 			.post<TMessageResponse>(M.transferOwnership(ws), { new_owner_id: newOwnerId })
 			.then((r) => r.data),
 
-	leave: (ws: string) =>
-		axiosClient.post<TMessageResponse>(M.leave(ws)).then((r) => r.data),
+	leave: (ws: string) => axiosClient.post<TMessageResponse>(M.leave(ws)).then((r) => r.data),
 };
 
 export const WorkspaceInvitationService = {

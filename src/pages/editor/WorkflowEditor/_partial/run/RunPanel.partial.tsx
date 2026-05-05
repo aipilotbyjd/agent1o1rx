@@ -11,7 +11,9 @@ const RunPanel = () => {
 		<section className='shrink-0 border-t border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950'>
 			<div className='mb-3 flex items-center justify-between'>
 				<div>
-					<div className='text-sm font-black text-zinc-900 dark:text-white'>Run Output</div>
+					<div className='text-sm font-black text-zinc-900 dark:text-white'>
+						Run Output
+					</div>
 					<RunTimeline run={state.run} />
 				</div>
 				<button

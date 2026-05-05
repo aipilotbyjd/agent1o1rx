@@ -26,8 +26,12 @@ const NodeLibrary = () => {
 		<aside className='flex h-full w-80 shrink-0 flex-col border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950'>
 			<div className='flex h-14 items-center justify-between border-b border-zinc-200 px-4 dark:border-zinc-800'>
 				<div>
-					<div className='text-sm font-black text-zinc-900 dark:text-white'>Node Library</div>
-					<div className='text-xs text-zinc-500'>{NODE_CATALOG.length} building blocks</div>
+					<div className='text-sm font-black text-zinc-900 dark:text-white'>
+						Node Library
+					</div>
+					<div className='text-xs text-zinc-500'>
+						{NODE_CATALOG.length} building blocks
+					</div>
 				</div>
 				<button
 					type='button'

@@ -24,7 +24,9 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		color: 'sky',
 		inputs: [],
 		outputs: [{ id: 'file', name: 'file', type: 'file' }],
-		fields: [{ key: 'accept', label: 'Accepted types', kind: 'text', default: '.pdf,.csv,image/*' }],
+		fields: [
+			{ key: 'accept', label: 'Accepted types', kind: 'text', default: '.pdf,.csv,image/*' },
+		],
 	},
 	{
 		key: 'ai.chat',
@@ -166,12 +168,18 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		outputs: [],
 		fields: [
 			{ key: 'name', label: 'Output name', kind: 'text', default: 'result' },
-			{ key: 'type', label: 'Type', kind: 'select', default: 'any', options: [
-				{ label: 'Text', value: 'string' },
-				{ label: 'List', value: 'list' },
-				{ label: 'JSON', value: 'json' },
-				{ label: 'Any', value: 'any' },
-			] },
+			{
+				key: 'type',
+				label: 'Type',
+				kind: 'select',
+				default: 'any',
+				options: [
+					{ label: 'Text', value: 'string' },
+					{ label: 'List', value: 'list' },
+					{ label: 'JSON', value: 'json' },
+					{ label: 'Any', value: 'any' },
+				],
+			},
 		],
 	},
 	{

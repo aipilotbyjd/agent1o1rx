@@ -7,6 +7,7 @@ Goal: turn the placeholder at `src/pages/editor/WorkflowEditor/WorkflowEditor.pa
 ## 1. Feature Parity Checklist (What "Exact Same" Means)
 
 ### Canvas (center)
+
 - Infinite pan/zoom canvas with dotted/grid background
 - Drag-and-drop nodes from the left library onto the canvas
 - Bezier edges with typed sockets (string / number / list / file / any)
@@ -22,12 +23,14 @@ Goal: turn the placeholder at `src/pages/editor/WorkflowEditor/WorkflowEditor.pa
 - Subflow node (embeds another workflow)
 
 ### Left panel — Node Library
+
 - Search bar with fuzzy match
 - Categorized, collapsible groups: **Inputs**, **AI**, **Extract**, **Scrape**, **Data**, **Logic**, **Loops**, **Integrations** (Gmail, Sheets, Slack, Notion, HTTP…), **Output**, **Subflows**, **Custom**
 - Drag-to-canvas and click-to-insert at cursor
 - Favorites / recents section
 
 ### Right panel — Node Inspector
+
 - Dynamic form driven by each node's schema (JSON-Schema-ish)
 - Variable picker: `{{Node Name.output}}` autocomplete pulled from upstream nodes
 - Per-field types: text, long-text, code, key-value, select, multi-select, number, toggle, file, credential picker, model picker
@@ -35,6 +38,7 @@ Goal: turn the placeholder at `src/pages/editor/WorkflowEditor/WorkflowEditor.pa
 - Docs / help drawer per node
 
 ### Top bar
+
 - Workflow name + folder breadcrumb, inline rename
 - Save state indicator (saved / saving / error), autosave
 - Run / Stop / Test-one-row buttons
@@ -45,20 +49,24 @@ Goal: turn the placeholder at `src/pages/editor/WorkflowEditor/WorkflowEditor.pa
 - Avatars of collaborators (optional later)
 
 ### Bottom panel — Execution Console
+
 - Resizable drawer
 - Per-node streaming logs, tabs: Inputs, Outputs, Logs, Raw
 - Table view for bulk runs (row per input, column per node output)
 - Error inspector with stack + retry
 
 ### Runs / History pages
+
 - Runs list, filter by status / date / workflow
 - Run detail: replay timeline, download outputs as CSV/JSON
 - Compare runs
 
 ### Sidebar (app-level)
+
 - New top-level entry: **Builder** (opens editor for a given workflow id)
 
 ### Collaboration (phase 2, optional)
+
 - Live cursors, presence avatars, soft-locking of nodes, commenting threads
 
 ---
@@ -89,65 +97,81 @@ New deps to add: `@xyflow/react`, `zustand`, `immer`, `dagre`, `@types/dagre`, `
 type TPortType = 'string' | 'number' | 'boolean' | 'list' | 'file' | 'json' | 'any';
 
 type TNodePort = {
-  id: string;
-  name: string;
-  type: TPortType;
-  required?: boolean;
+	id: string;
+	name: string;
+	type: TPortType;
+	required?: boolean;
 };
 
 type TNodeSchemaField = {
-  key: string;
-  label: string;
-  kind:
-    | 'text' | 'longtext' | 'code' | 'number' | 'toggle'
-    | 'select' | 'multiselect' | 'kv'
-    | 'credential' | 'model' | 'file';
-  options?: { label: string; value: string }[];
-  default?: unknown;
-  required?: boolean;
-  help?: string;
-  supportsVariables?: boolean;
+	key: string;
+	label: string;
+	kind:
+		| 'text'
+		| 'longtext'
+		| 'code'
+		| 'number'
+		| 'toggle'
+		| 'select'
+		| 'multiselect'
+		| 'kv'
+		| 'credential'
+		| 'model'
+		| 'file';
+	options?: { label: string; value: string }[];
+	default?: unknown;
+	required?: boolean;
+	help?: string;
+	supportsVariables?: boolean;
 };
 
 type TNodeType = {
-  key: string;                  // 'ai.chat', 'scrape.url', …
-  category:
-    | 'input' | 'ai' | 'extract' | 'scrape' | 'data'
-    | 'logic' | 'loop' | 'integration' | 'output'
-    | 'subflow' | 'custom';
-  label: string;
-  description: string;
-  icon: string;
-  inputs: TNodePort[];
-  outputs: TNodePort[];
-  fields: TNodeSchemaField[];
-  color?: string;
+	key: string; // 'ai.chat', 'scrape.url', …
+	category:
+		| 'input'
+		| 'ai'
+		| 'extract'
+		| 'scrape'
+		| 'data'
+		| 'logic'
+		| 'loop'
+		| 'integration'
+		| 'output'
+		| 'subflow'
+		| 'custom';
+	label: string;
+	description: string;
+	icon: string;
+	inputs: TNodePort[];
+	outputs: TNodePort[];
+	fields: TNodeSchemaField[];
+	color?: string;
 };
 
 type TWorkflowNode = {
-  id: string;
-  type: string;
-  position: { x: number; y: number };
-  data: {
-    label: string;
-    values: Record<string, unknown>;
-    notes?: string;
-    locked?: boolean;
-  };
+	id: string;
+	type: string;
+	position: { x: number; y: number };
+	data: {
+		label: string;
+		values: Record<string, unknown>;
+		notes?: string;
+		locked?: boolean;
+	};
 };
 
 type TWorkflowEdge = {
-  id: string;
-  source: string;
-  sourceHandle: string;
-  target: string;
-  targetHandle: string;
+	id: string;
+	source: string;
+	sourceHandle: string;
+	target: string;
+	targetHandle: string;
 };
 
 type TWorkflowGraph = {
-  nodes: TWorkflowNode[];
-  edges: TWorkflowEdge[];
-  viewport?: { x: number; y: number; zoom: number };
+	nodes: TWorkflowNode[];
+	edges: TWorkflowEdge[];
+	viewport?: { x: number; y: number; zoom: number };
 };
 ```
 
@@ -264,6 +288,7 @@ Plus `src/api/modules/node-types/` (exists) fleshed out to serve the full node c
 Single source of truth for the canvas; React Flow is a controlled component on top of it.
 
 State slices:
+
 - **graph**: `nodes`, `edges`, `viewport`
 - **selection**: selected node/edge ids
 - **inspector**: open node id, dirty form values
@@ -297,6 +322,7 @@ Actions: `addNode`, `removeNodes`, `connect`, `disconnect`, `updateNodeData`, `d
 - Stop → `runs.service.stop(runId)`.
 
 Backend contract (to agree with API team):
+
 ```
 POST /workflows/:id/runs          → { runId }
 GET  /runs/:id                    → snapshot
@@ -311,31 +337,31 @@ POST /workflows/:id/test-node     → run single node w/ inputs
 
 Matches Gumloop's most-used blocks.
 
-| Category | Node | Purpose |
-|---|---|---|
-| Input | Ask AI Input | Prompt the user at run time |
-| Input | File Input | Upload CSV / PDF / image |
-| Input | Google Sheet Input | Read rows |
-| AI | Ask AI | Single LLM call with prompt |
-| AI | Categorizer | Pick one of N buckets |
-| AI | Summarizer | Long-text → short-text |
-| AI | Extract Data | LLM + schema → JSON |
-| Scrape | Website Scraper | Fetch URL → markdown/text |
-| Scrape | Website Crawler | BFS from seed URL |
-| Data | HTTP Request | Generic REST call |
-| Data | JSON Transform | JMESPath / jq |
-| Data | Merge / Join | Combine streams |
-| Logic | If / Else | Branch on expression |
-| Logic | Switch | Multi-branch |
-| Loop | For Each | Iterate list → sub-graph |
-| Integration | Gmail Send | Send email |
-| Integration | Google Sheets Write | Append rows |
-| Integration | Slack Message | Post to channel |
-| Integration | Notion Page | Create page |
-| Output | Display | Render output to UI |
-| Output | File Output | Zip / CSV download |
-| Misc | Sticky Note | Comments |
-| Misc | Subflow | Embed another workflow |
+| Category    | Node                | Purpose                     |
+| ----------- | ------------------- | --------------------------- |
+| Input       | Ask AI Input        | Prompt the user at run time |
+| Input       | File Input          | Upload CSV / PDF / image    |
+| Input       | Google Sheet Input  | Read rows                   |
+| AI          | Ask AI              | Single LLM call with prompt |
+| AI          | Categorizer         | Pick one of N buckets       |
+| AI          | Summarizer          | Long-text → short-text      |
+| AI          | Extract Data        | LLM + schema → JSON         |
+| Scrape      | Website Scraper     | Fetch URL → markdown/text   |
+| Scrape      | Website Crawler     | BFS from seed URL           |
+| Data        | HTTP Request        | Generic REST call           |
+| Data        | JSON Transform      | JMESPath / jq               |
+| Data        | Merge / Join        | Combine streams             |
+| Logic       | If / Else           | Branch on expression        |
+| Logic       | Switch              | Multi-branch                |
+| Loop        | For Each            | Iterate list → sub-graph    |
+| Integration | Gmail Send          | Send email                  |
+| Integration | Google Sheets Write | Append rows                 |
+| Integration | Slack Message       | Post to channel             |
+| Integration | Notion Page         | Create page                 |
+| Output      | Display             | Render output to UI         |
+| Output      | File Output         | Zip / CSV download          |
+| Misc        | Sticky Note         | Comments                    |
+| Misc        | Subflow             | Embed another workflow      |
 
 Each is defined once in `node-types.service.ts` as a `TNodeType`; the builder reads them and renders automatically — adding a new node later = adding one config object.
 
@@ -343,46 +369,53 @@ Each is defined once in `node-types.service.ts` as a `TNodeType`; the builder re
 
 ## 9. Hotkeys
 
-| Key | Action |
-|---|---|
-| `Space` (hold) + drag | Pan |
-| `Cmd/Ctrl + Z` / `Shift+Z` | Undo / Redo |
-| `Cmd/Ctrl + C / V / D` | Copy / Paste / Duplicate |
-| `Delete` / `Backspace` | Remove selection |
-| `Cmd/Ctrl + A` | Select all |
-| `Cmd/Ctrl + S` | Force save |
-| `Cmd/Ctrl + Enter` | Run workflow |
-| `/` | Focus node library search |
-| `F` | Fit view |
-| `L` | Auto-layout |
+| Key                        | Action                    |
+| -------------------------- | ------------------------- |
+| `Space` (hold) + drag      | Pan                       |
+| `Cmd/Ctrl + Z` / `Shift+Z` | Undo / Redo               |
+| `Cmd/Ctrl + C / V / D`     | Copy / Paste / Duplicate  |
+| `Delete` / `Backspace`     | Remove selection          |
+| `Cmd/Ctrl + A`             | Select all                |
+| `Cmd/Ctrl + S`             | Force save                |
+| `Cmd/Ctrl + Enter`         | Run workflow              |
+| `/`                        | Focus node library search |
+| `F`                        | Fit view                  |
+| `L`                        | Auto-layout               |
 
 ---
 
 ## 10. Milestones
 
 ### M1 — Skeleton (1–2 days)
+
 - Install deps, wire route, `EditorLayout` with empty topbar / sidebars / console.
 - Zustand store, empty React Flow canvas with grid + minimap + controls.
 
 ### M2 — Graph editing (3–4 days)
+
 - Custom `BaseNode`, drag-from-library, connect, delete, multi-select, undo/redo, copy/paste, hotkeys.
 - Autosave to backend (stub service OK).
 
 ### M3 — Node catalog + Inspector (4–5 days)
+
 - `TNodeType` schema, 8 real node types, dynamic Inspector form, variable picker with upstream resolution.
 - Graph validation (cycles, missing required fields, type mismatch on edges).
 
 ### M4 — Execution (4–5 days)
+
 - Run button, SSE/WS stream, per-node status + logs, Console drawer, stop, retry.
 - Test-single-node.
 
 ### M5 — Polish (3 days)
+
 - Auto-layout, versions, share modal, sticky notes, subflow node, schedule tab, API tab.
 
 ### M6 — Runs & Logs pages (2 days)
+
 - Runs list, run detail timeline, bulk-run table, CSV export.
 
 ### M7 — Nice-to-haves (ongoing)
+
 - Real-time presence, comments, templates gallery, marketplace nodes.
 
 ---

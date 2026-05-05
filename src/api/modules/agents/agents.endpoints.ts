@@ -5,7 +5,8 @@ export const AgentEndpoints = {
 	update: (ws: string, agentId: string) => `/workspaces/${ws}/agents/${agentId}`,
 	delete: (ws: string, agentId: string) => `/workspaces/${ws}/agents/${agentId}`,
 	duplicate: (ws: string, agentId: string) => `/workspaces/${ws}/agents/${agentId}/duplicate`,
-	attachSkill: (ws: string, agentId: string) => `/workspaces/${ws}/agents/${agentId}/skills/attach`,
+	attachSkill: (ws: string, agentId: string) =>
+		`/workspaces/${ws}/agents/${agentId}/skills/attach`,
 	detachSkill: (ws: string, agentId: string, skillId: string) =>
 		`/workspaces/${ws}/agents/${agentId}/skills/${skillId}`,
 	conversations: (ws: string, agentId: string) =>

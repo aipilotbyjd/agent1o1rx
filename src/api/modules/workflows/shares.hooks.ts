@@ -14,8 +14,7 @@ export const useWorkflowShares = (ws: string, workflowId: string) =>
 export const useCreateWorkflowShare = (ws: string, workflowId: string) => {
 	const qc = useQueryClient();
 	return useMutation({
-		mutationFn: (body: ICreateShareDto) =>
-			WorkflowShareService.create(ws, workflowId, body),
+		mutationFn: (body: ICreateShareDto) => WorkflowShareService.create(ws, workflowId, body),
 		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: workflowKeys.shares(ws, workflowId) });
 			notify.success('Share link created');
@@ -40,8 +39,7 @@ export const useUpdateWorkflowShare = (ws: string, workflowId: string) => {
 export const useDeleteWorkflowShare = (ws: string, workflowId: string) => {
 	const qc = useQueryClient();
 	return useMutation({
-		mutationFn: (shareId: string) =>
-			WorkflowShareService.remove(ws, workflowId, shareId),
+		mutationFn: (shareId: string) => WorkflowShareService.remove(ws, workflowId, shareId),
 		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: workflowKeys.shares(ws, workflowId) });
 			notify.success('Share link deleted');

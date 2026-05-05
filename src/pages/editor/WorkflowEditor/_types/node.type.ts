@@ -70,4 +70,4 @@ export type TCanvasNodeData = {
 	outputPreview?: unknown;
 	notes?: string;
 	locked?: boolean;
-};
+} & Record<string, unknown>;

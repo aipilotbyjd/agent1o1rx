@@ -33,7 +33,9 @@ export class ApiError extends Error {
 }
 
 /** Back-compat helper for code paths that expect a plain object. */
-export const parseApiError = (error: unknown): { message: string; status?: number; errors?: Record<string, string[]> } => {
+export const parseApiError = (
+	error: unknown,
+): { message: string; status?: number; errors?: Record<string, string[]> } => {
 	if (ApiError.is(error)) {
 		return { message: error.message, status: error.status, errors: error.fields };
 	}

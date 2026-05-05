@@ -6,9 +6,7 @@ import { WebhookEndpoints as E } from './webhooks.endpoints';
 
 export const WebhookService = {
 	list: (ws: string, signal?: AbortSignal) =>
-		axiosClient
-			.get<TApiResponse<TWebhook[]>>(E.list(ws), { signal })
-			.then(unwrap<TWebhook[]>),
+		axiosClient.get<TApiResponse<TWebhook[]>>(E.list(ws), { signal }).then(unwrap<TWebhook[]>),
 
 	detail: (ws: string, webhookId: string, signal?: AbortSignal) =>
 		axiosClient

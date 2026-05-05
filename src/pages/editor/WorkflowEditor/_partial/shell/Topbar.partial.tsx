@@ -29,7 +29,7 @@ const Topbar = () => {
 						patch: { name: event.target.value, savingState: 'dirty' },
 					})
 				}
-				className='min-w-0 max-w-md flex-1 rounded-lg border border-transparent bg-transparent px-3 py-2 text-sm font-black text-zinc-900 outline-none hover:border-zinc-200 focus:border-emerald-400 dark:text-white dark:hover:border-zinc-800'
+				className='max-w-md min-w-0 flex-1 rounded-lg border border-transparent bg-transparent px-3 py-2 text-sm font-black text-zinc-900 outline-none hover:border-zinc-200 focus:border-emerald-400 dark:text-white dark:hover:border-zinc-800'
 			/>
 			<div className='ml-auto flex items-center gap-4'>
 				<div className='flex items-center gap-2'>

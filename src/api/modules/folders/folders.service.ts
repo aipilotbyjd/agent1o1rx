@@ -18,8 +18,7 @@ export const FolderService = {
 	update: (ws: string, id: string, body: IUpdateFolderDto) =>
 		axiosClient.put<TApiResponse<IFolder>>(E.update(ws, id), body).then(unwrap<IFolder>),
 
-	remove: (ws: string, id: string) =>
-		axiosClient.delete(E.delete(ws, id)).then(() => undefined),
+	remove: (ws: string, id: string) => axiosClient.delete(E.delete(ws, id)).then(() => undefined),
 
 	moveWorkflows: (ws: string, body: IMoveWorkflowsDto) =>
 		axiosClient.post(E.moveWorkflows(ws), body).then(() => undefined),

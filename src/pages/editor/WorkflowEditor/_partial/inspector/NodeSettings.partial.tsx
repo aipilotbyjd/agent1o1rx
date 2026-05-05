@@ -25,7 +25,9 @@ const FieldInput = ({
 				aria-checked={active}
 				onClick={() => onChange(!active)}
 				className={`h-7 w-12 rounded-full border p-1 transition ${active ? 'border-emerald-400 bg-emerald-500' : 'border-zinc-300 bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800'}`}>
-				<span className={`block h-4 w-4 rounded-full bg-white transition ${active ? 'translate-x-5' : ''}`} />
+				<span
+					className={`block h-4 w-4 rounded-full bg-white transition ${active ? 'translate-x-5' : ''}`}
+				/>
 			</button>
 		);
 	}
@@ -93,7 +95,7 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 	return (
 		<div className='space-y-4'>
 			<div>
-				<label className='mb-1 block text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400'>
+				<label className='mb-1 block text-xs font-black tracking-widest text-zinc-500 uppercase dark:text-zinc-400'>
 					Node name
 				</label>
 				<input
@@ -106,7 +108,7 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 			</div>
 			{def.fields.map((field) => (
 				<div key={field.key}>
-					<label className='mb-1 block text-xs font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400'>
+					<label className='mb-1 block text-xs font-black tracking-widest text-zinc-500 uppercase dark:text-zinc-400'>
 						{field.label}
 					</label>
 					<FieldInput
