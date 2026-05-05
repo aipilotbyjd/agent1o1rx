@@ -7,6 +7,7 @@ import {
 	useReactFlow,
 	type Connection,
 	type EdgeTypes,
+	type IsValidConnection,
 	type NodeChange,
 	type NodeTypes,
 } from '@xyflow/react';
@@ -23,6 +24,10 @@ import CanvasStats from './CanvasStats.partial';
 import ClickEdge from './ClickEdge.partial';
 import useDarkMode from '@/hooks/useDarkMode';
 import type { TCanvasNode } from '../../_types/canvas.type';
+import { validateWorkflow } from '../../_helper/validation.helper';
+import { NODE_CATALOG_MAP } from '../../_helper/nodeCatalog.constants';
+import { PORT_TYPE_COLOR } from '../../_helper/builder.constants';
+import type { TPortType } from '../../_types/node.type';
 
 const nodeTypes: NodeTypes = {
 	base: BaseNode,
@@ -35,6 +40,26 @@ const edgeTypes: EdgeTypes = {
 	workflow: ClickEdge,
 };
 
+const getPortType = (node: TCanvasNode | undefined, portId?: string | null): TPortType => {
+	const def = node ? NODE_CATALOG_MAP[node.data.defKey] : undefined;
+	const port = [...(def?.inputs ?? []), ...(def?.outputs ?? [])].find((item) => item.id === portId);
+	return port?.type ?? 'any';
+};
+
+const getEdgeLabel = (
+	nodes: TCanvasNode[],
+	source: string,
+	target: string,
+	sourceHandle?: string | null,
+	targetHandle?: string | null,
+) => {
+	const byId = new Map(nodes.map((node) => [node.id, node]));
+	const sourceType = getPortType(byId.get(source), sourceHandle);
+	const targetType = getPortType(byId.get(target), targetHandle);
+	const type = sourceType === 'any' ? targetType : sourceType;
+	return type === 'any' ? 'flow' : type;
+};
+
 const Canvas = () => {
 	const { state, dispatch } = useWorkflowEditor();
 	const { isDarkTheme } = useDarkMode();
@@ -44,6 +69,18 @@ const Canvas = () => {
 	const { isDraggingNode, onDragOver, onDragLeave, onDrop } = useCanvasDrop((event) =>
 		reactFlow.screenToFlowPosition({ x: event.clientX, y: event.clientY }),
 	);
+	const validationIssues = useMemo(
+		() => validateWorkflow(state.nodes, state.edges),
+		[state.nodes, state.edges],
+	);
+	const issuesByNode = useMemo(() => {
+		const result = new Map<string, typeof validationIssues>();
+		validationIssues.forEach((issue) => {
+			if (!issue.nodeId) return;
+			result.set(issue.nodeId, [...(result.get(issue.nodeId) ?? []), issue]);
+		});
+		return result;
+	}, [validationIssues]);
 
 	const storeNodes = useMemo(
 		() =>
@@ -51,8 +88,13 @@ const Canvas = () => {
 				...node,
 				selected: state.ui.selectedNodeId === node.id,
 				draggable: !node.data.locked,
+				data: {
+					...node.data,
+					validationIssues: issuesByNode.get(node.id) ?? [],
+					isActiveRunNode: state.run.currentNodeId === node.id,
+				},
 			})),
-		[state.nodes, state.ui.selectedNodeId],
+		[issuesByNode, state.nodes, state.run.currentNodeId, state.ui.selectedNodeId],
 	);
 
 	const [nodes, setNodes] = useState<TCanvasNode[]>(storeNodes);
@@ -63,13 +105,66 @@ const Canvas = () => {
 
 	const edges = useMemo(
 		() =>
-			state.edges.map((edge) => ({
-				...edge,
-				type: 'workflow' as const,
-				animated: state.run.status === 'running',
-				style: { stroke: 'rgb(139 92 246)', strokeWidth: 2 },
-			})),
-		[state.edges, state.run.status],
+			state.edges.map((edge) => {
+				const sourceType = getPortType(
+					state.nodes.find((node) => node.id === edge.source),
+					edge.sourceHandle,
+				);
+				const targetType = getPortType(
+					state.nodes.find((node) => node.id === edge.target),
+					edge.targetHandle,
+				);
+				const typeMismatch =
+					sourceType !== 'any' && targetType !== 'any' && sourceType !== targetType;
+				const isActive =
+					state.run.status === 'running' &&
+					(edge.source === state.run.currentNodeId || edge.target === state.run.currentNodeId);
+				return {
+					...edge,
+					type: 'workflow' as const,
+					animated: isActive,
+					data: {
+						...edge.data,
+						label: getEdgeLabel(
+							state.nodes,
+							edge.source,
+							edge.target,
+							edge.sourceHandle,
+							edge.targetHandle,
+						),
+						labelColor: PORT_TYPE_COLOR[sourceType === 'any' ? targetType : sourceType],
+						isActive,
+						issue: typeMismatch ? 'Port types do not match' : undefined,
+					},
+					style: {
+						stroke: typeMismatch
+							? 'rgb(244 63 94)'
+							: isActive
+								? 'rgb(16 185 129)'
+								: 'rgb(139 92 246)',
+						strokeWidth: isActive ? 3 : 2,
+					},
+				};
+			}),
+		[state.edges, state.nodes, state.run.currentNodeId, state.run.status],
+	);
+
+	const isValidConnection: IsValidConnection = useCallback(
+		(connection) => {
+			if (!connection.source || !connection.target || connection.source === connection.target) {
+				return false;
+			}
+			const sourceType = getPortType(
+				state.nodes.find((node) => node.id === connection.source),
+				connection.sourceHandle,
+			);
+			const targetType = getPortType(
+				state.nodes.find((node) => node.id === connection.target),
+				connection.targetHandle,
+			);
+			return sourceType === 'any' || targetType === 'any' || sourceType === targetType;
+		},
+		[state.nodes],
 	);
 
 	const onNodesChange = useCallback(
@@ -113,6 +208,7 @@ const Canvas = () => {
 				edgeTypes={edgeTypes}
 				onNodesChange={onNodesChange}
 				onConnect={onConnect}
+				isValidConnection={isValidConnection}
 				onNodeDragStart={(_, node) => {
 					didDragNodeRef.current = true;
 					setIsDraggingExistingNode(true);
@@ -145,13 +241,15 @@ const Canvas = () => {
 					size={1}
 				/>
 				<Controls position='bottom-right' />
-				<MiniMap
-					nodeStrokeWidth={3}
-					position='bottom-left'
-					pannable
-					zoomable
-					className='overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900'
-				/>
+				{state.ui.miniMapOpen && (
+					<MiniMap
+						nodeStrokeWidth={3}
+						position='bottom-left'
+						pannable
+						zoomable
+						className='overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900'
+					/>
+				)}
 			</ReactFlow>
 			{state.nodes.length === 0 ? (
 				<CanvasEmptyState />

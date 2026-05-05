@@ -14,6 +14,7 @@ export type TEditorUiState = {
 	rightPanelOpen: boolean;
 	runPanelOpen: boolean;
 	aiPanelOpen: boolean;
+	miniMapOpen: boolean;
 	commandPaletteOpen: boolean;
 	importExportOpen: boolean;
 	selectedNodeId: string | null;

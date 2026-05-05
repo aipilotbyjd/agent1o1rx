@@ -42,6 +42,7 @@ export type TWorkflowEditorAction =
 	| { type: 'TOGGLE_RIGHT_PANEL' }
 	| { type: 'TOGGLE_RUN_PANEL' }
 	| { type: 'TOGGLE_AI_PANEL' }
+	| { type: 'TOGGLE_MINIMAP' }
 	| { type: 'SET_COMMAND_PALETTE'; open: boolean }
 	| { type: 'SET_IMPORT_EXPORT'; open: boolean }
 	| { type: 'RUN_START'; id: string }
@@ -93,6 +94,7 @@ export const initialWorkflowEditorState: TWorkflowEditorState = {
 		rightPanelOpen: true,
 		runPanelOpen: false,
 		aiPanelOpen: false,
+		miniMapOpen: true,
 		commandPaletteOpen: false,
 		importExportOpen: false,
 		selectedNodeId: null,
@@ -158,7 +160,7 @@ export const workflowEditorReducer = (
 			return {
 				...next,
 				nodes: [...next.nodes, node],
-				ui: { ...next.ui, selectedNodeId: node.id, rightPanelOpen: false },
+				ui: { ...next.ui, selectedNodeId: node.id, rightPanelOpen: true },
 			};
 		}
 		case 'ADD_TEMPLATE': {
@@ -184,7 +186,7 @@ export const workflowEditorReducer = (
 				workflow: { ...next.workflow, name: action.name, savingState: 'dirty' },
 				nodes,
 				edges,
-				ui: { ...next.ui, selectedNodeId: nodes[0]?.id ?? null, rightPanelOpen: false },
+				ui: { ...next.ui, selectedNodeId: nodes[0]?.id ?? null, rightPanelOpen: true },
 			};
 		}
 		case 'MOVE_NODE': {
@@ -335,6 +337,8 @@ export const workflowEditorReducer = (
 			return { ...state, ui: { ...state.ui, runPanelOpen: !state.ui.runPanelOpen } };
 		case 'TOGGLE_AI_PANEL':
 			return { ...state, ui: { ...state.ui, aiPanelOpen: !state.ui.aiPanelOpen } };
+		case 'TOGGLE_MINIMAP':
+			return { ...state, ui: { ...state.ui, miniMapOpen: !state.ui.miniMapOpen } };
 		case 'SET_COMMAND_PALETTE':
 			return { ...state, ui: { ...state.ui, commandPaletteOpen: action.open } };
 		case 'SET_IMPORT_EXPORT':

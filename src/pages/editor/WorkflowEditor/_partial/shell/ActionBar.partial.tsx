@@ -1,28 +1,69 @@
+import { useReactFlow } from '@xyflow/react';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
+import Icon from '@/components/icon/Icon';
+
+const ToolButton = ({
+	title,
+	icon,
+	onClick,
+	active,
+}: {
+	title: string;
+	icon: string;
+	onClick: () => void;
+	active?: boolean;
+}) => (
+	<button
+		type='button'
+		title={title}
+		aria-label={title}
+		onClick={onClick}
+		className={[
+			'flex h-9 w-9 items-center justify-center rounded-lg text-lg transition',
+			active
+				? 'bg-emerald-500 text-white'
+				: 'text-zinc-300 hover:bg-zinc-800 hover:text-white',
+		].join(' ')}>
+		<Icon icon={icon} />
+	</button>
+);
 
 const ActionBar = () => {
-	const { dispatch } = useWorkflowEditor();
+	const { state, dispatch } = useWorkflowEditor();
+	const reactFlow = useReactFlow();
 
 	return (
-		<div className='absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2 rounded-xl border border-white/10 bg-zinc-950/90 p-2 shadow-xl backdrop-blur'>
-			<button
-				type='button'
+		<div className='absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-xl border border-white/10 bg-zinc-950/90 p-2 shadow-xl backdrop-blur'>
+			<ToolButton title='Zoom out' icon='ZoomOutArea' onClick={() => reactFlow.zoomOut()} />
+			<ToolButton title='Zoom in' icon='ZoomInArea' onClick={() => reactFlow.zoomIn()} />
+			<ToolButton
+				title='Fit view'
+				icon='FitToScreen'
+				onClick={() => reactFlow.fitView({ padding: 0.18, duration: 240 })}
+			/>
+			<ToolButton
+				title='Auto-layout'
+				icon='LayoutGrid'
+				onClick={() => dispatch({ type: 'AUTO_LAYOUT' })}
+			/>
+			<div className='mx-1 h-6 w-px bg-white/10' />
+			<ToolButton
+				title='Toggle minimap'
+				icon='Maps'
+				active={state.ui.miniMapOpen}
+				onClick={() => dispatch({ type: 'TOGGLE_MINIMAP' })}
+			/>
+			<ToolButton
+				title='Command palette'
+				icon='Command'
 				onClick={() => dispatch({ type: 'SET_COMMAND_PALETTE', open: true })}
-				className='rounded-lg px-3 py-2 text-xs font-bold text-zinc-300 hover:bg-zinc-800 hover:text-white'>
-				Command
-			</button>
-			<button
-				type='button'
-				onClick={() => dispatch({ type: 'SET_IMPORT_EXPORT', open: true })}
-				className='rounded-lg px-3 py-2 text-xs font-bold text-zinc-300 hover:bg-zinc-800 hover:text-white'>
-				Import / Export
-			</button>
-			<button
-				type='button'
+			/>
+			<ToolButton
+				title='Run console'
+				icon='CommandLine'
+				active={state.ui.runPanelOpen}
 				onClick={() => dispatch({ type: 'TOGGLE_RUN_PANEL' })}
-				className='rounded-lg px-3 py-2 text-xs font-bold text-zinc-300 hover:bg-zinc-800 hover:text-white'>
-				Console
-			</button>
+			/>
 		</div>
 	);
 };

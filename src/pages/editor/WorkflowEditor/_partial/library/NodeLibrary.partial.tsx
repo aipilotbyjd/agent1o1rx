@@ -23,7 +23,7 @@ const NodeLibrary = () => {
 	if (!state.ui.leftPanelOpen) return null;
 
 	return (
-		<aside className='flex h-full w-80 shrink-0 flex-col border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950'>
+		<aside className='flex h-full w-full shrink-0 flex-col border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950'>
 			<div className='flex h-14 items-center justify-between border-b border-zinc-200 px-4 dark:border-zinc-800'>
 				<div>
 					<div className='text-sm font-black text-zinc-900 dark:text-white'>

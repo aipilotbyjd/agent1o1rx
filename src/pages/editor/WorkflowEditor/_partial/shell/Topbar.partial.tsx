@@ -2,6 +2,37 @@ import { Link } from 'react-router';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import { useRunWorkflow } from '../../_hooks/useRunWorkflow.hook';
 import DarkModeSwitcherPart from '@/parts/DarkModeSwitcher.part';
+import Icon from '@/components/icon/Icon';
+
+const TopbarIconButton = ({
+	title,
+	icon,
+	onClick,
+	disabled,
+	active,
+}: {
+	title: string;
+	icon: string;
+	onClick?: () => void;
+	disabled?: boolean;
+	active?: boolean;
+}) => (
+	<button
+		type='button'
+		title={title}
+		aria-label={title}
+		onClick={onClick}
+		disabled={disabled}
+		className={[
+			'flex h-9 w-9 items-center justify-center rounded-lg border text-lg transition',
+			active
+				? 'border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700/60 dark:bg-emerald-950/40 dark:text-emerald-300'
+				: 'border-zinc-200 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-white',
+			disabled ? 'cursor-not-allowed opacity-30' : '',
+		].join(' ')}>
+		<Icon icon={icon} />
+	</button>
+);
 
 const Topbar = () => {
 	const { state, dispatch } = useWorkflowEditor();
@@ -10,16 +41,18 @@ const Topbar = () => {
 
 	return (
 		<header className='flex h-14 shrink-0 items-center gap-2 border-b border-zinc-200 bg-white px-3 dark:border-zinc-800 dark:bg-zinc-950'>
-			<button
-				type='button'
+			<TopbarIconButton
+				title='Toggle node library'
+				icon='SidebarLeft'
+				active={state.ui.leftPanelOpen}
 				onClick={() => dispatch({ type: 'TOGGLE_LEFT_PANEL' })}
-				className='rounded-lg border border-zinc-200 px-3 py-2 text-xs font-bold text-zinc-600 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:text-white'>
-				Library
-			</button>
+			/>
 			<Link
 				to='/'
-				className='rounded-lg border border-zinc-200 px-3 py-2 text-xs font-bold text-zinc-600 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:text-white'>
-				Home
+				title='Home'
+				aria-label='Home'
+				className='flex h-9 w-9 items-center justify-center rounded-lg border border-zinc-200 text-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-white'>
+				<Icon icon='Home01' />
 			</Link>
 			<input
 				value={state.workflow.name}
@@ -33,36 +66,34 @@ const Topbar = () => {
 			/>
 			<div className='ml-auto flex items-center gap-4'>
 				<div className='flex items-center gap-2'>
-					<button
-						type='button'
+					<TopbarIconButton
+						title='Undo'
+						icon='ArrowLeft02'
 						onClick={() => dispatch({ type: 'UNDO' })}
 						disabled={!state.history.past.length}
-						className='rounded-lg border border-zinc-200 px-3 py-2 text-xs font-bold text-zinc-600 disabled:opacity-30 dark:border-zinc-800 dark:text-zinc-300'>
-						Undo
-					</button>
-					<button
-						type='button'
+					/>
+					<TopbarIconButton
+						title='Redo'
+						icon='ArrowRight02'
 						onClick={() => dispatch({ type: 'REDO' })}
 						disabled={!state.history.future.length}
-						className='rounded-lg border border-zinc-200 px-3 py-2 text-xs font-bold text-zinc-600 disabled:opacity-30 dark:border-zinc-800 dark:text-zinc-300'>
-						Redo
-					</button>
-					<button
-						type='button'
+					/>
+					<TopbarIconButton
+						title='Auto-layout'
+						icon='FitToScreen'
 						onClick={() => dispatch({ type: 'AUTO_LAYOUT' })}
-						className='rounded-lg border border-zinc-200 px-3 py-2 text-xs font-bold text-zinc-600 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:text-white'>
-						Layout
-					</button>
-					<button
-						type='button'
+					/>
+					<TopbarIconButton
+						title='AI builder'
+						icon='AiMagic'
+						active={state.ui.aiPanelOpen}
 						onClick={() => dispatch({ type: 'TOGGLE_AI_PANEL' })}
-						className='rounded-lg border border-violet-400/30 bg-violet-400/10 px-3 py-2 text-xs font-bold text-violet-600 dark:text-violet-100'>
-						AI
-					</button>
+					/>
 					<button
 						type='button'
 						onClick={isRunning ? stopRun : runWorkflow}
-						className={`rounded-lg px-4 py-2 text-xs font-black text-white ${isRunning ? 'bg-rose-500' : 'bg-emerald-500'}`}>
+						className={`flex h-9 items-center gap-2 rounded-lg px-4 text-xs font-black text-white ${isRunning ? 'bg-rose-500 hover:bg-rose-600' : 'bg-emerald-500 hover:bg-emerald-600'}`}>
+						<Icon icon={isRunning ? 'Stop' : 'Play'} className='text-base' />
 						{isRunning ? 'Stop' : 'Run'}
 					</button>
 				</div>
