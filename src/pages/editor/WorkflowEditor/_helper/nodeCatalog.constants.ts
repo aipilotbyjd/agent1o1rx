@@ -11,8 +11,20 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		inputs: [],
 		outputs: [{ id: 'value', name: 'value', type: 'string' }],
 		fields: [
-			{ key: 'label', label: 'Question', kind: 'text', default: 'What should we process?' },
-			{ key: 'required', label: 'Required', kind: 'toggle', default: true },
+			{
+				key: 'label',
+				label: 'Question',
+				kind: 'text',
+				default: 'What should we process?',
+				help: 'The text prompt shown to users when the workflow runs.',
+			},
+			{
+				key: 'required',
+				label: 'Required',
+				kind: 'toggle',
+				default: true,
+				help: 'Whether the user must provide a value before continuing.',
+			},
 		],
 	},
 	{
@@ -25,7 +37,13 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		inputs: [],
 		outputs: [{ id: 'file', name: 'file', type: 'file' }],
 		fields: [
-			{ key: 'accept', label: 'Accepted types', kind: 'text', default: '.pdf,.csv,image/*' },
+			{
+				key: 'accept',
+				label: 'Accepted types',
+				kind: 'text',
+				default: '.pdf,.csv,image/*',
+				help: 'File extensions or MIME types (e.g., .pdf,.csv,image/*).',
+			},
 		],
 	},
 	{
@@ -43,6 +61,7 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 				label: 'Model',
 				kind: 'model',
 				default: 'gpt-4o-mini',
+				help: 'Select the AI model to use for this request.',
 				options: [
 					{ label: 'GPT-4o mini', value: 'gpt-4o-mini' },
 					{ label: 'GPT-4o', value: 'gpt-4o' },
@@ -57,9 +76,16 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 				rows: 6,
 				required: true,
 				supportsVariables: true,
+				help: 'Write your prompt here. Use {{variable}} syntax to inject values from previous nodes.',
 				placeholder: 'Use {{Ask Input.value}} and return a concise answer.',
 			},
-			{ key: 'temperature', label: 'Temperature', kind: 'number', default: 0.4 },
+			{
+				key: 'temperature',
+				label: 'Temperature',
+				kind: 'number',
+				default: 0.4,
+				help: 'Controls randomness: lower = more deterministic, higher = more creative.',
+			},
 		],
 	},
 	{
@@ -72,8 +98,21 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		inputs: [{ id: 'text', name: 'text', type: 'string' }],
 		outputs: [{ id: 'data', name: 'data', type: 'json' }],
 		fields: [
-			{ key: 'schema', label: 'Schema', kind: 'code', rows: 7, required: true },
-			{ key: 'model', label: 'Model', kind: 'model', default: 'gpt-4o-mini' },
+			{
+				key: 'schema',
+				label: 'Schema',
+				kind: 'code',
+				rows: 7,
+				required: true,
+				help: 'JSON schema describing the structure to extract (e.g., {"name": "string", "value": "number"}).',
+			},
+			{
+				key: 'model',
+				label: 'Model',
+				kind: 'model',
+				default: 'gpt-4o-mini',
+				help: 'AI model for extracting structured data.',
+			},
 		],
 	},
 	{
@@ -86,8 +125,20 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		inputs: [{ id: 'url', name: 'url', type: 'string' }],
 		outputs: [{ id: 'content', name: 'content', type: 'string' }],
 		fields: [
-			{ key: 'url', label: 'URL', kind: 'text', required: true, supportsVariables: true },
-			{ key: 'waitFor', label: 'Wait for selector', kind: 'text' },
+			{
+				key: 'url',
+				label: 'URL',
+				kind: 'text',
+				required: true,
+				supportsVariables: true,
+				help: 'Enter the full URL to scrape. Variables like {{Ask Input.value}} are supported.',
+			},
+			{
+				key: 'waitFor',
+				label: 'Wait for selector',
+				kind: 'text',
+				help: 'Optional CSS selector to wait for before extracting content.',
+			},
 		],
 	},
 	{
@@ -105,14 +156,33 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 				label: 'Method',
 				kind: 'select',
 				default: 'GET',
+				help: 'HTTP method for the request.',
 				options: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].map((method) => ({
 					label: method,
 					value: method,
 				})),
 			},
-			{ key: 'url', label: 'URL', kind: 'text', required: true, supportsVariables: true },
-			{ key: 'headers', label: 'Headers', kind: 'kv' },
-			{ key: 'body', label: 'Body', kind: 'code', rows: 5 },
+			{
+				key: 'url',
+				label: 'URL',
+				kind: 'text',
+				required: true,
+				supportsVariables: true,
+				help: 'Request URL. Variables like {{Ask Input.value}} are supported.',
+			},
+			{
+				key: 'headers',
+				label: 'Headers',
+				kind: 'kv',
+				help: 'Key-value pairs for request headers.',
+			},
+			{
+				key: 'body',
+				label: 'Body',
+				kind: 'code',
+				rows: 5,
+				help: 'Request body as JSON. Use for POST/PUT requests.',
+			},
 		],
 	},
 	{
@@ -127,7 +197,15 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 			{ id: 'true', name: 'true', type: 'any' },
 			{ id: 'false', name: 'false', type: 'any' },
 		],
-		fields: [{ key: 'expression', label: 'Condition', kind: 'text', required: true }],
+		fields: [
+			{
+				key: 'expression',
+				label: 'Condition',
+				kind: 'text',
+				required: true,
+				help: 'JavaScript expression to evaluate (e.g., value > 10).',
+			},
+		],
 	},
 	{
 		key: 'loop.each',
@@ -138,7 +216,15 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		color: 'indigo',
 		inputs: [{ id: 'items', name: 'items', type: 'list' }],
 		outputs: [{ id: 'item', name: 'item', type: 'any' }],
-		fields: [{ key: 'concurrency', label: 'Concurrency', kind: 'number', default: 5 }],
+		fields: [
+			{
+				key: 'concurrency',
+				label: 'Concurrency',
+				kind: 'number',
+				default: 5,
+				help: 'Number of items to process simultaneously.',
+			},
+		],
 		supportsLoopMode: true,
 	},
 	{
@@ -151,9 +237,27 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		inputs: [{ id: 'message', name: 'message', type: 'string' }],
 		outputs: [{ id: 'sent', name: 'sent', type: 'boolean' }],
 		fields: [
-			{ key: 'credential', label: 'Credential', kind: 'credential', required: true },
-			{ key: 'channel', label: 'Channel', kind: 'text', required: true },
-			{ key: 'message', label: 'Message', kind: 'longtext', supportsVariables: true },
+			{
+				key: 'credential',
+				label: 'Credential',
+				kind: 'credential',
+				required: true,
+				help: 'Select a connected Slack credential for authentication.',
+			},
+			{
+				key: 'channel',
+				label: 'Channel',
+				kind: 'text',
+				required: true,
+				help: 'Slack channel name (e.g., #general or @username for DMs).',
+			},
+			{
+				key: 'message',
+				label: 'Message',
+				kind: 'longtext',
+				supportsVariables: true,
+				help: 'Message content. Supports markdown and {{variable}} syntax.',
+			},
 		],
 		requiresCredential: true,
 	},
@@ -167,12 +271,19 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		inputs: [{ id: 'value', name: 'value', type: 'any' }],
 		outputs: [],
 		fields: [
-			{ key: 'name', label: 'Output name', kind: 'text', default: 'result' },
+			{
+				key: 'name',
+				label: 'Output name',
+				kind: 'text',
+				default: 'result',
+				help: 'Programmatic name for this output in your workflow.',
+			},
 			{
 				key: 'type',
 				label: 'Type',
 				kind: 'select',
 				default: 'any',
+				help: 'Data type for the output value.',
 				options: [
 					{ label: 'Text', value: 'string' },
 					{ label: 'List', value: 'list' },
@@ -191,7 +302,15 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 		color: 'zinc',
 		inputs: [],
 		outputs: [],
-		fields: [{ key: 'content', label: 'Note', kind: 'longtext', rows: 5 }],
+		fields: [
+			{
+				key: 'content',
+				label: 'Note',
+				kind: 'longtext',
+				rows: 5,
+				help: 'Add documentation directly on your workflow canvas.',
+			},
+		],
 	},
 ];
 
