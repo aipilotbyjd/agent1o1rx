@@ -20,7 +20,7 @@ export type TWorkflowEditorAction =
 	| { type: 'ADD_NODE'; defKey: string; position: TCanvasPosition }
 	| { type: 'ADD_TEMPLATE'; defKeys: string[]; name: string }
 	| { type: 'MOVE_NODE'; id: string; position: TCanvasPosition }
-	| { type: 'SELECT_NODE'; id: string | null }
+	| { type: 'SELECT_NODE'; id: string | null; openInspector?: boolean }
 	| { type: 'UPDATE_NODE_VALUE'; id: string; fieldKey: string; value: unknown }
 	| { type: 'RENAME_NODE'; id: string; label: string }
 	| { type: 'DELETE_SELECTED' }
@@ -158,7 +158,7 @@ export const workflowEditorReducer = (
 			return {
 				...next,
 				nodes: [...next.nodes, node],
-				ui: { ...next.ui, selectedNodeId: node.id, rightPanelOpen: true },
+				ui: { ...next.ui, selectedNodeId: node.id, rightPanelOpen: false },
 			};
 		}
 		case 'ADD_TEMPLATE': {
@@ -184,7 +184,7 @@ export const workflowEditorReducer = (
 				workflow: { ...next.workflow, name: action.name, savingState: 'dirty' },
 				nodes,
 				edges,
-				ui: { ...next.ui, selectedNodeId: nodes[0]?.id ?? null },
+				ui: { ...next.ui, selectedNodeId: nodes[0]?.id ?? null, rightPanelOpen: false },
 			};
 		}
 		case 'MOVE_NODE': {
@@ -202,7 +202,10 @@ export const workflowEditorReducer = (
 				ui: {
 					...state.ui,
 					selectedNodeId: action.id,
-					rightPanelOpen: action.id ? true : state.ui.rightPanelOpen,
+					rightPanelOpen:
+						action.id && action.openInspector !== false
+							? true
+							: state.ui.rightPanelOpen,
 				},
 			};
 		case 'UPDATE_NODE_VALUE':

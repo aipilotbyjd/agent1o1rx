@@ -11,7 +11,7 @@ import {
 	type NodeTypes,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCanvasDrop } from '../../_hooks/useCanvasDrop.hook';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import BaseNode from './nodes/BaseNode.partial';
@@ -39,6 +39,7 @@ const Canvas = () => {
 	const { state, dispatch } = useWorkflowEditor();
 	const { isDarkTheme } = useDarkMode();
 	const reactFlow = useReactFlow<TCanvasNode>();
+	const didDragNodeRef = useRef(false);
 	const [isDraggingExistingNode, setIsDraggingExistingNode] = useState(false);
 	const { isDraggingNode, onDragOver, onDragLeave, onDrop } = useCanvasDrop((event) =>
 		reactFlow.screenToFlowPosition({ x: event.clientX, y: event.clientY }),
@@ -76,7 +77,7 @@ const Canvas = () => {
 			setNodes((currentNodes) => applyNodeChanges(changes, currentNodes));
 			changes.forEach((change) => {
 				if (change.type === 'select' && change.selected) {
-					dispatch({ type: 'SELECT_NODE', id: change.id });
+					dispatch({ type: 'SELECT_NODE', id: change.id, openInspector: false });
 				}
 			});
 		},
@@ -113,15 +114,22 @@ const Canvas = () => {
 				onNodesChange={onNodesChange}
 				onConnect={onConnect}
 				onNodeDragStart={(_, node) => {
+					didDragNodeRef.current = true;
 					setIsDraggingExistingNode(true);
-					dispatch({ type: 'SELECT_NODE', id: node.id });
+					dispatch({ type: 'SELECT_NODE', id: node.id, openInspector: false });
 				}}
 				onNodeDragStop={(_, node) => {
 					setIsDraggingExistingNode(false);
 					dispatch({ type: 'MOVE_NODE', id: node.id, position: node.position });
 				}}
 				onPaneClick={() => dispatch({ type: 'SELECT_NODE', id: null })}
-				onNodeClick={(_, node) => dispatch({ type: 'SELECT_NODE', id: node.id })}
+				onNodeClick={(_, node) => {
+					if (didDragNodeRef.current) {
+						didDragNodeRef.current = false;
+						return;
+					}
+					dispatch({ type: 'SELECT_NODE', id: node.id });
+				}}
 				onEdgesDelete={(deletedEdges) =>
 					deletedEdges.forEach((edge) => dispatch({ type: 'REMOVE_EDGE', id: edge.id }))
 				}
