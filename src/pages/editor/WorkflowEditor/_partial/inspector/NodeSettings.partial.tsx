@@ -167,8 +167,27 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 
 	if (!node || !def) return null;
 
+	// Count required fields and current valid fields
+	const requiredFields = def.fields.filter((f) => f.required);
+	const validRequiredFields = requiredFields.filter((f) => {
+		const v = node.data.values[f.key];
+		return v !== undefined && v !== null && v !== '';
+	});
+
 	return (
 		<div className='space-y-4'>
+			<div className='mb-4 flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 p-3 dark:border-emerald-900/50 dark:bg-emerald-950/30'>
+				<div className='text-xs'>
+					<span className='font-black text-emerald-700 dark:text-emerald-300'>
+						{validRequiredFields.length} / {requiredFields.length}
+					</span>
+					<span className='ml-1 text-emerald-600 dark:text-emerald-400'>required</span>
+				</div>
+				{requiredFields.length > 0 && validRequiredFields.length === requiredFields.length && (
+					<span className='text-xs font-bold text-emerald-600 dark:text-emerald-400'>✓ Complete</span>
+				)}
+			</div>
+
 			<div>
 				<label
 					htmlFor={`node-name-${nodeId}`}

@@ -31,6 +31,7 @@ const PortHandles = ({
 					height: 10,
 					width: 10,
 				}}
+				className="transition-transform duration-150 group-hover:scale-125"
 			/>
 		))}
 	</>
@@ -59,10 +60,10 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 	return (
 		<div
 			className={[
-				'relative w-[230px] rounded-lg border p-3 text-left shadow-lg transition',
+				'group relative w-[230px] rounded-lg border p-3 text-left shadow-lg transition-all duration-200',
 				'bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-100',
-				selected ? 'border-emerald-400 ring-4 ring-emerald-400/25' : `${hue.border} ${hue.darkBorder}`,
-				isActiveRunNode ? 'shadow-emerald-500/30 ring-4 ring-emerald-400/30' : '',
+				selected ? 'border-emerald-400 ring-4 ring-emerald-400/25 shadow-xl' : `${hue.border} ${hue.darkBorder}`,
+				isActiveRunNode ? 'shadow-emerald-500/30 ring-4 ring-emerald-400/30 animate-pulse' : '',
 				hasError ? 'border-rose-400' : '',
 			].join(' ')}>
 			<PortHandles ports={inputs} type='target' position={Position.Left} />
@@ -70,7 +71,7 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 				<div
 					title={validationIssues.map((issue) => issue.message).join('\n')}
 					className={[
-						'absolute -top-2 -right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full border text-[11px] font-black shadow',
+						'absolute -top-2 -right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full border text-[11px] font-black shadow transition-transform duration-200 group-hover:scale-110',
 						hasError
 							? 'border-rose-200 bg-rose-500 text-white'
 							: 'border-amber-200 bg-amber-400 text-zinc-950',
@@ -80,7 +81,7 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 			)}
 			<div className='flex items-start gap-2'>
 				<span
-					className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border text-xs font-black ${hue.bg} ${hue.text} ${hue.border} ${hue.darkBg} ${hue.darkText} ${hue.darkBorder}`}>
+					className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border text-xs font-black transition-transform duration-200 ${hue.bg} ${hue.text} ${hue.border} ${hue.darkBg} ${hue.darkText} ${hue.darkBorder} group-hover:scale-105`}>
 					{def?.icon ?? '?'}
 				</span>
 				<div className='min-w-0 flex-1'>
@@ -96,7 +97,7 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 					{inputs.slice(0, 3).map((port) => (
 						<span
 							key={port.id}
-							className='h-2.5 w-2.5 rounded-full border border-zinc-800 dark:border-zinc-600'
+							className='h-2.5 w-2.5 rounded-full border border-zinc-800 dark:border-zinc-600 transition-transform duration-150 group-hover:scale-125'
 							style={{ backgroundColor: PORT_TYPE_COLOR[port.type] }}
 							title={`${port.name}: ${port.type}`}
 						/>
@@ -104,8 +105,9 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 				</div>
 				<span
 					className={[
-						'rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase',
+						'rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase transition-all duration-200',
 						statusClass[status],
+						isActiveRunNode ? 'ring-2 ring-emerald-400/50' : '',
 					].join(' ')}>
 					{status}
 				</span>
@@ -113,7 +115,7 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 					{outputs.slice(0, 3).map((port) => (
 						<span
 							key={port.id}
-							className='h-2.5 w-2.5 rounded-full border border-zinc-800 dark:border-zinc-600'
+							className='h-2.5 w-2.5 rounded-full border border-zinc-800 dark:border-zinc-600 transition-transform duration-150 group-hover:scale-125'
 							style={{ backgroundColor: PORT_TYPE_COLOR[port.type] }}
 							title={`${port.name}: ${port.type}`}
 						/>

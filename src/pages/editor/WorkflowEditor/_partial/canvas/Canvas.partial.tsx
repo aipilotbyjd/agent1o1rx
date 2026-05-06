@@ -68,6 +68,7 @@ const Canvas = () => {
 	const reactFlow = useReactFlow<TCanvasNode>();
 	const didDragNodeRef = useRef(false);
 	const [isDraggingExistingNode, setIsDraggingExistingNode] = useState(false);
+
 	const { isDraggingNode, onDragOver, onDragLeave, onDrop } = useCanvasDrop((event) =>
 		reactFlow.screenToFlowPosition({ x: event.clientX, y: event.clientY }),
 	);
@@ -84,6 +85,8 @@ const Canvas = () => {
 		return result;
 	}, [validationIssues]);
 
+	// Create the nodes array that ReactFlow will use
+	// During drag, we need to update positions locally, but sync back to store on drag end
 	const storeNodes = useMemo(
 		() =>
 			state.nodes.map((node) => ({
@@ -99,8 +102,45 @@ const Canvas = () => {
 		[issuesByNode, state.nodes, state.run.currentNodeId, state.ui.selectedNodeId],
 	);
 
-	const [dragNodes, setDragNodes] = useState<TCanvasNode[]>(storeNodes);
-	const nodes = isDraggingExistingNode ? dragNodes : storeNodes;
+	// Track position changes during drag to apply to storeNodes
+	const dragPositionsRef = useRef<Map<string, { x: number; y: number }>>(new Map());
+
+	// Get the current positions map from state.nodes for quick lookup
+	const nodePositionsMap = useMemo(() => {
+		const map = new Map<string, { x: number; y: number }>();
+		state.nodes.forEach((node) => map.set(node.id, node.position));
+		return map;
+	}, [state.nodes]);
+
+	const onNodesChange = useCallback(
+		(changes: NodeChange<TCanvasNode>[]) => {
+			// Track position changes during drag
+			changes.forEach((change) => {
+				if (change.type === 'position' && 'position' in change && change.position) {
+					dragPositionsRef.current.set(change.id, change.position);
+				}
+				if (change.type === 'select' && change.selected) {
+					dispatch({ type: 'SELECT_NODE', id: change.id, openInspector: false });
+				}
+			});
+		},
+		[dispatch],
+	);
+
+	// Create the nodes array that includes drag positions during active drag
+	const nodes = useMemo(() => {
+		return storeNodes.map((node) => {
+			// Use drag position if available, otherwise use store position
+			const dragPos = dragPositionsRef.current.get(node.id);
+			if (isDraggingExistingNode && dragPos) {
+				return {
+					...node,
+					position: dragPos,
+				};
+			}
+			return node;
+		});
+	}, [storeNodes, isDraggingExistingNode]);
 
 	const edges = useMemo(
 		() =>
@@ -171,18 +211,6 @@ const Canvas = () => {
 		[state.nodes],
 	);
 
-	const onNodesChange = useCallback(
-		(changes: NodeChange<TCanvasNode>[]) => {
-			setDragNodes((currentNodes) => applyNodeChanges(changes, currentNodes));
-			changes.forEach((change) => {
-				if (change.type === 'select' && change.selected) {
-					dispatch({ type: 'SELECT_NODE', id: change.id, openInspector: false });
-				}
-			});
-		},
-		[dispatch],
-	);
-
 	const onConnect = useCallback(
 		(connection: Connection) => {
 			if (!connection.source || !connection.target) return;
@@ -197,6 +225,24 @@ const Canvas = () => {
 		[dispatch],
 	);
 
+	// Clear drag positions when drag ends and sync to store
+	const handleDragStop = useCallback(
+		(_event: unknown, node: TCanvasNode) => {
+			setIsDraggingExistingNode(false);
+			didDragNodeRef.current = false;
+
+			// Get the final position from drag positions or node
+			const finalPos = dragPositionsRef.current.get(node.id) ?? node.position;
+
+			// Clear the tracked position
+			dragPositionsRef.current.delete(node.id);
+
+			// Dispatch to store
+			dispatch({ type: 'MOVE_NODE', id: node.id, position: finalPos });
+		},
+		[dispatch],
+	);
+
 	return (
 		<section
 			data-canvas='true'
@@ -206,7 +252,7 @@ const Canvas = () => {
 			onDrop={onDrop}>
 			<ReactFlow
 				fitView
-				nodes={renderedNodes}
+				nodes={nodes}
 				edges={edges}
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}
@@ -218,11 +264,7 @@ const Canvas = () => {
 					setIsDraggingExistingNode(true);
 					dispatch({ type: 'SELECT_NODE', id: node.id, openInspector: false });
 				}}
-				onNodeDragStop={(_, node) => {
-					setIsDraggingExistingNode(false);
-					didDragNodeRef.current = false;
-					dispatch({ type: 'MOVE_NODE', id: node.id, position: node.position });
-				}}
+				onNodeDragStop={handleDragStop}
 				onPaneClick={() => dispatch({ type: 'SELECT_NODE', id: null })}
 				onNodeClick={(_, node) => {
 					if (didDragNodeRef.current) {

@@ -109,14 +109,22 @@ const Inspector = () => {
 						<button
 							type='button'
 							onClick={() => dispatch({ type: 'DUPLICATE_SELECTED' })}
-							className='flex-1 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs font-bold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900'>
+							disabled={!state.ui.selectedNodeId}
+							className='flex-1 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs font-bold text-zinc-700 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900'>
 							Duplicate
 						</button>
 						<button
 							type='button'
 							onClick={() => dispatch({ type: 'DELETE_SELECTED' })}
-							className='flex-1 rounded-lg bg-rose-500 px-3 py-2 text-xs font-bold text-white hover:bg-rose-600'>
+							disabled={!state.ui.selectedNodeId}
+							className='flex-1 rounded-lg bg-rose-500 px-3 py-2 text-xs font-bold text-white hover:bg-rose-600 disabled:cursor-not-allowed disabled:opacity-50'>
 							Delete
+						</button>
+						<button
+							type='button'
+							onClick={() => dispatch({ type: 'SELECT_NODE', id: null })}
+							className='flex-1 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs font-bold text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:bg-zinc-900'>
+							Deselect
 						</button>
 					</div>
 				</div>

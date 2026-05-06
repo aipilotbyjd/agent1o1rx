@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useWorkflowEditor } from '../_context/WorkflowEditorProvider.context';
+import { useRunWorkflow } from '../_hooks/useRunWorkflow.hook';
 
 const isTypingTarget = (target: EventTarget | null) => {
 	if (!(target instanceof HTMLElement)) return false;
@@ -7,12 +8,14 @@ const isTypingTarget = (target: EventTarget | null) => {
 };
 
 export const useEditorHotkeys = () => {
-	const { dispatch } = useWorkflowEditor();
+	const { dispatch, state } = useWorkflowEditor();
+	const { runWorkflow, stopRun } = useRunWorkflow();
 
 	useEffect(() => {
 		const onKeyDown = (event: KeyboardEvent) => {
 			const mod = event.metaKey || event.ctrlKey;
 
+			// Undo/Redo
 			if (mod && event.key.toLowerCase() === 'z' && !event.shiftKey) {
 				event.preventDefault();
 				dispatch({ type: 'UNDO' });
@@ -26,33 +29,74 @@ export const useEditorHotkeys = () => {
 				dispatch({ type: 'REDO' });
 				return;
 			}
-			if (mod && event.key.toLowerCase() === 'd') {
+
+			// Run/Stop workflow
+			if (mod && event.key === 'Enter') {
 				event.preventDefault();
-				dispatch({ type: 'DUPLICATE_SELECTED' });
+				if (state.run.status === 'running') {
+					stopRun();
+				} else {
+					runWorkflow();
+				}
 				return;
 			}
-			if (mod && event.key.toLowerCase() === 'k') {
-				event.preventDefault();
-				dispatch({ type: 'TOGGLE_AI_PANEL' });
-				return;
-			}
+
+			// Command palette
 			if (mod && event.key.toLowerCase() === 'p') {
 				event.preventDefault();
 				dispatch({ type: 'SET_COMMAND_PALETTE', open: true });
 				return;
 			}
+
+			// AI Builder - use J instead of conflicting with Command Palette
+			if (mod && event.key.toLowerCase() === 'j' && !event.shiftKey) {
+				event.preventDefault();
+				dispatch({ type: 'TOGGLE_AI_PANEL' });
+				return;
+			}
+
+			// Toggle panels
+			if (mod && event.shiftKey && event.key.toLowerCase() === 'l') {
+				event.preventDefault();
+				dispatch({ type: 'TOGGLE_LEFT_PANEL' });
+				return;
+			}
+			if (mod && event.shiftKey && event.key.toLowerCase() === 'r') {
+				event.preventDefault();
+				dispatch({ type: 'TOGGLE_RUN_PANEL' });
+				return;
+			}
+			if (mod && event.shiftKey && event.key.toLowerCase() === 'e') {
+				event.preventDefault();
+				dispatch({ type: 'SET_IMPORT_EXPORT', open: true });
+				return;
+			}
+
+			// Auto-layout
 			if (!isTypingTarget(event.target) && event.key.toLowerCase() === 'l') {
 				event.preventDefault();
 				dispatch({ type: 'AUTO_LAYOUT' });
 				return;
 			}
-			if (!isTypingTarget(event.target) && ['Backspace', 'Delete'].includes(event.key)) {
+
+			// Node operations
+			if (mod && event.key.toLowerCase() === 'd') {
+				event.preventDefault();
+				dispatch({ type: 'DUPLICATE_SELECTED' });
+				return;
+			}
+			if (
+				!isTypingTarget(event.target) &&
+				['Backspace', 'Delete'].includes(event.key) &&
+				state.ui.selectedNodeId
+			) {
 				event.preventDefault();
 				dispatch({ type: 'DELETE_SELECTED' });
+				return;
 			}
 		};
 
 		window.addEventListener('keydown', onKeyDown);
 		return () => window.removeEventListener('keydown', onKeyDown);
-	}, [dispatch]);
+	}, [dispatch, state.run.status, state.ui.selectedNodeId, runWorkflow, stopRun]);
 };
