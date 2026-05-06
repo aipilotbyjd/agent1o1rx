@@ -206,7 +206,7 @@ const Canvas = () => {
 			onDrop={onDrop}>
 			<ReactFlow
 				fitView
-				nodes={nodes}
+				nodes={renderedNodes}
 				edges={edges}
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}

@@ -56,6 +56,7 @@ const Topbar = () => {
 			</Link>
 			<input
 				value={state.workflow.name}
+				aria-label='Workflow name'
 				onChange={(event) =>
 					dispatch({
 						type: 'SET_WORKFLOW_META',
@@ -83,12 +84,22 @@ const Topbar = () => {
 						icon='FitToScreen'
 						onClick={() => dispatch({ type: 'AUTO_LAYOUT' })}
 					/>
-					<TopbarIconButton
-						title='AI builder'
-						icon='AiMagic'
-						active={state.ui.aiPanelOpen}
+					<button
+						type='button'
+						title={state.ui.aiPanelOpen ? 'Collapse AI builder' : 'Ask AI for help'}
+						aria-label={
+							state.ui.aiPanelOpen ? 'Collapse AI builder' : 'Ask AI for help'
+						}
 						onClick={() => dispatch({ type: 'TOGGLE_AI_PANEL' })}
-					/>
+						className={[
+							'flex h-9 items-center gap-2 rounded-lg border px-3 text-xs font-black transition',
+							state.ui.aiPanelOpen
+								? 'border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700/60 dark:bg-emerald-950/40 dark:text-emerald-300'
+								: 'border-zinc-200 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-white',
+						].join(' ')}>
+						<Icon icon='AiMagic' className='text-base' />
+						{state.ui.aiPanelOpen ? 'Collapse AI' : 'Ask AI'}
+					</button>
 					<button
 						type='button'
 						onClick={isRunning ? stopRun : runWorkflow}

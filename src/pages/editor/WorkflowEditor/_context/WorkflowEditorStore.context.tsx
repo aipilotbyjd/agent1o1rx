@@ -340,7 +340,10 @@ export const workflowEditorReducer = (
 		case 'TOGGLE_RUN_PANEL':
 			return { ...state, ui: { ...state.ui, runPanelOpen: !state.ui.runPanelOpen } };
 		case 'TOGGLE_AI_PANEL':
-			return { ...state, ui: { ...state.ui, aiPanelOpen: !state.ui.aiPanelOpen } };
+			return {
+				...state,
+				ui: { ...state.ui, aiPanelOpen: !state.ui.aiPanelOpen },
+			};
 		case 'TOGGLE_MINIMAP':
 			return { ...state, ui: { ...state.ui, miniMapOpen: !state.ui.miniMapOpen } };
 		case 'SET_COMMAND_PALETTE':
