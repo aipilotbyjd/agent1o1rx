@@ -12,7 +12,7 @@ import {
 	type NodeTypes,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useCanvasDrop } from '../../_hooks/useCanvasDrop.hook';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import BaseNode from './nodes/BaseNode.partial';
@@ -42,7 +42,9 @@ const edgeTypes: EdgeTypes = {
 
 const getPortType = (node: TCanvasNode | undefined, portId?: string | null): TPortType => {
 	const def = node ? NODE_CATALOG_MAP[node.data.defKey] : undefined;
-	const port = [...(def?.inputs ?? []), ...(def?.outputs ?? [])].find((item) => item.id === portId);
+	const port = [...(def?.inputs ?? []), ...(def?.outputs ?? [])].find(
+		(item) => item.id === portId,
+	);
 	return port?.type ?? 'any';
 };
 
@@ -97,11 +99,8 @@ const Canvas = () => {
 		[issuesByNode, state.nodes, state.run.currentNodeId, state.ui.selectedNodeId],
 	);
 
-	const [nodes, setNodes] = useState<TCanvasNode[]>(storeNodes);
-
-	useEffect(() => {
-		if (!isDraggingExistingNode) setNodes(storeNodes);
-	}, [isDraggingExistingNode, storeNodes]);
+	const [dragNodes, setDragNodes] = useState<TCanvasNode[]>(storeNodes);
+	const nodes = isDraggingExistingNode ? dragNodes : storeNodes;
 
 	const edges = useMemo(
 		() =>
@@ -118,7 +117,8 @@ const Canvas = () => {
 					sourceType !== 'any' && targetType !== 'any' && sourceType !== targetType;
 				const isActive =
 					state.run.status === 'running' &&
-					(edge.source === state.run.currentNodeId || edge.target === state.run.currentNodeId);
+					(edge.source === state.run.currentNodeId ||
+						edge.target === state.run.currentNodeId);
 				return {
 					...edge,
 					type: 'workflow' as const,
@@ -151,7 +151,11 @@ const Canvas = () => {
 
 	const isValidConnection: IsValidConnection = useCallback(
 		(connection) => {
-			if (!connection.source || !connection.target || connection.source === connection.target) {
+			if (
+				!connection.source ||
+				!connection.target ||
+				connection.source === connection.target
+			) {
 				return false;
 			}
 			const sourceType = getPortType(
@@ -169,7 +173,7 @@ const Canvas = () => {
 
 	const onNodesChange = useCallback(
 		(changes: NodeChange<TCanvasNode>[]) => {
-			setNodes((currentNodes) => applyNodeChanges(changes, currentNodes));
+			setDragNodes((currentNodes) => applyNodeChanges(changes, currentNodes));
 			changes.forEach((change) => {
 				if (change.type === 'select' && change.selected) {
 					dispatch({ type: 'SELECT_NODE', id: change.id, openInspector: false });
@@ -216,6 +220,7 @@ const Canvas = () => {
 				}}
 				onNodeDragStop={(_, node) => {
 					setIsDraggingExistingNode(false);
+					didDragNodeRef.current = false;
 					dispatch({ type: 'MOVE_NODE', id: node.id, position: node.position });
 				}}
 				onPaneClick={() => dispatch({ type: 'SELECT_NODE', id: null })}

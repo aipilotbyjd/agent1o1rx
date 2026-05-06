@@ -190,10 +190,10 @@ export const workflowEditorReducer = (
 			};
 		}
 		case 'MOVE_NODE': {
+			const next = withHistory(state);
 			return {
-				...state,
-				workflow: { ...state.workflow, savingState: 'dirty', updatedAt: Date.now() },
-				nodes: state.nodes.map((node) =>
+				...next,
+				nodes: next.nodes.map((node) =>
 					node.id === action.id ? { ...node, position: action.position } : node,
 				),
 			};
@@ -268,7 +268,11 @@ export const workflowEditorReducer = (
 		case 'ADD_EDGE': {
 			if (action.source === action.target) return state;
 			const exists = state.edges.some(
-				(edge) => edge.source === action.source && edge.target === action.target,
+				(edge) =>
+					edge.source === action.source &&
+					edge.target === action.target &&
+					edge.sourceHandle === action.sourceHandle &&
+					edge.targetHandle === action.targetHandle,
 			);
 			if (exists) return state;
 			const next = withHistory(state);
