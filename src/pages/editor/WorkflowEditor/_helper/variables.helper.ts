@@ -1,4 +1,4 @@
-import { NODE_CATALOG_MAP } from './nodeCatalog.constants';
+import { getNodeDefinition } from './nodeCatalog.constants';
 import type { TCanvasEdge, TCanvasNode } from '../_types/canvas.type';
 
 export type TWorkflowVariable = {
@@ -33,7 +33,7 @@ export const collectUpstreamVariables = (
 	visit(nodeId);
 
 	return upstream.flatMap((node) => {
-		const def = NODE_CATALOG_MAP[node.data.defKey];
+		const def = getNodeDefinition(node.data.defKey, node.data.definition);
 		return (def?.outputs ?? []).map((output) => ({
 			nodeId: node.id,
 			nodeLabel: node.data.label,

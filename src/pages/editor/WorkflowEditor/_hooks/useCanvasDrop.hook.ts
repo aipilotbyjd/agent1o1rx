@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useWorkflowEditor } from '../_context/WorkflowEditorProvider.context';
 import type { TCanvasPosition } from '../_types/canvas.type';
+import type { TNodeDefinition } from '../_types/node.type';
 
 export const useCanvasDrop = (
 	getCanvasPosition?: (event: React.DragEvent<HTMLElement>) => TCanvasPosition,
@@ -35,10 +36,20 @@ export const useCanvasDrop = (
 			setIsDraggingNode(false);
 			const defKey = event.dataTransfer.getData('application/x-node-def');
 			if (!defKey) return;
+			const rawDefinition = event.dataTransfer.getData('application/x-node-definition');
+			let definition: TNodeDefinition | undefined;
+			if (rawDefinition) {
+				try {
+					definition = JSON.parse(rawDefinition) as TNodeDefinition;
+				} catch {
+					definition = undefined;
+				}
+			}
 			dispatch({
 				type: 'ADD_NODE',
 				defKey,
 				position: getCanvasPosition?.(event) ?? getFallbackCanvasPosition(event),
+				definition,
 			});
 		},
 		[dispatch, getCanvasPosition, getFallbackCanvasPosition],

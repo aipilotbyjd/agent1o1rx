@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { HISTORY_LIMIT } from '../_helper/builder.constants';
-import { NODE_CATALOG_MAP } from '../_helper/nodeCatalog.constants';
+import { getNodeDefinition } from '../_helper/nodeCatalog.constants';
 import { autoLayout } from '../_helper/layout.helper';
 import type {
 	TCanvasEdge,
@@ -8,7 +8,7 @@ import type {
 	TCanvasPosition,
 	TCanvasSnapshot,
 } from '../_types/canvas.type';
-import type { TCanvasNodeData, TNodeRunStatus } from '../_types/node.type';
+import type { TCanvasNodeData, TNodeDefinition, TNodeRunStatus } from '../_types/node.type';
 import type { TRunLog } from '../_types/run.type';
 import type {
 	TExportedWorkflow,
@@ -17,7 +17,12 @@ import type {
 } from '../_types/workflow-editor.type';
 
 export type TWorkflowEditorAction =
-	| { type: 'ADD_NODE'; defKey: string; position: TCanvasPosition }
+	| {
+			type: 'ADD_NODE';
+			defKey: string;
+			position: TCanvasPosition;
+			definition?: TNodeDefinition;
+	  }
 	| { type: 'ADD_TEMPLATE'; defKeys: string[]; name: string }
 	| { type: 'MOVE_NODE'; id: string; position: TCanvasPosition }
 	| { type: 'SELECT_NODE'; id: string | null; openInspector?: boolean }
@@ -119,8 +124,12 @@ const withHistory = (state: TWorkflowEditorState): TWorkflowEditorState => ({
 	},
 });
 
-const makeNode = (defKey: string, position: TCanvasPosition): TCanvasNode | null => {
-	const def = NODE_CATALOG_MAP[defKey];
+const makeNode = (
+	defKey: string,
+	position: TCanvasPosition,
+	runtimeDefinition?: TNodeDefinition,
+): TCanvasNode | null => {
+	const def = getNodeDefinition(defKey, runtimeDefinition);
 	if (!def) return null;
 	const values: Record<string, unknown> = {};
 	def.fields.forEach((field) => {
@@ -129,6 +138,7 @@ const makeNode = (defKey: string, position: TCanvasPosition): TCanvasNode | null
 	const data: TCanvasNodeData = {
 		defKey,
 		label: def.label,
+		definition: runtimeDefinition,
 		values,
 		status: 'idle',
 	};
@@ -154,7 +164,7 @@ export const workflowEditorReducer = (
 ): TWorkflowEditorState => {
 	switch (action.type) {
 		case 'ADD_NODE': {
-			const node = makeNode(action.defKey, action.position);
+			const node = makeNode(action.defKey, action.position, action.definition);
 			if (!node) return state;
 			const next = withHistory(state);
 			return {
@@ -170,8 +180,14 @@ export const workflowEditorReducer = (
 				.filter(Boolean) as TCanvasNode[];
 			const edges: TCanvasEdge[] = [];
 			for (let index = 0; index < nodes.length - 1; index += 1) {
-				const sourceDef = NODE_CATALOG_MAP[nodes[index].data.defKey];
-				const targetDef = NODE_CATALOG_MAP[nodes[index + 1].data.defKey];
+				const sourceDef = getNodeDefinition(
+					nodes[index].data.defKey,
+					nodes[index].data.definition,
+				);
+				const targetDef = getNodeDefinition(
+					nodes[index + 1].data.defKey,
+					nodes[index + 1].data.definition,
+				);
 				if (!sourceDef?.outputs[0] || !targetDef?.inputs[0]) continue;
 				edges.push({
 					id: createId('edge'),

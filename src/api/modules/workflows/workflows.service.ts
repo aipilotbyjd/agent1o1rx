@@ -6,7 +6,7 @@ import type {
 	IWorkflowFilters,
 	TCreateWorkflowDto,
 	TUpdateWorkflowDto,
-	IWorkflowExecutionResult,
+	IExecuteWorkflowDto,
 	IWorkflowExport,
 	IWorkflowImport,
 	IDuplicateWorkflowDto,
@@ -33,14 +33,10 @@ export const WorkflowService = {
 
 	remove: (ws: string, id: string) => axiosClient.delete(E.delete(ws, id)).then(() => undefined),
 
-	execute: (
-		ws: string,
-		id: string,
-		body?: { input_data?: Record<string, unknown>; test_mode?: boolean },
-	) =>
+	execute: (ws: string, id: string, body?: IExecuteWorkflowDto) =>
 		axiosClient
-			.post<TApiResponse<IWorkflowExecutionResult>>(E.execute(ws, id), body)
-			.then(unwrap<IWorkflowExecutionResult>),
+			.post<TApiResponse<TExecution>>(E.execute(ws, id), body)
+			.then(unwrap<TExecution>),
 
 	activate: (ws: string, id: string) =>
 		axiosClient.post<TApiResponse<IWorkflow>>(E.activate(ws, id)).then(unwrap<IWorkflow>),

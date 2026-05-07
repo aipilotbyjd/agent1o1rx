@@ -12,10 +12,14 @@ import StatusBar from '../_partial/shell/StatusBar.partial';
 import Topbar from '../_partial/shell/Topbar.partial';
 import { useAutosave } from '../_hooks/useAutosave.hook';
 import { useEditorHotkeys } from '../_hooks/useEditorHotkeys.hook';
+import { useWorkflowApiLoader } from '../_hooks/useWorkflowApiLoader.hook';
+import { useWorkflowRouteParams } from '../_hooks/useWorkflowRouteParams.hook';
 import { useWorkflowEditor } from '../_context/WorkflowEditorProvider.context';
 
 const BuildPage = () => {
 	const { state } = useWorkflowEditor();
+	const { workspaceId, workflowId } = useWorkflowRouteParams();
+	const apiState = useWorkflowApiLoader(workspaceId, workflowId);
 	const [leftPanelWidth, setLeftPanelWidth] = useState(320);
 	const [aiPanelWidth, setAiPanelWidth] = useState(400);
 	const [rightPanelWidth, setRightPanelWidth] = useState(420);
@@ -23,6 +27,22 @@ const BuildPage = () => {
 
 	useAutosave();
 	useEditorHotkeys();
+
+	if (apiState.isLoading) {
+		return (
+			<div className='flex h-full items-center justify-center bg-white text-sm font-bold text-zinc-500 dark:bg-zinc-950 dark:text-zinc-400'>
+				Loading workflow...
+			</div>
+		);
+	}
+
+	if (apiState.isError) {
+		return (
+			<div className='flex h-full items-center justify-center bg-white text-sm font-bold text-rose-500 dark:bg-zinc-950'>
+				Unable to load workflow.
+			</div>
+		);
+	}
 
 	return (
 		<div className='flex h-full min-h-0'>

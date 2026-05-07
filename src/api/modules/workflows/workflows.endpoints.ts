@@ -15,9 +15,11 @@ export const WorkflowEndpoints = {
 
 export const WorkflowEditorEndpoints = {
 	versions: (ws: string, id: string) => `/workspaces/${ws}/workflows/${id}/versions`,
-	version: (ws: string, id: string, version: number) =>
+	version: (ws: string, id: string, version: string) =>
 		`/workspaces/${ws}/workflows/${id}/versions/${version}`,
-	rollback: (ws: string, id: string, version: number) =>
+	publish: (ws: string, id: string, version: string) =>
+		`/workspaces/${ws}/workflows/${id}/versions/${version}/publish`,
+	rollback: (ws: string, id: string, version: string) =>
 		`/workspaces/${ws}/workflows/${id}/versions/${version}/rollback`,
 	compareVersions: (ws: string, id: string) => `/workspaces/${ws}/workflows/${id}/versions/diff`,
 	validate: (ws: string) => `/workspaces/${ws}/workflows/validate`,

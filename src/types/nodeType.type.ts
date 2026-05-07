@@ -55,32 +55,64 @@ export interface INodeSchemaField {
 
 // Node schema from backend
 export interface INodeSchema {
+	type?: string;
+	properties?: Record<string, INodeSchemaProperty>;
+	required?: string[];
 	inputs?: INodeSchemaField[];
 	outputs?: INodeSchemaField[];
 }
 
+export interface INodeSchemaProperty {
+	type?: string;
+	label?: string;
+	description?: string;
+	default?: unknown;
+	enum?: string[];
+	items?: INodeSchemaProperty;
+	properties?: Record<string, INodeSchemaProperty>;
+}
+
 // Node type definition from API
 export interface INodeType {
+	id?: string;
 	type: string;
 	name: string;
 	description: string;
-	category: TNodeCategory;
-	version: string;
+	category?: INodeCategory | TNodeCategory;
+	version?: string | number;
 	icon?: string;
 	color?: string;
+	node_kind?: string;
 	tags?: string[];
-	inputs: INodeIO[];
-	outputs: INodeIO[];
+	inputs?: INodeIO[];
+	outputs?: INodeIO[];
 	parameters?: INodeParameter[];
 	credentials?: string[];
 	schema?: INodeSchema;
+	config_schema?: INodeSchema;
+	input_schema?: INodeSchema;
+	output_schema?: INodeSchema;
+	credential_type?: string | null;
+	is_active?: boolean;
+	is_premium?: boolean;
+	docs_url?: string | null;
 }
 
 // Node category from API
 export interface INodeCategory {
-	id: TNodeCategory;
+	id: string;
 	name: string;
+	slug: string;
 	description: string;
+	icon: string;
+	color: string;
+	sort_order: number;
+	nodes_count?: number;
+	nodes?: INodeType[];
+}
+
+export interface INodeCategoryFilters {
+	include_nodes?: boolean;
 }
 
 // Filters for node types list

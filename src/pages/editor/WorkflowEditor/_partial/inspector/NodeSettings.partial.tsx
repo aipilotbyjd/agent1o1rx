@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { NODE_CATALOG_MAP } from '../../_helper/nodeCatalog.constants';
+import { getNodeDefinition } from '../../_helper/nodeCatalog.constants';
 import { collectUpstreamVariables } from '../../_helper/variables.helper';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import type { TNodeField } from '../../_types/node.type';
@@ -159,7 +159,7 @@ const FieldInput = ({
 const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 	const { state, dispatch } = useWorkflowEditor();
 	const node = state.nodes.find((item) => item.id === nodeId);
-	const def = node ? NODE_CATALOG_MAP[node.data.defKey] : null;
+	const def = node ? getNodeDefinition(node.data.defKey, node.data.definition) : null;
 	const variables = useMemo(
 		() => (node ? collectUpstreamVariables(node.id, state.nodes, state.edges) : []),
 		[node, state.edges, state.nodes],

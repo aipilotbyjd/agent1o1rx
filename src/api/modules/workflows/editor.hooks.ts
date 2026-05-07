@@ -6,6 +6,7 @@ import type {
 	ITestNodeDto,
 	ICloneWorkflowDto,
 	ISetPinnedDataDto,
+	TStoreWorkflowVersionDto,
 } from '@/types/workflow.type';
 import { WorkflowEditorService } from './editor.service';
 import { workflowKeys } from './workflows.keys';
@@ -21,7 +22,7 @@ export const useWorkflowVersions = (ws: string, id: string) =>
 export const useRollbackWorkflowVersion = (ws: string) => {
 	const qc = useQueryClient();
 	return useMutation({
-		mutationFn: ({ id, version }: { id: string; version: number }) =>
+		mutationFn: ({ id, version }: { id: string; version: string }) =>
 			WorkflowEditorService.rollbackVersion(ws, id, version),
 		onSuccess: (_data, { id }) => {
 			qc.invalidateQueries({ queryKey: workflowKeys.detail(ws, id) });
@@ -29,6 +30,34 @@ export const useRollbackWorkflowVersion = (ws: string) => {
 			notify.success('Rolled back to previous version');
 		},
 		onError: notify.fromError('Failed to rollback'),
+	});
+};
+
+export const useCreateWorkflowVersion = (ws: string) => {
+	const qc = useQueryClient();
+	return useMutation({
+		mutationFn: ({ id, body }: { id: string; body: TStoreWorkflowVersionDto }) =>
+			WorkflowEditorService.createVersion(ws, id, body),
+		onSuccess: (version, { id }) => {
+			qc.invalidateQueries({ queryKey: workflowKeys.detail(ws, id) });
+			qc.invalidateQueries({ queryKey: workflowKeys.versions(ws, id) });
+			notify.success(`Saved version ${version.version_number}`);
+		},
+		onError: notify.fromError('Failed to save workflow version'),
+	});
+};
+
+export const usePublishWorkflowVersion = (ws: string) => {
+	const qc = useQueryClient();
+	return useMutation({
+		mutationFn: ({ id, version }: { id: string; version: string }) =>
+			WorkflowEditorService.publishVersion(ws, id, version),
+		onSuccess: (_version, { id }) => {
+			qc.invalidateQueries({ queryKey: workflowKeys.detail(ws, id) });
+			qc.invalidateQueries({ queryKey: workflowKeys.versions(ws, id) });
+			notify.success('Workflow version published');
+		},
+		onError: notify.fromError('Failed to publish workflow version'),
 	});
 };
 

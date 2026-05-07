@@ -10,7 +10,13 @@ export type TNodeCategory =
 	| 'loop'
 	| 'integration'
 	| 'output'
-	| 'note';
+	| 'note'
+	| 'flow-control'
+	| 'communication'
+	| 'http-apis'
+	| 'utility'
+	| 'storage'
+	| 'debug';
 
 export type TNodePort = {
 	id: string;
@@ -63,6 +69,7 @@ export type TNodeRunStatus = 'idle' | 'queued' | 'running' | 'success' | 'error'
 export type TCanvasNodeData = {
 	defKey: string;
 	label: string;
+	definition?: TNodeDefinition;
 	values: Record<string, unknown>;
 	status?: TNodeRunStatus;
 	durationMs?: number;

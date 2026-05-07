@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NODE_CATALOG_MAP } from '../../_helper/nodeCatalog.constants';
+import { getNodeDefinition } from '../../_helper/nodeCatalog.constants';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import NodeDataPreview from './NodeDataPreview.partial';
 import NodeDocs from './NodeDocs.partial';
@@ -28,7 +28,7 @@ const getStatusStyles = (status: TNodeRunStatus) => {
 const Inspector = () => {
 	const { state, dispatch } = useWorkflowEditor();
 	const selected = state.nodes.find((node) => node.id === state.ui.selectedNodeId);
-	const def = selected ? NODE_CATALOG_MAP[selected.data.defKey] : null;
+	const def = selected ? getNodeDefinition(selected.data.defKey, selected.data.definition) : null;
 	const isOpen = state.ui.rightPanelOpen && Boolean(selected && def);
 	const [activeTab, setActiveTab] = useState<TabKey>('settings');
 

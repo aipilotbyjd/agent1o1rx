@@ -10,7 +10,7 @@ const NodeCategorySection = ({
 	label: string;
 	color: string;
 	nodes: TNodeDefinition[];
-	onAdd: (defKey: string) => void;
+	onAdd: (node: TNodeDefinition) => void;
 }) => {
 	if (!nodes.length) return null;
 	const hue = HUE_TO_CLASSES[color] ?? HUE_TO_CLASSES.zinc;
@@ -34,9 +34,13 @@ const NodeCategorySection = ({
 						draggable
 						onDragStart={(event) => {
 							event.dataTransfer.setData('application/x-node-def', node.key);
+							event.dataTransfer.setData(
+								'application/x-node-definition',
+								JSON.stringify(node),
+							);
 							event.dataTransfer.effectAllowed = 'move';
 						}}
-						onClick={() => onAdd(node.key)}
+						onClick={() => onAdd(node)}
 						className='group flex w-full cursor-grab items-center gap-2 rounded-lg border border-transparent p-2 text-left transition hover:border-zinc-300 hover:bg-zinc-100 active:cursor-grabbing dark:hover:border-zinc-700 dark:hover:bg-zinc-800'>
 						<span
 							className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md border text-[10px] font-black ${hue.bg} ${hue.text} ${hue.border} ${hue.darkBg} ${hue.darkText} ${hue.darkBorder}`}>

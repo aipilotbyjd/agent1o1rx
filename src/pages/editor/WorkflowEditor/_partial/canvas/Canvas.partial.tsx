@@ -3,7 +3,6 @@ import {
 	Controls,
 	MiniMap,
 	ReactFlow,
-	applyNodeChanges,
 	useReactFlow,
 	type Connection,
 	type EdgeTypes,
@@ -25,7 +24,7 @@ import ClickEdge from './ClickEdge.partial';
 import useDarkMode from '@/hooks/useDarkMode';
 import type { TCanvasNode } from '../../_types/canvas.type';
 import { validateWorkflow } from '../../_helper/validation.helper';
-import { NODE_CATALOG_MAP } from '../../_helper/nodeCatalog.constants';
+import { getNodeDefinition } from '../../_helper/nodeCatalog.constants';
 import { PORT_TYPE_COLOR } from '../../_helper/builder.constants';
 import type { TPortType } from '../../_types/node.type';
 
@@ -41,7 +40,7 @@ const edgeTypes: EdgeTypes = {
 };
 
 const getPortType = (node: TCanvasNode | undefined, portId?: string | null): TPortType => {
-	const def = node ? NODE_CATALOG_MAP[node.data.defKey] : undefined;
+	const def = node ? getNodeDefinition(node.data.defKey, node.data.definition) : undefined;
 	const port = [...(def?.inputs ?? []), ...(def?.outputs ?? [])].find(
 		(item) => item.id === portId,
 	);
@@ -104,13 +103,6 @@ const Canvas = () => {
 
 	// Track position changes during drag to apply to storeNodes
 	const dragPositionsRef = useRef<Map<string, { x: number; y: number }>>(new Map());
-
-	// Get the current positions map from state.nodes for quick lookup
-	const nodePositionsMap = useMemo(() => {
-		const map = new Map<string, { x: number; y: number }>();
-		state.nodes.forEach((node) => map.set(node.id, node.position));
-		return map;
-	}, [state.nodes]);
 
 	const onNodesChange = useCallback(
 		(changes: NodeChange<TCanvasNode>[]) => {

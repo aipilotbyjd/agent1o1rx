@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
+import { useNodeCategories } from '@/api/modules/node-types';
 import { CATEGORY_META } from '../../_helper/builder.constants';
 import { NODE_CATALOG } from '../../_helper/nodeCatalog.constants';
+import { mapApiCategoriesToGroups } from '../../_helper/apiNodeCatalog.helper';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import NodeCategorySection from './NodeCategorySection.partial';
 import NodeLibrarySearch from './NodeLibrarySearch.partial';
@@ -9,16 +11,47 @@ import TemplateLibrary from './TemplateLibrary.partial';
 const NodeLibrary = () => {
 	const { state, dispatch } = useWorkflowEditor();
 	const [query, setQuery] = useState('');
+	const { data: apiCategories, isLoading, isError } = useNodeCategories({
+		include_nodes: true,
+	});
 
-	const filtered = useMemo(() => {
+	const apiGroups = useMemo(
+		() => (apiCategories?.length ? mapApiCategoriesToGroups(apiCategories) : []),
+		[apiCategories],
+	);
+
+	const staticGroups = useMemo(
+		() =>
+			Object.entries(CATEGORY_META)
+				.sort(([, a], [, b]) => a.order - b.order)
+				.map(([category, meta]) => ({
+					id: category,
+					label: meta.label,
+					color: meta.color,
+					order: meta.order,
+					nodes: NODE_CATALOG.filter((node) => node.category === category),
+				})),
+		[],
+	);
+
+	const groups = apiGroups.length ? apiGroups : staticGroups;
+	const totalNodes = groups.reduce((count, group) => count + group.nodes.length, 0);
+
+	const filteredGroups = useMemo(() => {
 		const needle = query.trim().toLowerCase();
-		if (!needle) return NODE_CATALOG;
-		return NODE_CATALOG.filter((node) =>
-			[node.label, node.description, node.category, node.key].some((value) =>
-				value.toLowerCase().includes(needle),
-			),
-		);
-	}, [query]);
+		if (!needle) return groups;
+
+		return groups
+			.map((group) => ({
+				...group,
+				nodes: group.nodes.filter((node) =>
+					[node.label, node.description, node.category, node.key].some((value) =>
+						value.toLowerCase().includes(needle),
+					),
+				),
+			}))
+			.filter((group) => group.nodes.length);
+	}, [groups, query]);
 
 	if (!state.ui.leftPanelOpen) return null;
 
@@ -30,7 +63,7 @@ const NodeLibrary = () => {
 						Node Library
 					</div>
 					<div className='text-xs text-zinc-500'>
-						{NODE_CATALOG.length} building blocks
+						{isLoading ? 'Loading nodes...' : `${totalNodes} building blocks`}
 					</div>
 				</div>
 				<button
@@ -41,20 +74,28 @@ const NodeLibrary = () => {
 				</button>
 			</div>
 			<NodeLibrarySearch value={query} onChange={setQuery} />
+			{isError && (
+				<div className='border-b border-amber-200 bg-amber-50 px-4 py-2 text-xs font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-300'>
+					Using local node catalog
+				</div>
+			)}
 			<div className='min-h-0 flex-1 overflow-y-auto'>
-				{Object.entries(CATEGORY_META)
-					.sort(([, a], [, b]) => a.order - b.order)
-					.map(([category, meta]) => (
-						<NodeCategorySection
-							key={category}
-							label={meta.label}
-							color={meta.color}
-							nodes={filtered.filter((node) => node.category === category)}
-							onAdd={(defKey) =>
-								dispatch({ type: 'ADD_NODE', defKey, position: { x: 120, y: 120 } })
-							}
-						/>
-					))}
+				{filteredGroups.map((group) => (
+					<NodeCategorySection
+						key={group.id}
+						label={group.label}
+						color={group.color}
+						nodes={group.nodes}
+						onAdd={(node) =>
+							dispatch({
+								type: 'ADD_NODE',
+								defKey: node.key,
+								definition: node,
+								position: { x: 120, y: 120 },
+							})
+						}
+					/>
+				))}
 			</div>
 			<TemplateLibrary />
 		</aside>

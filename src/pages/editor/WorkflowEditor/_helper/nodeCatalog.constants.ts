@@ -317,3 +317,8 @@ export const NODE_CATALOG: TNodeDefinition[] = [
 export const NODE_CATALOG_MAP = Object.fromEntries(
 	NODE_CATALOG.map((node) => [node.key, node]),
 ) as Record<string, TNodeDefinition>;
+
+export const getNodeDefinition = (
+	defKey: string,
+	runtimeDefinition?: TNodeDefinition,
+): TNodeDefinition | undefined => runtimeDefinition ?? NODE_CATALOG_MAP[defKey];

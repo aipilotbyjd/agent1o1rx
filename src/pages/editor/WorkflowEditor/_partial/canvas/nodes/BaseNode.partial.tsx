@@ -1,5 +1,5 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react';
-import { NODE_CATALOG_MAP } from '../../../_helper/nodeCatalog.constants';
+import { getNodeDefinition } from '../../../_helper/nodeCatalog.constants';
 import { HUE_TO_CLASSES, PORT_TYPE_COLOR } from '../../../_helper/builder.constants';
 import type { TCanvasNode } from '../../../_types/canvas.type';
 import type { TNodePort } from '../../../_types/node.type';
@@ -38,7 +38,7 @@ const PortHandles = ({
 );
 
 const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
-	const def = NODE_CATALOG_MAP[data.defKey];
+	const def = getNodeDefinition(data.defKey, data.definition);
 	const hue = HUE_TO_CLASSES[def?.color ?? 'zinc'] ?? HUE_TO_CLASSES.zinc;
 	const status = data.status ?? 'idle';
 	const inputs = def?.inputs ?? [];

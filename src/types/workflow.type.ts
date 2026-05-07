@@ -52,14 +52,17 @@ export interface IWorkflow {
 	id: string;
 	name: string;
 	description?: string | null;
-	status: TWorkflowStatus;
-	version: number;
-	tags: string[];
+	status?: TWorkflowStatus;
+	version?: number;
+	tags?: string[];
 	color?: string | null;
 	icon?: string | null;
 	category?: string | null;
-	is_favorite: boolean;
+	is_favorite?: boolean;
 	folder_id?: string | null;
+	is_active?: boolean;
+	is_locked?: boolean;
+	current_version_id?: string | null;
 	execution_count: number;
 	last_executed_at: number | null;
 	nodes?: IWorkflowNode[];
@@ -122,6 +125,7 @@ export type TUpdateWorkflowDto = {
 
 // Execute workflow request
 export interface IExecuteWorkflowDto {
+	trigger_data?: Record<string, unknown>;
 	input_data?: Record<string, unknown>;
 	test_mode?: boolean;
 }
@@ -159,14 +163,30 @@ export interface IMoveWorkflowsDto {
 export interface IWorkflowVersion {
 	id: string;
 	workflow_id: string;
-	version: number;
-	nodes: IWorkflowNode[];
-	connections: IWorkflowConnection[];
-	settings?: IWorkflowSettings;
-	created_by: string;
-	change_message?: string;
-	created_at: number;
+	version?: number;
+	version_number: number;
+	name?: string | null;
+	description?: string | null;
+	nodes: unknown[];
+	edges: unknown[];
+	viewport?: Record<string, unknown> | null;
+	settings?: IWorkflowSettings | Record<string, unknown>;
+	change_summary?: string | null;
+	is_published: boolean;
+	published_at?: string | null;
+	created_by?: string;
+	created_at: number | string;
 }
+
+export type TStoreWorkflowVersionDto = {
+	name?: string;
+	description?: string;
+	nodes: unknown[];
+	edges: unknown[];
+	viewport?: Record<string, unknown>;
+	settings?: Record<string, unknown>;
+	change_summary?: string;
+};
 
 export interface IWorkflowVersionComparisonSummary {
 	nodesAdded: number;

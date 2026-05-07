@@ -1,9 +1,8 @@
 import { CATEGORY_META } from './builder.constants';
 import { NODE_CATALOG } from './nodeCatalog.constants';
-import type { TNodeCategory } from '../_types/node.type';
 
 export const NODE_GROUPS = Object.keys(CATEGORY_META).map((category) => ({
-	category: category as TNodeCategory,
-	meta: CATEGORY_META[category as TNodeCategory],
+	category: category as keyof typeof CATEGORY_META,
+	meta: CATEGORY_META[category as keyof typeof CATEGORY_META],
 	nodes: NODE_CATALOG.filter((node) => node.category === category),
 }));

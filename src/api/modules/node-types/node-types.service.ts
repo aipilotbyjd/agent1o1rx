@@ -1,7 +1,12 @@
 import { axiosClient } from '@/api/client';
 import { unwrap } from '@/api/core';
 import type { TApiResponse } from '@/api/core';
-import type { INodeType, INodeCategory, INodeTypeFilters } from '@/types/nodeType.type';
+import type {
+	INodeType,
+	INodeCategory,
+	INodeCategoryFilters,
+	INodeTypeFilters,
+} from '@/types/nodeType.type';
 import { NodeTypeEndpoints as E } from './node-types.endpoints';
 
 export const NodeTypeService = {
@@ -10,9 +15,9 @@ export const NodeTypeService = {
 			.get<TApiResponse<INodeType[]>>(E.list, { params: filters, signal })
 			.then(unwrap<INodeType[]>),
 
-	categories: (signal?: AbortSignal) =>
+	categories: (filters?: INodeCategoryFilters, signal?: AbortSignal) =>
 		axiosClient
-			.get<TApiResponse<INodeCategory[]>>(E.categories, { signal })
+			.get<TApiResponse<INodeCategory[]>>(E.categories, { params: filters, signal })
 			.then(unwrap<INodeCategory[]>),
 
 	detail: (nodeType: string, signal?: AbortSignal) =>

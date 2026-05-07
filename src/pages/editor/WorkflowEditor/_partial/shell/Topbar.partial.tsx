@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
+import { useCreateWorkflowVersion, usePublishWorkflowVersion } from '@/api/modules/workflows';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
+import { buildVersionPayload } from '../../_helper/workflowApiTransform.helper';
 import { useRunWorkflow } from '../../_hooks/useRunWorkflow.hook';
 import DarkModeSwitcherPart from '@/parts/DarkModeSwitcher.part';
 import Icon from '@/components/icon/Icon';
@@ -37,7 +39,48 @@ const TopbarIconButton = ({
 const Topbar = () => {
 	const { state, dispatch } = useWorkflowEditor();
 	const { runWorkflow, stopRun } = useRunWorkflow();
+	const saveVersion = useCreateWorkflowVersion(state.workflow.workspaceId ?? '');
+	const publishVersion = usePublishWorkflowVersion(state.workflow.workspaceId ?? '');
 	const isRunning = state.run.status === 'running';
+	const canUseWorkflowApi = Boolean(state.workflow.workspaceId && state.workflow.apiId);
+	const canPublish = canUseWorkflowApi && Boolean(state.workflow.currentVersionId);
+
+	const handleSave = () => {
+		if (!state.workflow.workspaceId || !state.workflow.apiId) {
+			dispatch({ type: 'SET_SAVE_STATE', savingState: 'dirty' });
+			return;
+		}
+
+		dispatch({ type: 'SET_SAVE_STATE', savingState: 'saving' });
+		saveVersion.mutate(
+			{
+				id: state.workflow.apiId,
+				body: buildVersionPayload(state),
+			},
+			{
+				onSuccess: (version) => {
+					dispatch({
+						type: 'SET_WORKFLOW_META',
+						patch: {
+							currentVersionId: version.id,
+							currentVersionNumber: version.version_number,
+							savingState: 'saved',
+						},
+					});
+				},
+				onError: () => dispatch({ type: 'SET_SAVE_STATE', savingState: 'error' }),
+			},
+		);
+	};
+
+	const handlePublish = () => {
+		if (!state.workflow.apiId || !state.workflow.currentVersionId) return;
+
+		publishVersion.mutate({
+			id: state.workflow.apiId,
+			version: state.workflow.currentVersionId,
+		});
+	};
 
 	return (
 		<header className='flex h-14 shrink-0 items-center gap-2 border-b border-zinc-200 bg-white px-3 dark:border-zinc-800 dark:bg-zinc-950'>
@@ -84,6 +127,22 @@ const Topbar = () => {
 						icon='FitToScreen'
 						onClick={() => dispatch({ type: 'AUTO_LAYOUT' })}
 					/>
+					<button
+						type='button'
+						onClick={handleSave}
+						disabled={saveVersion.isPending}
+						className='flex h-9 items-center gap-2 rounded-lg border border-zinc-200 px-3 text-xs font-black text-zinc-700 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-900'>
+						<Icon icon='FloppyDisk' className='text-base' />
+						{saveVersion.isPending ? 'Saving' : 'Save'}
+					</button>
+					<button
+						type='button'
+						onClick={handlePublish}
+						disabled={!canPublish || publishVersion.isPending}
+						className='flex h-9 items-center gap-2 rounded-lg border border-zinc-200 px-3 text-xs font-black text-zinc-700 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-900'>
+						<Icon icon='Upload01' className='text-base' />
+						{publishVersion.isPending ? 'Publishing' : 'Publish'}
+					</button>
 					<button
 						type='button'
 						title={state.ui.aiPanelOpen ? 'Collapse AI builder' : 'Ask AI for help'}

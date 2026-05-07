@@ -15,6 +15,10 @@ const EditorPages = [
 				path: pages.editor.subPages.edit.to,
 				element: <WorkflowEditorPage />,
 			},
+			{
+				path: `${pages.editor.subPages.edit.to}/:workspaceId/:workflowId`,
+				element: <WorkflowEditorPage />,
+			},
 		],
 	},
 ];

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import type { INodeTypeFilters } from '@/types/nodeType.type';
+import type { INodeCategoryFilters, INodeTypeFilters } from '@/types/nodeType.type';
 import { NodeTypeService } from './node-types.service';
 import { nodeTypeKeys } from './node-types.keys';
 
@@ -9,10 +9,10 @@ export const useNodeTypes = (filters?: INodeTypeFilters) =>
 		queryFn: ({ signal }) => NodeTypeService.list(filters, signal),
 	});
 
-export const useNodeCategories = () =>
+export const useNodeCategories = (filters?: INodeCategoryFilters) =>
 	useQuery({
-		queryKey: nodeTypeKeys.categories(),
-		queryFn: ({ signal }) => NodeTypeService.categories(signal),
+		queryKey: nodeTypeKeys.categories(filters as unknown as Record<string, unknown>),
+		queryFn: ({ signal }) => NodeTypeService.categories(filters, signal),
 	});
 
 export const useNodeType = (nodeType: string) =>

@@ -13,6 +13,7 @@ import type {
 	IWorkflowConnection,
 	IWorkflowPinnedData,
 	ISetPinnedDataDto,
+	TStoreWorkflowVersionDto,
 } from '@/types/workflow.type';
 import { WorkflowEditorEndpoints as E } from './workflows.endpoints';
 
@@ -40,10 +41,20 @@ export const WorkflowEditorService = {
 			.get<TPaginatedResponse<IWorkflowVersion>>(E.versions(ws, workflowId), { signal })
 			.then((r) => r.data.data),
 
-	rollbackVersion: (ws: string, id: string, version: number) =>
+	createVersion: (ws: string, workflowId: string, body: TStoreWorkflowVersionDto) =>
 		axiosClient
-			.post<TApiResponse<IWorkflow>>(E.rollback(ws, id, version))
-			.then(unwrap<IWorkflow>),
+			.post<TApiResponse<IWorkflowVersion>>(E.versions(ws, workflowId), body)
+			.then(unwrap<IWorkflowVersion>),
+
+	publishVersion: (ws: string, id: string, version: string) =>
+		axiosClient
+			.post<TApiResponse<IWorkflowVersion>>(E.publish(ws, id, version))
+			.then(unwrap<IWorkflowVersion>),
+
+	rollbackVersion: (ws: string, id: string, version: string) =>
+		axiosClient
+			.post<TApiResponse<IWorkflowVersion>>(E.rollback(ws, id, version))
+			.then(unwrap<IWorkflowVersion>),
 
 	compareVersions: (ws: string, id: string, from: number, to: number, signal?: AbortSignal) =>
 		axiosClient

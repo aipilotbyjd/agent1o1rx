@@ -1,4 +1,4 @@
-import { NODE_CATALOG_MAP } from './nodeCatalog.constants';
+import { getNodeDefinition } from './nodeCatalog.constants';
 import type { TCanvasEdge, TCanvasNode } from '../_types/canvas.type';
 
 export type TValidationIssue = {
@@ -26,7 +26,7 @@ export const validateWorkflow = (
 	});
 
 	nodes.forEach((node) => {
-		const def = NODE_CATALOG_MAP[node.data.defKey];
+		const def = getNodeDefinition(node.data.defKey, node.data.definition);
 		if (!def) {
 			issues.push({
 				id: `node:${node.id}:definition`,
@@ -51,7 +51,11 @@ export const validateWorkflow = (
 			});
 	});
 
-	if (!nodes.some((node) => NODE_CATALOG_MAP[node.data.defKey]?.category === 'output')) {
+	if (
+		!nodes.some(
+			(node) => getNodeDefinition(node.data.defKey, node.data.definition)?.category === 'output',
+		)
+	) {
 		issues.push({
 			id: 'workflow:output',
 			message: 'Add an Output node so the workflow returns a result.',

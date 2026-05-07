@@ -1,4 +1,4 @@
-import { NODE_CATALOG_MAP } from './nodeCatalog.constants';
+import { getNodeDefinition } from './nodeCatalog.constants';
 import type { TCanvasEdge, TCanvasNode } from '../_types/canvas.type';
 
 export const getRunOrder = (nodes: TCanvasNode[], edges: TCanvasEdge[]): TCanvasNode[] => {
@@ -29,7 +29,7 @@ export const getRunOrder = (nodes: TCanvasNode[], edges: TCanvasEdge[]): TCanvas
 };
 
 export const createMockNodeOutput = (node: TCanvasNode): unknown => {
-	const def = NODE_CATALOG_MAP[node.data.defKey];
+	const def = getNodeDefinition(node.data.defKey, node.data.definition);
 	if (!def) return null;
 	if (def.category === 'output') return node.data.values.name ?? 'result';
 	if (def.category === 'logic') return { branch: 'true' };

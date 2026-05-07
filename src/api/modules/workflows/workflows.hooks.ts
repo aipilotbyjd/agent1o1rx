@@ -7,6 +7,7 @@ import type {
 	TUpdateWorkflowDto,
 	IDuplicateWorkflowDto,
 	IWorkflowImport,
+	IExecuteWorkflowDto,
 } from '@/types/workflow.type';
 import { WorkflowService } from './workflows.service';
 import { workflowKeys } from './workflows.keys';
@@ -78,7 +79,7 @@ export const useExecuteWorkflow = (ws: string) => {
 			body,
 		}: {
 			id: string;
-			body?: { input_data?: Record<string, unknown>; test_mode?: boolean };
+			body?: IExecuteWorkflowDto;
 		}) => WorkflowService.execute(ws, id, body),
 		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: workflowKeys.all(ws) });
