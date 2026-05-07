@@ -28,7 +28,7 @@ export type TimeLabelEdge = Edge<{ time: string; label: string }, 'timeLabel'>;
 
 // Component receives EdgeProps
 export default function TimeLabelEdge(props: EdgeProps<TimeLabelEdge>) {
-  // Edge implementation
+	// Edge implementation
 }
 ```
 
@@ -38,32 +38,32 @@ The `EdgeProps` type includes these key properties:
 
 ```typescript
 type EdgeProps<T extends Edge = Edge> = {
-  id: string;
-  type?: string;
-  source: string;
-  target: string;
-  sourceX: number;
-  sourceY: number;
-  targetX: number;
-  targetY: number;
-  sourcePosition: Position;
-  targetPosition: Position;
-  data?: T['data'];
-  selected?: boolean;
-  animated?: boolean;
-  style?: CSSProperties;
-  markerStart?: string;
-  markerEnd?: string;
-  sourceHandleId?: string | null;
-  targetHandleId?: string | null;
-  label?: ReactNode;
-  labelStyle?: CSSProperties;
-  labelShowBg?: boolean;
-  labelBgStyle?: CSSProperties;
-  labelBgPadding?: [number, number];
-  labelBgBorderRadius?: number;
-  interactionWidth?: number;
-  pathOptions?: any;
+	id: string;
+	type?: string;
+	source: string;
+	target: string;
+	sourceX: number;
+	sourceY: number;
+	targetX: number;
+	targetY: number;
+	sourcePosition: Position;
+	targetPosition: Position;
+	data?: T['data'];
+	selected?: boolean;
+	animated?: boolean;
+	style?: CSSProperties;
+	markerStart?: string;
+	markerEnd?: string;
+	sourceHandleId?: string | null;
+	targetHandleId?: string | null;
+	label?: ReactNode;
+	labelStyle?: CSSProperties;
+	labelShowBg?: boolean;
+	labelBgStyle?: CSSProperties;
+	labelBgPadding?: [number, number];
+	labelBgBorderRadius?: number;
+	interactionWidth?: number;
+	pathOptions?: any;
 };
 ```
 
@@ -111,10 +111,10 @@ Creates direct straight lines:
 import { getStraightPath } from '@xyflow/react';
 
 const [edgePath, labelX, labelY] = getStraightPath({
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
+	sourceX,
+	sourceY,
+	targetX,
+	targetY,
 });
 ```
 
@@ -126,14 +126,14 @@ Creates orthogonal paths with smooth corners:
 import { getSmoothStepPath } from '@xyflow/react';
 
 const [edgePath, labelX, labelY] = getSmoothStepPath({
-  sourceX,
-  sourceY,
-  sourcePosition,
-  targetX,
-  targetY,
-  targetPosition,
-  borderRadius: 8, // Optional: corner radius
-  offset: 20, // Optional: offset from node
+	sourceX,
+	sourceY,
+	sourcePosition,
+	targetX,
+	targetY,
+	targetPosition,
+	borderRadius: 8, // Optional: corner radius
+	offset: 20, // Optional: offset from node
 });
 ```
 
@@ -145,14 +145,14 @@ For orthogonal paths with sharp corners, use `getSmoothStepPath` with `borderRad
 import { getSmoothStepPath } from '@xyflow/react';
 
 const [edgePath, labelX, labelY] = getSmoothStepPath({
-  sourceX,
-  sourceY,
-  sourcePosition,
-  targetX,
-  targetY,
-  targetPosition,
-  borderRadius: 0, // Sharp corners (step edge)
-  offset: 20, // Optional: offset from node
+	sourceX,
+	sourceY,
+	sourcePosition,
+	targetX,
+	targetY,
+	targetPosition,
+	borderRadius: 0, // Sharp corners (step edge)
+	offset: 20, // Optional: offset from node
 });
 ```
 

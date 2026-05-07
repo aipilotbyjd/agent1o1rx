@@ -1,4 +1,9 @@
-import type { INodeCategory, INodeSchema, INodeSchemaProperty, INodeType } from '@/types/nodeType.type';
+import type {
+	INodeCategory,
+	INodeSchema,
+	INodeSchemaProperty,
+	INodeType,
+} from '@/types/nodeType.type';
 import type {
 	TFieldKind,
 	TNodeCategory,
@@ -64,9 +69,7 @@ const schemaTypeToFieldKind = (property: INodeSchemaProperty): TFieldKind => {
 };
 
 const humanize = (value: string) =>
-	value
-		.replace(/[_-]+/g, ' ')
-		.replace(/\b\w/g, (letter) => letter.toUpperCase());
+	value.replace(/[_-]+/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
 
 const schemaProperties = (schema?: INodeSchema) => schema?.properties ?? {};
 

@@ -36,7 +36,9 @@ const ClickEdge = ({
 						pointerEvents: 'all',
 					}}>
 					<span
-						title={data?.issue ? String(data.issue) : String(data?.label ?? 'Connection')}
+						title={
+							data?.issue ? String(data.issue) : String(data?.label ?? 'Connection')
+						}
 						className={[
 							'rounded-full border bg-white px-2 py-0.5 text-[10px] font-black shadow dark:bg-zinc-900',
 							data?.issue
@@ -44,7 +46,9 @@ const ClickEdge = ({
 								: 'border-zinc-200 text-zinc-500 dark:border-zinc-700 dark:text-zinc-300',
 							data?.isActive ? 'ring-2 ring-emerald-400/40' : '',
 						].join(' ')}
-						style={{ borderColor: data?.labelColor ? String(data.labelColor) : undefined }}>
+						style={{
+							borderColor: data?.labelColor ? String(data.labelColor) : undefined,
+						}}>
 						{data?.issue ? '!' : String(data?.label ?? 'flow')}
 					</span>
 					<button

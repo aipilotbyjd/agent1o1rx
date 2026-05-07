@@ -15,9 +15,13 @@ export const useRunWorkflow = () => {
 
 		if (state.workflow.workspaceId && state.workflow.apiId) {
 			try {
-				const execution = await WorkflowService.execute(state.workflow.workspaceId, state.workflow.apiId, {
-					trigger_data: {},
-				});
+				const execution = await WorkflowService.execute(
+					state.workflow.workspaceId,
+					state.workflow.apiId,
+					{
+						trigger_data: {},
+					},
+				);
 				dispatch({
 					type: 'APPEND_LOG',
 					log: {
@@ -31,7 +35,8 @@ export const useRunWorkflow = () => {
 					type: 'APPEND_LOG',
 					log: {
 						level: 'error',
-						message: error instanceof Error ? error.message : 'Failed to execute workflow',
+						message:
+							error instanceof Error ? error.message : 'Failed to execute workflow',
 					},
 				});
 				dispatch({ type: 'RUN_FINISH', status: 'error' });

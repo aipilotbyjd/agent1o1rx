@@ -147,14 +147,14 @@ Apply styles with `className` and `style` props on the node definition:
 
 ```typescript
 const nodes: Node[] = [
-  {
-    id: '1',
-    type: 'custom',
-    data: { label: 'Styled Node' },
-    position: { x: 250, y: 5 },
-    style: { border: '1px solid #777', padding: 10 },
-    className: 'custom-node',
-  },
+	{
+		id: '1',
+		type: 'custom',
+		data: { label: 'Styled Node' },
+		position: { x: 250, y: 5 },
+		style: { border: '1px solid #777', padding: 10 },
+		className: 'custom-node',
+	},
 ];
 ```
 

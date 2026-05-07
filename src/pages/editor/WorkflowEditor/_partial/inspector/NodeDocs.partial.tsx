@@ -11,8 +11,8 @@ const NodeDocs = ({ def }: { def: TNodeDefinition }) => (
 		{def.supportsLoopMode && (
 			<div className='mt-3 rounded-lg border border-indigo-200 bg-indigo-50 p-3 dark:border-indigo-800/50 dark:bg-indigo-950/30'>
 				<p className='text-sm leading-relaxed text-indigo-600 dark:text-indigo-300'>
-					<span className='font-semibold'>Loop Mode:</span> This node is designed for
-					list processing and can be wired after list-producing steps.
+					<span className='font-semibold'>Loop Mode:</span> This node is designed for list
+					processing and can be wired after list-producing steps.
 				</p>
 			</div>
 		)}

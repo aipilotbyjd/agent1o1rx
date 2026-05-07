@@ -96,8 +96,8 @@ const CommandPalette = () => {
 		},
 	].filter((command) =>
 		needle
-			? [command.label, command.description, command.category].some((value) =>
-					typeof value === 'string' && value.toLowerCase().includes(needle),
+			? [command.label, command.description, command.category].some(
+					(value) => typeof value === 'string' && value.toLowerCase().includes(needle),
 				)
 			: true,
 	);
@@ -141,7 +141,10 @@ const CommandPalette = () => {
 											type='button'
 											onClick={() => {
 												command.action();
-												dispatch({ type: 'SET_COMMAND_PALETTE', open: false });
+												dispatch({
+													type: 'SET_COMMAND_PALETTE',
+													open: false,
+												});
 											}}
 											disabled={command.disabled}
 											className='flex w-full items-center justify-between rounded-lg px-3 py-2 text-left hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-zinc-800'>
@@ -154,7 +157,7 @@ const CommandPalette = () => {
 												</span>
 											</div>
 											{command.shortcut && (
-												<span className='text-xs font-mono text-zinc-400 dark:text-zinc-500'>
+												<span className='font-mono text-xs text-zinc-400 dark:text-zinc-500'>
 													{command.shortcut}
 												</span>
 											)}
@@ -179,7 +182,10 @@ const CommandPalette = () => {
 											type='button'
 											onClick={() => {
 												command.action();
-												dispatch({ type: 'SET_COMMAND_PALETTE', open: false });
+												dispatch({
+													type: 'SET_COMMAND_PALETTE',
+													open: false,
+												});
 											}}
 											disabled={command.disabled}
 											className='flex w-full items-center justify-between rounded-lg px-3 py-2 text-left hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-zinc-800'>
@@ -192,7 +198,7 @@ const CommandPalette = () => {
 												</span>
 											</div>
 											{command.shortcut && (
-												<span className='text-xs font-mono text-zinc-400 dark:text-zinc-500'>
+												<span className='font-mono text-xs text-zinc-400 dark:text-zinc-500'>
 													{command.shortcut}
 												</span>
 											)}

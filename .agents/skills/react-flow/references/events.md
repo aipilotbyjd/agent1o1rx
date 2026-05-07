@@ -5,30 +5,30 @@ React Flow provides comprehensive event handling for nodes, edges, connections, 
 ## Table of Contents
 
 - [Node Events](#node-events)
-  - [Click Events](#click-events)
-  - [Drag Events](#drag-events)
-  - [Hover Events](#hover-events)
+    - [Click Events](#click-events)
+    - [Drag Events](#drag-events)
+    - [Hover Events](#hover-events)
 - [Edge Events](#edge-events)
-  - [Click Events](#click-events-1)
-  - [Hover Events](#hover-events-1)
-  - [Edge Update and Reconnect](#edge-update-and-reconnect)
+    - [Click Events](#click-events-1)
+    - [Hover Events](#hover-events-1)
+    - [Edge Update and Reconnect](#edge-update-and-reconnect)
 - [Connection Events](#connection-events)
-  - [Basic Connection](#basic-connection)
-  - [Connection Start and End](#connection-start-and-end)
-  - [Validate Connections](#validate-connections)
+    - [Basic Connection](#basic-connection)
+    - [Connection Start and End](#connection-start-and-end)
+    - [Validate Connections](#validate-connections)
 - [Selection Events](#selection-events)
-  - [useOnSelectionChange Hook](#useonselectionchange-hook)
-  - [Selection Drag](#selection-drag)
-  - [Selection Context Menu](#selection-context-menu)
+    - [useOnSelectionChange Hook](#useonselectionchange-hook)
+    - [Selection Drag](#selection-drag)
+    - [Selection Context Menu](#selection-context-menu)
 - [Viewport Events](#viewport-events)
-  - [useOnViewportChange Hook](#useonviewportchange-hook)
-  - [Move Events](#move-events)
+    - [useOnViewportChange Hook](#useonviewportchange-hook)
+    - [Move Events](#move-events)
 - [Pane Events](#pane-events)
-  - [Click Events](#click-events-2)
-  - [Mouse Events](#mouse-events)
+    - [Click Events](#click-events-2)
+    - [Mouse Events](#mouse-events)
 - [Init and Delete Events](#init-and-delete-events)
-  - [Initialization](#initialization)
-  - [Delete Events](#delete-events)
+    - [Initialization](#initialization)
+    - [Delete Events](#delete-events)
 - [Error Handling](#error-handling)
 
 ## Node Events
@@ -419,29 +419,29 @@ import { useOnViewportChange, Viewport } from '@xyflow/react';
 import { useCallback } from 'react';
 
 function ViewportLogger() {
-  const onStart = useCallback((viewport: Viewport) => {
-    console.log('Viewport change started:', viewport);
-  }, []);
+	const onStart = useCallback((viewport: Viewport) => {
+		console.log('Viewport change started:', viewport);
+	}, []);
 
-  const onChange = useCallback((viewport: Viewport) => {
-    console.log('Viewport:', {
-      x: viewport.x,
-      y: viewport.y,
-      zoom: viewport.zoom,
-    });
-  }, []);
+	const onChange = useCallback((viewport: Viewport) => {
+		console.log('Viewport:', {
+			x: viewport.x,
+			y: viewport.y,
+			zoom: viewport.zoom,
+		});
+	}, []);
 
-  const onEnd = useCallback((viewport: Viewport) => {
-    console.log('Viewport change ended:', viewport);
-  }, []);
+	const onEnd = useCallback((viewport: Viewport) => {
+		console.log('Viewport change ended:', viewport);
+	}, []);
 
-  useOnViewportChange({
-    onStart,
-    onChange,
-    onEnd,
-  });
+	useOnViewportChange({
+		onStart,
+		onChange,
+		onEnd,
+	});
 
-  return null;
+	return null;
 }
 ```
 

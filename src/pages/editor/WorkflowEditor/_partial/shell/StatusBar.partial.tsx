@@ -11,7 +11,9 @@ const StatusBar = () => {
 	return (
 		<footer className='flex h-8 shrink-0 items-center justify-between border-t border-zinc-200 bg-white px-3 text-xs dark:border-zinc-800 dark:bg-zinc-950'>
 			<div className='flex items-center gap-4'>
-				<span className='text-zinc-500 dark:text-zinc-400'>{state.workflow.savingState}</span>
+				<span className='text-zinc-500 dark:text-zinc-400'>
+					{state.workflow.savingState}
+				</span>
 				{errorCount > 0 && (
 					<span className='flex items-center gap-1 text-rose-600 dark:text-rose-400'>
 						<Icon icon='AlertCircle' className='text-xs' />

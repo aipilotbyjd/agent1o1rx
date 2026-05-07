@@ -359,25 +359,25 @@ import { useOnViewportChange, Viewport } from '@xyflow/react';
 import { useCallback } from 'react';
 
 function ViewportLogger() {
-  const onStart = useCallback((viewport: Viewport) => {
-    console.log('Viewport change started:', viewport);
-  }, []);
+	const onStart = useCallback((viewport: Viewport) => {
+		console.log('Viewport change started:', viewport);
+	}, []);
 
-  const onChange = useCallback((viewport: Viewport) => {
-    console.log('Viewport changing:', viewport);
-  }, []);
+	const onChange = useCallback((viewport: Viewport) => {
+		console.log('Viewport changing:', viewport);
+	}, []);
 
-  const onEnd = useCallback((viewport: Viewport) => {
-    console.log('Viewport change ended:', viewport);
-  }, []);
+	const onEnd = useCallback((viewport: Viewport) => {
+		console.log('Viewport change ended:', viewport);
+	}, []);
 
-  useOnViewportChange({
-    onStart,
-    onChange,
-    onEnd,
-  });
+	useOnViewportChange({
+		onStart,
+		onChange,
+		onEnd,
+	});
 
-  return null;
+	return null;
 }
 ```
 

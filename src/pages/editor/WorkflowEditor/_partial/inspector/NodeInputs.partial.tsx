@@ -21,7 +21,7 @@ const NodeInputs = ({ def }: { def: TNodeDefinition }) => (
 						<span className='font-medium'>{input.name}</span>
 						<span className='flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400'>
 							{input.required !== false && (
-								<span className='text-rose-500 font-medium' title='Required'>
+								<span className='font-medium text-rose-500' title='Required'>
 									*
 								</span>
 							)}

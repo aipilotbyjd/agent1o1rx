@@ -31,7 +31,7 @@ const PortHandles = ({
 					height: 10,
 					width: 10,
 				}}
-				className="transition-transform duration-150 group-hover:scale-125"
+				className='transition-transform duration-150 group-hover:scale-125'
 			/>
 		))}
 	</>
@@ -44,7 +44,8 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 	const inputs = def?.inputs ?? [];
 	const outputs = def?.outputs ?? [];
 	const validationIssues = (data.validationIssues ?? []) as TValidationIssue[];
-	const hasError = status === 'error' || validationIssues.some((issue) => issue.severity === 'error');
+	const hasError =
+		status === 'error' || validationIssues.some((issue) => issue.severity === 'error');
 	const hasWarning = validationIssues.length > 0;
 	const isActiveRunNode = Boolean(data.isActiveRunNode);
 
@@ -62,8 +63,12 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 			className={[
 				'group relative w-[230px] rounded-lg border p-3 text-left shadow-lg transition-all duration-200',
 				'bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-100',
-				selected ? 'border-emerald-400 ring-4 ring-emerald-400/25 shadow-xl' : `${hue.border} ${hue.darkBorder}`,
-				isActiveRunNode ? 'shadow-emerald-500/30 ring-4 ring-emerald-400/30 animate-pulse' : '',
+				selected
+					? 'border-emerald-400 shadow-xl ring-4 ring-emerald-400/25'
+					: `${hue.border} ${hue.darkBorder}`,
+				isActiveRunNode
+					? 'animate-pulse ring-4 shadow-emerald-500/30 ring-emerald-400/30'
+					: '',
 				hasError ? 'border-rose-400' : '',
 			].join(' ')}>
 			<PortHandles ports={inputs} type='target' position={Position.Left} />
@@ -97,7 +102,7 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 					{inputs.slice(0, 3).map((port) => (
 						<span
 							key={port.id}
-							className='h-2.5 w-2.5 rounded-full border border-zinc-800 dark:border-zinc-600 transition-transform duration-150 group-hover:scale-125'
+							className='h-2.5 w-2.5 rounded-full border border-zinc-800 transition-transform duration-150 group-hover:scale-125 dark:border-zinc-600'
 							style={{ backgroundColor: PORT_TYPE_COLOR[port.type] }}
 							title={`${port.name}: ${port.type}`}
 						/>
@@ -115,7 +120,7 @@ const BaseNode = ({ data, selected }: NodeProps<TCanvasNode>) => {
 					{outputs.slice(0, 3).map((port) => (
 						<span
 							key={port.id}
-							className='h-2.5 w-2.5 rounded-full border border-zinc-800 dark:border-zinc-600 transition-transform duration-150 group-hover:scale-125'
+							className='h-2.5 w-2.5 rounded-full border border-zinc-800 transition-transform duration-150 group-hover:scale-125 dark:border-zinc-600'
 							style={{ backgroundColor: PORT_TYPE_COLOR[port.type] }}
 							title={`${port.name}: ${port.type}`}
 						/>

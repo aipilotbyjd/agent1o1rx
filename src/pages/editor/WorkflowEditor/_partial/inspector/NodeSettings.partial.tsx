@@ -25,10 +25,7 @@ const FieldInput = ({
 				aria-checked={active}
 				onClick={() => onChange(!active)}
 				aria-label={field.label}
-				className={`
-					h-7 w-12 rounded-full border p-1 transition
-					${active ? 'border-emerald-400 bg-emerald-500' : 'border-zinc-300 bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800'}
-				`}>
+				className={`h-7 w-12 rounded-full border p-1 transition ${active ? 'border-emerald-400 bg-emerald-500' : 'border-zinc-300 bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800'} `}>
 				<span
 					className={`block h-4 w-4 rounded-full bg-white transition ${active ? 'translate-x-5' : ''}`}
 				/>
@@ -65,8 +62,7 @@ const FieldInput = ({
 					onChange(options.map((opt) => opt.value));
 				}}
 				aria-label={field.label}
-				className={`${inputClass} h-auto`}
-			>
+				className={`${inputClass} h-auto`}>
 				{field.options?.map((option) => (
 					<option key={option.value} value={option.value}>
 						{option.label}
@@ -102,9 +98,7 @@ const FieldInput = ({
 	}
 
 	if (field.kind === 'kv') {
-		const kvPairs = Array.isArray(value)
-			? value
-			: [{ key: '', value: '' }];
+		const kvPairs = Array.isArray(value) ? value : [{ key: '', value: '' }];
 		return (
 			<div className='space-y-2'>
 				{kvPairs.map((pair, index) => (
@@ -183,9 +177,12 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 					</span>
 					<span className='ml-1 text-emerald-600 dark:text-emerald-400'>required</span>
 				</div>
-				{requiredFields.length > 0 && validRequiredFields.length === requiredFields.length && (
-					<span className='text-xs font-bold text-emerald-600 dark:text-emerald-400'>✓ Complete</span>
-				)}
+				{requiredFields.length > 0 &&
+					validRequiredFields.length === requiredFields.length && (
+						<span className='text-xs font-bold text-emerald-600 dark:text-emerald-400'>
+							✓ Complete
+						</span>
+					)}
 			</div>
 
 			<div>
@@ -214,7 +211,7 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 						<div className='mb-1 flex items-baseline justify-between'>
 							<label className='block text-xs font-black tracking-widest text-zinc-500 uppercase dark:text-zinc-400'>
 								{field.label}
-								{field.required && <span className='text-rose-500 ml-0.5'>*</span>}
+								{field.required && <span className='ml-0.5 text-rose-500'>*</span>}
 							</label>
 							{isRequired && (
 								<span className='text-xs text-rose-500' aria-live='polite'>
@@ -243,7 +240,9 @@ const NodeSettings = ({ nodeId }: { nodeId: string }) => {
 						)}
 
 						{field.supportsVariables && variables.length > 0 && (
-							<div className='mt-2 flex flex-wrap gap-1' aria-label='Available variables'>
+							<div
+								className='mt-2 flex flex-wrap gap-1'
+								aria-label='Available variables'>
 								{variables.slice(0, 6).map((variable) => (
 									<span
 										key={`${variable.nodeId}:${variable.outputId}`}

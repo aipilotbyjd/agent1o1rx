@@ -34,11 +34,19 @@ const ActionBar = () => {
 
 	return (
 		<div className='absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-xl border border-white/10 bg-zinc-950/90 p-2 shadow-xl backdrop-blur'>
-			<ToolButton title='Zoom out' icon='ZoomOutArea' onClick={() => reactFlow.zoomOut({ duration: 150 })} />
+			<ToolButton
+				title='Zoom out'
+				icon='ZoomOutArea'
+				onClick={() => reactFlow.zoomOut({ duration: 150 })}
+			/>
 			<div className='flex min-w-[3rem] items-center justify-center text-xs font-bold text-zinc-300'>
 				{Math.round(reactFlow.getZoom() * 100)}%
 			</div>
-			<ToolButton title='Zoom in' icon='ZoomInArea' onClick={() => reactFlow.zoomIn({ duration: 150 })} />
+			<ToolButton
+				title='Zoom in'
+				icon='ZoomInArea'
+				onClick={() => reactFlow.zoomIn({ duration: 150 })}
+			/>
 			<ToolButton
 				title='Fit view'
 				icon='FitToScreen'

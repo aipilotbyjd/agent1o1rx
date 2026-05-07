@@ -74,13 +74,8 @@ export const useDeleteWorkflow = (ws: string) => {
 export const useExecuteWorkflow = (ws: string) => {
 	const qc = useQueryClient();
 	return useMutation({
-		mutationFn: ({
-			id,
-			body,
-		}: {
-			id: string;
-			body?: IExecuteWorkflowDto;
-		}) => WorkflowService.execute(ws, id, body),
+		mutationFn: ({ id, body }: { id: string; body?: IExecuteWorkflowDto }) =>
+			WorkflowService.execute(ws, id, body),
 		onSuccess: () => {
 			qc.invalidateQueries({ queryKey: workflowKeys.all(ws) });
 			notify.success('Workflow execution started');

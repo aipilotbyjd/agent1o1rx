@@ -53,7 +53,8 @@ export const validateWorkflow = (
 
 	if (
 		!nodes.some(
-			(node) => getNodeDefinition(node.data.defKey, node.data.definition)?.category === 'output',
+			(node) =>
+				getNodeDefinition(node.data.defKey, node.data.definition)?.category === 'output',
 		)
 	) {
 		issues.push({

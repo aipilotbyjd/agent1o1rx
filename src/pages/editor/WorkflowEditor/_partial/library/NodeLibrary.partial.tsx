@@ -1,7 +1,5 @@
 import { useMemo, useState } from 'react';
 import { useNodeCategories } from '@/api/modules/node-types';
-import { CATEGORY_META } from '../../_helper/builder.constants';
-import { NODE_CATALOG } from '../../_helper/nodeCatalog.constants';
 import { mapApiCategoriesToGroups } from '../../_helper/apiNodeCatalog.helper';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import NodeCategorySection from './NodeCategorySection.partial';
@@ -11,7 +9,11 @@ import TemplateLibrary from './TemplateLibrary.partial';
 const NodeLibrary = () => {
 	const { state, dispatch } = useWorkflowEditor();
 	const [query, setQuery] = useState('');
-	const { data: apiCategories, isLoading, isError } = useNodeCategories({
+	const {
+		data: apiCategories,
+		isLoading,
+		isError,
+	} = useNodeCategories({
 		include_nodes: true,
 	});
 
@@ -20,21 +22,7 @@ const NodeLibrary = () => {
 		[apiCategories],
 	);
 
-	const staticGroups = useMemo(
-		() =>
-			Object.entries(CATEGORY_META)
-				.sort(([, a], [, b]) => a.order - b.order)
-				.map(([category, meta]) => ({
-					id: category,
-					label: meta.label,
-					color: meta.color,
-					order: meta.order,
-					nodes: NODE_CATALOG.filter((node) => node.category === category),
-				})),
-		[],
-	);
-
-	const groups = apiGroups.length ? apiGroups : staticGroups;
+	const groups = apiGroups;
 	const totalNodes = groups.reduce((count, group) => count + group.nodes.length, 0);
 
 	const filteredGroups = useMemo(() => {
@@ -46,7 +34,7 @@ const NodeLibrary = () => {
 				...group,
 				nodes: group.nodes.filter((node) =>
 					[node.label, node.description, node.category, node.key].some((value) =>
-						value.toLowerCase().includes(needle),
+						value?.toLowerCase().includes(needle),
 					),
 				),
 			}))
@@ -74,12 +62,27 @@ const NodeLibrary = () => {
 				</button>
 			</div>
 			<NodeLibrarySearch value={query} onChange={setQuery} />
+			{isLoading && (
+				<div className='border-b border-blue-200 bg-blue-50 px-4 py-2 text-xs font-medium text-blue-800 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-300'>
+					Loading node categories...
+				</div>
+			)}
 			{isError && (
-				<div className='border-b border-amber-200 bg-amber-50 px-4 py-2 text-xs font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-300'>
-					Using local node catalog
+				<div className='border-b border-red-200 bg-red-50 px-4 py-2 text-xs font-medium text-red-800 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300'>
+					Failed to load node categories. Please check your API connection.
 				</div>
 			)}
 			<div className='min-h-0 flex-1 overflow-y-auto'>
+				{!isLoading && !isError && filteredGroups.length === 0 && (
+					<div className='flex flex-col items-center justify-center px-4 py-12 text-center'>
+						<div className='mb-2 text-sm text-zinc-500 dark:text-zinc-400'>
+							No node categories available
+						</div>
+						<div className='text-xs text-zinc-400 dark:text-zinc-500'>
+							Check your API connection or contact support
+						</div>
+					</div>
+				)}
 				{filteredGroups.map((group) => (
 					<NodeCategorySection
 						key={group.id}
