@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNodeCategories } from '@/api/modules/node-types';
 import { mapApiCategoriesToGroups } from '../../_helper/apiNodeCatalog.helper';
+import { NODE_GROUPS } from '../../_helper/nodeGroups.constants';
 import { useWorkflowEditor } from '../../_context/WorkflowEditorProvider.context';
 import NodeCategorySection from './NodeCategorySection.partial';
 import NodeLibrarySearch from './NodeLibrarySearch.partial';
@@ -11,8 +12,8 @@ const NodeLibrary = () => {
 	const [query, setQuery] = useState('');
 	const {
 		data: apiCategories,
-		isLoading,
-		isError,
+		isLoading: apiIsLoading,
+		isError: apiIsError,
 	} = useNodeCategories({
 		include_nodes: true,
 	});
@@ -22,7 +23,15 @@ const NodeLibrary = () => {
 		[apiCategories],
 	);
 
-	const groups = apiGroups;
+	const isApiUnavailable = apiIsError || (!apiIsLoading && !apiCategories?.length);
+
+	const groups = isApiUnavailable ? NODE_GROUPS.map((g) => ({
+		id: g.category,
+		label: g.meta.label,
+		color: g.meta.color,
+		order: g.meta.order,
+		nodes: g.nodes,
+	})) : apiGroups;
 	const totalNodes = groups.reduce((count, group) => count + group.nodes.length, 0);
 
 	const filteredGroups = useMemo(() => {
@@ -51,7 +60,7 @@ const NodeLibrary = () => {
 						Node Library
 					</div>
 					<div className='text-xs text-zinc-500'>
-						{isLoading ? 'Loading nodes...' : `${totalNodes} building blocks`}
+						{apiIsLoading ? 'Loading nodes...' : `${totalNodes} building blocks`}
 					</div>
 				</div>
 				<button
@@ -62,18 +71,18 @@ const NodeLibrary = () => {
 				</button>
 			</div>
 			<NodeLibrarySearch value={query} onChange={setQuery} />
-			{isLoading && (
+			{apiIsLoading && (
 				<div className='border-b border-blue-200 bg-blue-50 px-4 py-2 text-xs font-medium text-blue-800 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-300'>
 					Loading node categories...
 				</div>
 			)}
-			{isError && (
-				<div className='border-b border-red-200 bg-red-50 px-4 py-2 text-xs font-medium text-red-800 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300'>
-					Failed to load node categories. Please check your API connection.
+			{isApiUnavailable && !apiIsLoading && (
+				<div className='border-b border-amber-200 bg-amber-50 px-4 py-2 text-xs font-medium text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-300'>
+					Using local node definitions (API unavailable)
 				</div>
 			)}
 			<div className='min-h-0 flex-1 overflow-y-auto'>
-				{!isLoading && !isError && filteredGroups.length === 0 && (
+				{!apiIsLoading && filteredGroups.length === 0 && (
 					<div className='flex flex-col items-center justify-center px-4 py-12 text-center'>
 						<div className='mb-2 text-sm text-zinc-500 dark:text-zinc-400'>
 							No node categories available

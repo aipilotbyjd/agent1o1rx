@@ -28,7 +28,7 @@ const BuildPage = () => {
 	useAutosave();
 	useEditorHotkeys();
 
-	if (apiState.isLoading) {
+	if (apiState.isLoading && workspaceId && workflowId) {
 		return (
 			<div className='flex h-full items-center justify-center bg-white text-sm font-bold text-zinc-500 dark:bg-zinc-950 dark:text-zinc-400'>
 				Loading workflow...
@@ -36,16 +36,13 @@ const BuildPage = () => {
 		);
 	}
 
-	if (apiState.isError) {
-		return (
-			<div className='flex h-full items-center justify-center bg-white text-sm font-bold text-rose-500 dark:bg-zinc-950'>
-				Unable to load workflow.
-			</div>
-		);
-	}
-
 	return (
 		<div className='flex h-full min-h-0'>
+			{apiState.isError && (
+				<div className='absolute top-0 left-0 right-0 z-50 flex items-center justify-center gap-2 bg-rose-500 px-4 py-1 text-xs font-bold text-white'>
+					API unavailable — running in local mode.
+				</div>
+			)}
 			{state.ui.aiPanelOpen && (
 				<Resizable
 					size={{ width: aiPanelWidth, height: '100%' }}
